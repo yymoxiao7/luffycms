@@ -75,7 +75,7 @@
                     {else /}
                         <a href="{:url($vo['name'])}" class="ng-scope">
                     {/if}
-                            <div class="nav-icon"><span class="glyphicon glyphicon-home"></span></div>
+                            <div class="nav-icon"><span class="{$vo.icon}"></span></div>
                             <span class="nav-title ng-binding">{$vo.title}</span>
                         </a> {if condition="isset($vo['sub']) && !empty($vo['sub'])"}
                         <ul>

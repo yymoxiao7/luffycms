@@ -16,6 +16,10 @@ class Rule extends AdminBase
      */
     public function index()
     {
+        $ruleModel = Loader::model('Rule');
+        $lists     = $ruleModel::select();
+
+        $this->assign('lists', $lists);
         return $this->fetch();
     }
 
@@ -35,9 +39,9 @@ class Rule extends AdminBase
                 return ['status' => 0, 'data' => $result];
             }
 
-            $userModel = Loader::model('Rule');
+            $ruleModel = Loader::model('Rule');
 
-            $userModel->save($data);
+            $ruleModel->save($data);
 
             return ['status' => 1, 'url' => Url::build('admin/rule/index')];
 

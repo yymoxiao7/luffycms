@@ -11,49 +11,40 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-condensed table-bordered table-hover">
+                    <table class="table  table-bordered table-hover">
                         <tr class="active">
                             <th><input class="check-all" type="checkbox" value=""></th>
                             <th>菜单名称</th>
                             <th>链接</th>
                             <th>ICON</th>
-                            <th>是否菜单</th>
+                            <th>类型</th>
                             <th>排序</th>
                             <th>操作</th>
                         </tr>
+                        {volist name="$lists" id="vo"}
+                        <tr {if condition="$vo['parent_id'] eq 0"} class="success" {/if}>
+                            <td><input class="check-item" type="checkbox" value="{$vo.id}"></td>
+                            <td class="text-left">
+                            {if condition="$vo['parent_id'] neq 0"}
+                            &nbsp;&nbsp;┗━
+                            {/if}
+                            {$vo.title}
+                            </td>
+                            <td>
+                                {$vo.name}
+                            </td>
+                            <td>{$vo.icon}</td>
+                            <td>{$vo.islink}</td>
+                            <td>{$vo.sort}</td>
+                            <td>
+                                <a class="btn btn-xs btn-default">编辑</a>
+                            </td>
+                        </tr>
+                        {/volist}
                     </table>
                 </div>
             </div>
             <div class="panel-footer">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="text-primary">每页
-                            <kbd>10</kbd> 条, 共
-                            <kbd>220</kbd> 条记录。当前第
-                            <kbd>4</kbd> 页</div>
-                    </div>
-                    <div class="col-sm-8 text-right">
-                        <nav>
-                            <ul class="pagination pagination-sm">
-                                <li class="disabled">
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">«</span>
-                                    </a>
-                                </li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li class="active"><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li>
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">»</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

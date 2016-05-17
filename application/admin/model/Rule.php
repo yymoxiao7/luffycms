@@ -9,8 +9,6 @@ class Rule extends Model
     protected $type = [
         'id'        => 'integer',
         'parent_id' => 'integer',
-        'islink'    => 'integer',
-        'sort'      => 'integer',
     ];
 
     /**
@@ -20,10 +18,32 @@ class Rule extends Model
      * @param    string                   $value [description]
      * @return   [type]                          [description]
      */
-    public function getIslinkTextAttr($islink, $data)
+    public function getIslinkAttr($islink, $data)
     {
-        $islinks = [0 => '操作', 1 => '菜单'];
-        return $islinks[$data['islink']];
+        $islinks = [0 => '<span class="label label-success">操作</span>', 1 => '<span class="label label-info">菜单</span>'];
+        return $islinks[$islink];
+    }
+
+    /**
+     * 获取图标
+     * @param  [type] $islink [description]
+     * @param  [type] $data   [description]
+     * @return [type]         [description]
+     */
+    public function getIconAttr($islink, $data)
+    {
+        return ($islink === '') ? '' : '<i class="' . $islink . '"></i>';
+    }
+
+    /**
+     * 获取排序
+     * @param  [type] $sort [description]
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
+    public function getSortAttr($sort, $data)
+    {
+        return '<input type="text" value="' . $sort . '" class="sort"/>';
     }
 
     /**

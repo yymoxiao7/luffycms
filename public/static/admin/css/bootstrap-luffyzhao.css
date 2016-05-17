@@ -1,10 +1,27 @@
 @import url('./font-awesome.min.css');
+@import url('./font-awesome.css');
 body {
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei";
     background: #eaedf1;
 }
-th{
+th, td{
     text-align: center;
+    font-weight: normal;
+}
+td > input.sort {
+    background: none;
+    border: 1px solid #eaedf1;
+    width: 40px;
+    text-align: center;
+}
+
+td > input.sort:hover {
+    border: 1px solid #eaedf1;
+    background: #FFF;
+}
+    
+label{
+    font-weight: normal;
 }
 table{
     margin-top: 8px;
