@@ -1,0 +1,60 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">菜单列表</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a href="{:url('admin/rule/add')}" class="btn btn-success">添加</a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-condensed table-bordered table-hover">
+                        <tr class="active">
+                            <th><input class="check-all" type="checkbox" value=""></th>
+                            <th>菜单名称</th>
+                            <th>链接</th>
+                            <th>ICON</th>
+                            <th>是否菜单</th>
+                            <th>排序</th>
+                            <th>操作</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="text-primary">每页
+                            <kbd>10</kbd> 条, 共
+                            <kbd>220</kbd> 条记录。当前第
+                            <kbd>4</kbd> 页</div>
+                    </div>
+                    <div class="col-sm-8 text-right">
+                        <nav>
+                            <ul class="pagination pagination-sm">
+                                <li class="disabled">
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li class="active"><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

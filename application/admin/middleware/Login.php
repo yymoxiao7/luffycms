@@ -1,8 +1,8 @@
 <?php
 namespace app\admin\middleware;
 
+use think\response\Redirect;
 use \think\Config;
-use \think\Response;
 use \think\Session;
 
 class Login
@@ -12,7 +12,7 @@ class Login
     {
         if (Session::has(Config::get('login_session_identifier')) && ($user = Session::get(Config::get('login_session_identifier')))) {
             if (CONTROLLER_NAME == 'common') {
-                Response::create('redirect')->data('/admin/index/index')->send();
+                (new Redirect('/admin/index/index'))->send();
                 exit;
             } else {
                 if (Config::has('no_auth_controller_name') && ($noAuthControllerName = Config::get('no_auth_controller_name')) != '') {
@@ -30,7 +30,7 @@ class Login
 
             // 没有登录标识说明没登录 直接清除登录再跳转到登录页面
             Session::clear();
-            Response::create('redirect')->data('/admin/common/login')->send();
+            (new Redirect('/admin/common/login'))->send();
             exit;
         }
 

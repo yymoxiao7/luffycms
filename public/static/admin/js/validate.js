@@ -40,7 +40,8 @@
             greater_than_date: '%s 必须大于 %s.',
             less_than_date: '%s 必须小于 %s.',
             greater_than_or_equal_date: '%s 必须在 %s 范围内.',
-            less_than_or_equal_date: '%s必须在 %s 范围外.'
+            less_than_or_equal_date: '%s必须在 %s 范围外.',
+            rule_name:'%s 只能包含字母数字、下划线和斜杠'
         },
         callback: function(errors) {
 
@@ -65,7 +66,8 @@
         base64Regex = /[^a-zA-Z0-9\/\+=]/i,
         numericDashRegex = /^[\d\-\s]+$/,
         urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
-        dateRegex = /\d{4}-\d{1,2}-\d{1,2}/;
+        dateRegex = /\d{4}-\d{1,2}-\d{1,2}/
+        ruleNameRegex = /^[a-z0-9_\/]+$/i;
 
     /*
      * The exposed public object to validate a form:
@@ -632,6 +634,9 @@
             }
 
             return enteredDate <= validDate;
+        },
+        rule_name: function(field) {
+            return (ruleNameRegex.test(field.value));
         }
     };
 

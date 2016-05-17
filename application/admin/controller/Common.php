@@ -1,11 +1,9 @@
 <?php
 namespace app\admin\controller;
 
-use think\Config;
 use think\Controller;
 use think\Input;
 use think\Loader;
-use think\Session;
 use think\Url;
 
 /**
@@ -40,8 +38,6 @@ class Common extends Controller
             if ($userRow === false) {
                 return ['status' => 0, 'data' => $userModel->getError()];
             }
-
-            Session::set(Config::get('login_session_identifier'), $userRow);
 
             return ['status' => 1, 'url' => Url::build('admin/index/index')];
 

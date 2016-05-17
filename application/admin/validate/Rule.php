@@ -1,9 +1,10 @@
 <?php
 namespace app\admin\validate;
 
+use \think\Db;
 use \think\Validate;
 
-class User extends Validate
+class Rule extends Validate
 {
     use \app\common\validate\Validate;
 
@@ -62,13 +63,3 @@ class User extends Validate
         return false;
     }
 }
-
-/**
-id:自增ID 主键
-parent_id:父ID
-name:菜单&权限
-title:菜单&权限名称
-icon:图标
-islink:是否菜单
-sort:排序
- */

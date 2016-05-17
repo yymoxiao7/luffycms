@@ -3,6 +3,12 @@ body {
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei";
     background: #eaedf1;
 }
+th{
+    text-align: center;
+}
+table{
+    margin-top: 8px;
+}
 nav.navbar{
     margin-bottom: 0px;
 }

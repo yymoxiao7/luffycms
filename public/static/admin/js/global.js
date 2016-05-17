@@ -6,6 +6,7 @@ $._messengerDefaults = {
 
 $.extend({
     buttonObject: false,
+    formLuffyZhaoErrorMessages:[],
     /**
      * 错误信息提示
      * @author luffy<luffyzhao@vip.126.com>
@@ -14,7 +15,7 @@ $.extend({
      * @return   {[type]}                      [description]
      */
     messageError: function(info) {
-        this.globalMessenger().post({
+        return this.globalMessenger().post({
             message: info,
             type: 'error'
         });
@@ -81,10 +82,10 @@ $.extend({
 
         } else {
             if (typeof result.data == 'string') {
-                $.messageError(result.data);
+                $.formLuffyZhaoErrorMessages.push($.messageError(result.data));
             } else {
                 for (i in result.data) {
-                    $.messageError(result.data[i]);
+                    $.formLuffyZhaoErrorMessages.push($.messageError(result.data[i]));
                 }
             }
         }
@@ -110,13 +111,17 @@ $.fn.extend({
      * @return {[type]} [description]
      */
     formLuffyZhao: function(fields, is_ajax) {
-        var me = $(this);
-
+        var me = $(this);        
         if (typeof(is_ajax) == 'undefined') {
             is_ajax = true;
         }
 
         $(this).submit(function(event) {
+            for (var i = $.formLuffyZhaoErrorMessages.length - 1; i >= 0; i--) {
+                $.formLuffyZhaoErrorMessages[i].hide();
+            }
+            $.formLuffyZhaoErrorMessages = [];
+
             $.buttonObject = $(this).find('button[type="submit"]');
 
             var action = $(this).attr('action'),
@@ -131,7 +136,7 @@ $.fn.extend({
             }
 
             if (typeof action == 'undefined' || action.length == 0) {
-                $.messageError('内部错误！');
+                $.formLuffyZhaoErrorMessages.push($.messageError('内部错误！'));
                 // 启用按钮
                 $.buttonEnable();
             } else {
@@ -139,7 +144,7 @@ $.fn.extend({
                     if (errors.length > 0) {
                         for (variable in errors) {
                             for (var i = 0; i < errors[variable].messages.length; i++) {
-                                $.messageError(errors[variable].messages[i]);
+                                $.formLuffyZhaoErrorMessages.push($.messageError(errors[variable].messages[i]));
                             }
                             // $.messageError(errors[variable].message);
                         }
