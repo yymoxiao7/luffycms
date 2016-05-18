@@ -61,11 +61,11 @@ class Rule extends AdminBase
      */
     public function edit($id)
     {
-        $ruleRow = Loader::model('Rule')->get($id);
+        $ruleRow = \think\Db::table('rule')->find($id);
         if (empty($ruleRow)) {
             $this->error('没有找到对应的id!');
         }
-        dump($ruleRow->getData('icon'));exit;
+
         $ruleRows = Loader::model('Rule')->getMenusByParentId(0);
 
         $this->assign('ruleRow', $ruleRow);
