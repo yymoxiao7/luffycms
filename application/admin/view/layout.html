@@ -32,9 +32,10 @@
         <div class="row">
             <div class="col-md-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">首页</a></li>
-                    <li><a href="#">图书馆</a></li>
-                    <li class="active">数据</li>
+                    <li><a href="{:url('index/main')}">首页</a></li>
+                    {volist name="$breadcrumb" id="vo"}
+                    <li><a href="{:url($vo['name'])}">{$vo.title}</a></li>
+                    {/volist}
                 </ol>
             </div>
         </div>
