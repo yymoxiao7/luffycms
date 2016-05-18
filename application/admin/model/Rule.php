@@ -9,7 +9,14 @@ class Rule extends Model
     protected $type = [
         'id'        => 'integer',
         'parent_id' => 'integer',
+        'islink'    => 'integer',
+        'sort'      => 'integer',
     ];
+
+    // 定义自动完成的属性
+    protected $auto   = ['sort', 'islink'];
+    protected $insert = ['sort', 'islink'];
+    protected $update = ['sort', 'islink'];
 
     /**
      * 获取状态
@@ -100,5 +107,4 @@ class Rule extends Model
             ->order('parent_id ASC , sort ASC')
             ->select();
     }
-
 }

@@ -82,7 +82,7 @@
                             {volist name="vo['sub']" id="v"}
                             <li>
                                 <a href="{:url($v['name'])}" class="ng-scope">
-                                    <div class="nav-icon"><span class="caret"></span></div>
+                                    <div class="nav-icon"><span class="{$v.icon}"></span></div>
                                     <span class="nav-title ng-binding">{$v['title']}</span>
                                 </a>
                             </li>

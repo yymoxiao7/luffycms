@@ -2,10 +2,11 @@
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
+            <div class="panel-heading">菜单编辑:ID[{$ruleRow.id}]</div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-8">
-                        <form action="{:url('admin/rule/edit')}" class="form-horizontal ajax-form" method="post" name="rule">
+                        <form action="{:url('admin/rule/edit',['id'=>$ruleRow['id']])}" class="form-horizontal ajax-form" method="post" name="rule">
                             <div class="form-group">
                                 <label for="inputparent_id" class="col-sm-3 control-label">上级菜单</label>
                                 <div class="col-sm-5">

@@ -6,4 +6,24 @@ $(document).ready(function() {
             increaseArea: '20%' // optional
         });
     }
+
+    $('.delete').bind('click', function(event) {
+        event.preventDefault();
+        var $this = $(this);
+        bootbox.confirm({
+            size: 'small',
+            message: "确认删除这条数据吗?",
+            callback: function(result) {
+                if(result == true){
+                    $.ajax({
+                            url: $this.attr('href'),
+                            type: 'post',
+                            dataType: 'json',
+                        })
+                        .done($.ajaxDoneResult)
+                        .fail($.ajaxFailResult);
+                }
+            }
+        });
+    });
 });
