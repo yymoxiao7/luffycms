@@ -51,4 +51,25 @@ class Rule extends AdminBase
             return $this->fetch();
         }
     }
+
+    /**
+     * 编辑
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-18T10:27:08+0800
+     * @param    string                   $value [description]
+     * @return   [type]                          [description]
+     */
+    public function edit($id)
+    {
+        $ruleRow = Loader::model('Rule')->get($id);
+        if (empty($ruleRow)) {
+            $this->error('没有找到对应的id!');
+        }
+        dump($ruleRow->getData('icon'));exit;
+        $ruleRows = Loader::model('Rule')->getMenusByParentId(0);
+
+        $this->assign('ruleRow', $ruleRow);
+        $this->assign('ruleRows', $ruleRows);
+        return $this->fetch();
+    }
 }
