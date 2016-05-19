@@ -6,6 +6,8 @@ use think\Model;
 
 class Rule extends Model
 {
+    protected $autoWriteTimestamp = false;
+
     protected $type = [
         'id'        => 'integer',
         'parent_id' => 'integer',
@@ -14,9 +16,7 @@ class Rule extends Model
     ];
 
     // 定义自动完成的属性
-    protected $auto   = ['sort', 'islink'];
-    protected $insert = ['sort', 'islink'];
-    protected $update = ['sort', 'islink'];
+    protected $auto = ['sort', 'islink'];
 
     /**
      * 获取状态
@@ -51,6 +51,24 @@ class Rule extends Model
     public function getSortAttr($sort, $data)
     {
         return '<input type="text" value="' . $sort . '" class="sort"/>';
+    }
+
+    /**
+     * 获取用户组所有的权限
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-19T17:11:06+0800
+     * @param    [type]                   $roleId [description]
+     * @return   [type]                           [description]
+     */
+    public function getRulesByRoleId($roleId)
+    {
+        return Db::table('role_rule')
+            ->field('r.id,r.name,r.title')
+            ->alias('rr')
+            ->join('rule as r', 'rr.rule_id=r.id')
+            ->where('rr.role_id', $roleId)
+            ->order('r.parent_id ASC , r.sort ASC')
+            ->select();
     }
 
     /**
@@ -115,7 +133,7 @@ class Rule extends Model
      * @param    integer                  $parentId [description]
      * @return   [type]                             [description]
      */
-    public function getMenusByParentId($parentId = 0, $islink = ture)
+    public function getMenusByParentId($parentId = 0, $islink = true)
     {
         $ruleDb = Db::table('rule');
         if ($islink) {

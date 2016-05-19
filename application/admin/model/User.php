@@ -6,19 +6,15 @@ use \think\Model;
 
 class User extends Model
 {
-    protected $autoTimeField = ['create_time', 'update_time'];
-    protected $insert        = ['create_time', 'password', 'update_time'];
-    protected $update        = ['update_time', 'password'];
+    protected $autoTimeField = ['password'];
 
     protected $dateFormat = 'Y-m-d';
     protected $type       = [
-        'id'          => 'integer',
-        'role_id'     => 'integer',
-        'status'      => 'integer',
-        'sex'         => 'integer',
-        'birthday'    => 'datetime',
-        'create_time' => 'datetime',
-        'update_time' => 'datetime',
+        'id'       => 'integer',
+        'role_id'  => 'integer',
+        'status'   => 'integer',
+        'sex'      => 'integer',
+        'birthday' => 'datetime',
     ];
 
     /**

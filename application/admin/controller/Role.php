@@ -60,7 +60,19 @@ class Role extends AdminBase
      */
     public function edit($id)
     {
-        # code...
+        $rouleModel = Loader::model('Role');
+        $roleRow    = $rouleModel::find($id);
+        if (empty($roleRow)) {
+            $this->error('没有找到对应的数据');
+        }
+
+        $myRuleRows = array_column(Loader::model('Rule')->getRulesByRoleId($id), 'id');
+
+        $this->assign('ruleRows', Loader::model('Rule')->getAllRule());
+        $this->assign('roleRow', $roleRow);
+        $this->assign('myRuleRows', $myRuleRows);
+
+        return $this->fetch();
     }
 
     /**
