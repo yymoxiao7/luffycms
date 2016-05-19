@@ -8,9 +8,10 @@ class Role extends Validate
     use \app\common\validate\Validate;
 
     protected $rule = [
-        'name'   => ['require', 'unique:role', 'length:3,25'],
+        'name'   => ['require', 'unique:role,name', 'length:3,25'],
         'status' => ['require', 'in:0,1'],
         'remark' => ['max:250'],
+        'rules'  => ['array'],
     ];
 
     protected $message = [
@@ -19,11 +20,13 @@ class Role extends Validate
         'name.length'   => '角色名称必须大于3个字符小于25个字符',
         'remark.remark' => '角色说明长度不能超过250个字符',
         'status.in'     => '状态值不可用',
+        'rules.array'   => '权限格式不正确',
     ];
 
     protected $scene = [
-        'add'        => ['name', 'status', 'remark'],
+        'add'        => ['name', 'status', 'remark', 'rules'],
         'edit'       => ['name', 'status', 'remark'],
         'editstatus' => ['status'],
     ];
+
 }

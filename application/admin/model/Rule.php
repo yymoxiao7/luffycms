@@ -92,18 +92,38 @@ class Rule extends Model
     }
 
     /**
+     * 获取权限
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-19T12:36:05+0800
+     * @param    string                   $value [description]
+     */
+    public function getAllRule()
+    {
+        $rules = $this->getMenusByParentId(0, false);
+
+        foreach ($rules as $key => $rule) {
+            $rules[$key]['sub'] = $this->getMenusByParentId($rule['id'], false);
+        }
+
+        return $rules;
+    }
+
+    /**
      * 通过parent_id获取菜单
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-17T16:36:34+0800
      * @param    integer                  $parentId [description]
      * @return   [type]                             [description]
      */
-    public function getMenusByParentId($parentId = 0)
+    public function getMenusByParentId($parentId = 0, $islink = ture)
     {
-        return Db::table('rule')
+        $ruleDb = Db::table('rule');
+        if ($islink) {
+            $ruleDb->where('islink', 1);
+        }
+        return $ruleDb
             ->field('id,title')
             ->where('parent_id', $parentId)
-            ->where('islink', 1)
             ->order('parent_id ASC , sort ASC')
             ->select();
     }
