@@ -19,6 +19,17 @@ class Rule extends Model
     protected $auto = ['sort', 'islink'];
 
     /**
+     * [user description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-20T14:36:59+0800
+     * @return   [type]                   [description]
+     */
+    public function parent()
+    {
+        return $this->hasMany('Rule', 'parent_id', 'id');
+    }
+
+    /**
      * 获取状态
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-04-19T16:00:40+0800
@@ -144,5 +155,33 @@ class Rule extends Model
             ->where('parent_id', $parentId)
             ->order('parent_id ASC , sort ASC')
             ->select();
+    }
+
+    /**
+     * [deleteRole description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-20T15:03:31+0800
+     * @param    [type]                   $id [description]
+     * @return   [type]                       [description]
+     */
+    public function deleteRole($id)
+    {
+        $ruleModel = $this->find($id);
+        if ($ruleModel == false) {
+            $this->error = '权限不存在，或者已删除！';
+            return false;
+        }
+
+        if ($ruleModel->parent()->count() > 0) {
+            $this->error = '权限下存在其他，不能删除！';
+            return false;
+        }
+
+        return Db::transaction(function () use ($ruleModel) {
+            // 先删除关联中间表的数据
+            \think\Db::table('role_rule')->where('rule_id', $ruleModel->id)->delete();
+
+            $ruleModel->delete();
+        });
     }
 }

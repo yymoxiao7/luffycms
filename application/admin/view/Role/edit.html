@@ -6,7 +6,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-8">
-                        <form action="{:url('admin/role/add')}" class="form-horizontal ajax-form" method="post" name="rule">
+                        <form action="{:url('admin/role/edit',['id'=>$roleRow['id']])}" class="form-horizontal ajax-form" method="post" name="rule">
                             <div class="form-group">
                                 <label for="inputname" class="col-sm-3 control-label">用户组名称</label>
                                 <div class="col-sm-5">

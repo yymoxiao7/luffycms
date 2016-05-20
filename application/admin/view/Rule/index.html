@@ -41,6 +41,27 @@
                                 <a class="btn btn-xs btn-default delete" href="{:url('admin/rule/destroy',['id'=>$vo['id']])}">删除</a>
                             </td>
                         </tr>
+                            {volist name="$vo->parent" id="v"}
+                                <tr {if condition="$v['parent_id'] eq 0"} class="success" {/if}>
+                                    <td><input class="check-item" type="checkbox" value="{$v.id}"></td>
+                                    <td class="text-left">
+                                    {if condition="$v['parent_id'] neq 0"}
+                                    &nbsp;&nbsp;┗━
+                                    {/if}
+                                    {$v.title}
+                                    </td>
+                                    <td>
+                                        {$v.name}
+                                    </td>
+                                    <td>{$v.icon}</td>
+                                    <td>{$v.islink}</td>
+                                    <td>{$v.sort}</td>
+                                    <td>
+                                        <a class="btn btn-xs btn-default" href="{:url('admin/rule/edit',['id'=>$v['id']])}">编辑</a>
+                                        <a class="btn btn-xs btn-default delete" href="{:url('admin/rule/destroy',['id'=>$v['id']])}">删除</a>
+                                    </td>
+                                </tr>
+                            {/volist}
                         {/volist}
                     </table>
                 </div>

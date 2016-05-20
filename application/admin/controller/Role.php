@@ -32,18 +32,13 @@ class Role extends AdminBase
     public function add()
     {
         if (IS_AJAX) {
-            $data = Input::post();
-
-            $roleValidate = Loader::validate('Role');
-            $result       = $roleValidate->scene('add')->check($data);
-            if ($result === false) {
-                return ['status' => 0, 'data' => $roleValidate->getError()];
-            }
-
+            $data      = Input::post();
             $roleModel = Loader::model('role');
+
             if ($roleModel->addRole($data) !== false) {
                 return ['status' => 1, 'url' => Url::build('admin/role/index')];
             }
+
             return ['status' => 0, 'data' => $roleModel->getError()];
 
         }
@@ -60,12 +55,23 @@ class Role extends AdminBase
      */
     public function edit($id)
     {
-        $rouleModel = Loader::model('Role');
-        $roleRow    = $rouleModel::find($id);
-        if (empty($roleRow)) {
+        $roleRow = Loader::model('Role')->find($id);
+
+        if ($roleRow == false) {
             $this->error('没有找到对应的数据');
         }
 
+        if (IS_AJAX) {
+            $data = Input::post();
+
+            if ($roleRow->editRole($data) !== false) {
+                return ['status' => 1, 'url' => Url::build('admin/role/index')];
+            }
+
+            return ['status' => 0, 'data' => $roleRow->getError()];
+        }
+
+        // 用户组所有权限
         $myRuleRows = array_column(Loader::model('Rule')->getRulesByRoleId($id), 'id');
 
         $this->assign('ruleRows', Loader::model('Rule')->getAllRule());
@@ -84,6 +90,12 @@ class Role extends AdminBase
      */
     public function destroy($id)
     {
-        # code...
+        $rouleModel = Loader::model('Role');
+
+        if ($rouleModel->deleteRole($id) === false) {
+            return ['status' => 0, 'data' => '删除失败'];
+        }
+
+        return ['status' => 1, 'url' => Url::build('admin/role/index')];
     }
 }

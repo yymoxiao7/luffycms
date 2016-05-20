@@ -12,7 +12,12 @@ class Login
     {
         if (Session::has(Config::get('login_session_identifier')) && ($user = Session::get(Config::get('login_session_identifier')))) {
             if (CONTROLLER_NAME == 'common') {
-                (new Redirect('/admin/index/index'))->send();
+                if (IS_AJAX) {
+                    return ['status' => 2, 'url' => '/admin/index/index'];
+                } else {
+                    (new Redirect('/admin/index/index'))->send();
+                }
+
                 exit;
             } else {
                 if (Config::has('no_auth_controller_name') && ($noAuthControllerName = Config::get('no_auth_controller_name')) != '') {
@@ -30,7 +35,12 @@ class Login
 
             // 没有登录标识说明没登录 直接清除登录再跳转到登录页面
             Session::clear();
-            (new Redirect('/admin/common/login'))->send();
+            if (IS_AJAX) {
+                return ['status' => 2, 'url' => '/admin/index/index'];
+            } else {
+                (new Redirect('/admin/common/login'))->send();
+            }
+
             exit;
         }
 

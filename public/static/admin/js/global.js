@@ -80,7 +80,16 @@ $.extend({
                 1000);
 
 
-        } else {
+        } else if(result.status == 2){
+            if (typeof result.url == 'undefined') {
+                result.url = '/admin/index/index';
+            }
+            $.messageSuccess('权限发生改变！');
+            setTimeout(function() {
+                    location.href = result.url;
+                },
+                1000);
+        }else{
             if (typeof result.data == 'string') {
                 $.formLuffyZhaoErrorMessages.push($.messageError(result.data));
             } else {

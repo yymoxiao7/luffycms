@@ -24,8 +24,9 @@ class Role extends Validate
     ];
 
     protected $scene = [
-        'add'        => ['name', 'status', 'remark', 'rules'],
+        'add'        => ['name', 'status', 'remark'],
         'edit'       => ['name', 'status', 'remark'],
+        'role_rules' => ['rules'],
         'editstatus' => ['status'],
     ];
 

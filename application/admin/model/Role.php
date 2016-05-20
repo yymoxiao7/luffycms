@@ -1,7 +1,7 @@
 <?php
 namespace app\admin\model;
 
-use think\exception\PDOException;
+use \PDOException;
 use \think\Db;
 use \think\Model;
 
@@ -39,9 +39,7 @@ class Role extends Model
      */
     public function getUserCountAttr($value, $data)
     {
-        return Db::table('user')->where([
-            'role_id' => $data['id'],
-        ])->count();
+        return $this->user()->count();
     }
 
     /**
@@ -56,6 +54,17 @@ class Role extends Model
     }
 
     /**
+     * [user description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-20T14:36:59+0800
+     * @return   [type]                   [description]
+     */
+    public function user()
+    {
+        return $this->hasMany('User', 'role_id', 'id');
+    }
+
+    /**
      * 添加角色
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-19T15:04:27+0800
@@ -64,20 +73,78 @@ class Role extends Model
     public function addRole(array $data)
     {
         return Db::transaction(function () use ($data) {
-            $roleId = Role::save([
+            $roleModel = new Role;
+
+            $roleId = $roleModel->validate('Role.add')->save([
                 'status' => $data['status'],
                 'name'   => $data['name'],
                 'remark' => $data['remark'],
             ]);
 
             if ($roleId === false) {
-                throw new PDOException("用户组添加失败");
+                throw new PDOException($roleModel->getError());
             }
 
-            $roleModle     = Role::find($roleId);
+            $roleModel     = $roleModel->find($roleId);
             $data['rules'] = array_map('intval', $data['rules']);
             //插入关联表
-            $roleModle->rule()->saveAll($data['rules']);
+            $roleModel->rule()->saveAll($data['rules']);
+        });
+    }
+
+    /**
+     * [editRole description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-20T10:49:49+0800
+     * @param    array                    $data [description]
+     * @param    [type]                   $id   [description]
+     * @return   [type]                         [description]
+     */
+    public function editRole(array $data)
+    {
+        return Db::transaction(function () use ($data) {
+            // 更新
+            if ($this->validate('Role.edit')->save([
+                'status' => $data['status'],
+                'name'   => $data['name'],
+                'remark' => $data['remark'],
+            ]) === false) {
+                throw new PDOException($this->getError());
+            }
+            //先删除关联数据
+            Db::table('role_rule')->where(['role_id' => $this->id])->delete();
+
+            $data['rules'] = array_map('intval', $data['rules']);
+            //插入关联表
+            $this->rule()->saveAll($data['rules']);
+        });
+    }
+
+    /**
+     * [deleteRole description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-20T15:03:31+0800
+     * @param    [type]                   $id [description]
+     * @return   [type]                       [description]
+     */
+    public function deleteRole($id)
+    {
+        $roleModel = $this->find($id);
+        if ($roleModel == false) {
+            $this->error = '用户组不存在，或者已删除！';
+            return false;
+        }
+
+        if ($roleModel->user()->count() > 0) {
+            $this->error = '用户组下存在用户，不能删除！';
+            return false;
+        }
+
+        return Db::transaction(function () use ($roleModel) {
+            // 先删除关联中间表的数据
+            \think\Db::table('role_rule')->where('role_id', $roleModel->id)->delete();
+
+            $roleModel->delete();
         });
     }
 
