@@ -26,4 +26,17 @@ $(document).ready(function() {
             }
         });
     });
+    // 日期
+    if (typeof $.fn.datetimepicker !== 'undefined') {
+        $('input.date').datetimepicker({
+            format:'yyyy-mm-dd',
+            language:'zh-CN',
+            autoclose:true,
+            minView:'month',
+        });
+    }
+
+    if (typeof $.fn.luffyuploadpic !== 'undefined') {
+        $("input[type='hidden'].upload").luffyuploadpic();
+    }
 });

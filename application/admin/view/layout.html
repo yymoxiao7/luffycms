@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta charset="UTF-8">
+    <meta>
     <title>首页</title>
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="/static/admin/css/bootstrap.css">
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/static/admin/js/messenger/css/messenger.css">
     <link rel="stylesheet" href="/static/admin/js/messenger/css/messenger-theme-air.css">
     <link rel="stylesheet" href="/static/admin/js/icheck-1.x/skins/minimal/green.css">
+    <link href="/static/admin/js/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -25,6 +26,7 @@
 
 <body>
     <div class="container-fluid">
+        {if condition="isset($breadcrumb)"}
         <div class="row">
             <div class="col-md-12">
                 <ol class="breadcrumb">
@@ -35,6 +37,7 @@
                 </ol>
             </div>
         </div>
+        {/if}
         {__CONTENT__}
     </div>
     <script type="text/javascript" src="/static/admin/js/bootstrap.js"></script>
@@ -42,6 +45,9 @@
     <script type="text/javascript" src="/static/admin/js/messenger/js/messenger.min.js"></script>
     <script type="text/javascript" src="/static/admin/js/validate.js"></script>
     <script type="text/javascript" src="/static/admin/js/icheck-1.x/icheck.min.js"></script>
+    <script type="text/javascript" src="/static/admin/js/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="/static/admin/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="/static/admin/js/luffyuploadpic.js"></script>
     <script type="text/javascript" src="/static/admin/js/global.js"></script>
     <script type="text/javascript" src="/static/admin/js/start.js"></script>
 </body>

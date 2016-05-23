@@ -37,8 +37,10 @@ class Rule extends AdminBase
             $result = $ruleModel->validate('Rule.add')->save(Input::param());
 
             if (false !== $result) {
+                \think\Loader::model('BackstageLog')->record("添加菜单,ID:[{$result}]");
                 return ['status' => 1, 'url' => Url::build('admin/rule/index')];
             }
+
             return ['status' => 0, 'data' => $ruleModel->getError()];
 
         }
@@ -69,6 +71,7 @@ class Rule extends AdminBase
             $result = $ruleRow->validate('Rule.edit')->save($data);
 
             if (false !== $result) {
+                \think\Loader::model('BackstageLog')->record("修改菜单,ID:[{$id}]");
                 return ['status' => 1, 'url' => Url::build('admin/rule/index')];
             }
             return ['status' => 0, 'data' => $ruleModel->getError()];
@@ -96,6 +99,7 @@ class Rule extends AdminBase
         if ($ruleModel->deleteRole($id) === false) {
             return ['status' => 0, 'data' => $ruleModel->getError()];
         }
+        \think\Loader::model('BackstageLog')->record("删除菜单,ID:[{$id}]");
 
         return ['status' => 1, 'url' => Url::build('admin/rule/index')];
     }

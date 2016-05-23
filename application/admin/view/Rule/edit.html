@@ -38,7 +38,7 @@
                                 <label class="col-sm-3 control-label" for="inputislink"> 是否菜单链接 </label>
                                 <div class="col-sm-5">
                                     <input type="checkbox" name="islink" id="inputislink" value="1" 
-                                    {if condition="$ruleRow['islink'] eq 1"}
+                                    {if condition="$ruleRow->getData('islink') eq 1"}
                                     checked="checked" 
                                     {/if}
                                     /> </div>

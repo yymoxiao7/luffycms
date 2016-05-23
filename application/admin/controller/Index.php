@@ -2,9 +2,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
-use \think\Config;
 use \think\Loader;
-use \think\Session;
 
 class Index extends AdminBase
 {
@@ -16,10 +14,9 @@ class Index extends AdminBase
      */
     public function index()
     {
-        $user     = Session::get(Config::get('login_session_identifier'));
-        $ruleData = Loader::model('Rule')->getMenusByRoleId($user['role_id']);
+        $ruleData = Loader::model('Rule')->getMenusByRoleId($this->userRow['role_id']);
 
-        $this->assign('userRow', $user);
+        $this->assign('userRow', $this->userRow);
         $this->assign('ruleData', $ruleData);
         return $this->fetch();
     }

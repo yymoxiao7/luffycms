@@ -3,6 +3,7 @@ namespace app\admin\model;
 
 use \think\Db;
 use \think\Model;
+use \app\common\tools\String;
 
 class User extends Model
 {
@@ -44,12 +45,7 @@ class User extends Model
             }
 
             //登录失败要记录在日志里
-            $loginErrorLog = \think\Loader::model('LoginErrorLog');
-            $loginErrorLog->save([
-                'email'    => $params['password'],
-                'password' => $params['password'],
-                'remark'   => $this->error,
-            ]);
+            \think\Loader::model('BackstageLog')->record("登录失败,email:[{$params['email']}] password:[".String::replaceToStar($params['password']) . ']');
 
             return false;
         }
@@ -59,10 +55,7 @@ class User extends Model
         \Think\Session::set(\Think\Config::get('login_session_identifier'), $userRow);
 
         //登录成功要记录在日志里
-        $loginSuccessLog = \think\Loader::model('LoginSuccessLog');
-        $loginSuccessLog->save([
-            'user_id' => $userRow['id'],
-        ]);
+        \think\Loader::model('BackstageLog')->record('登录');
 
         return $userRow;
     }

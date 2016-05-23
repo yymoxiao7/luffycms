@@ -1,0 +1,105 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">用户组添加</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <form action="{:url('admin/role/add')}" class="form-horizontal ajax-form" method="post" name="rule">
+                            <div class="form-group">
+                                <label for="inputemail" class="col-sm-3 control-label">用户邮件地址</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="email" id="inputemail" disabled="disabled" placeholder="用户邮件地址"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputname" class="col-sm-3 control-label">用户姓名</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="name" id="inputname" placeholder="菜单名称">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputpassword" class="col-sm-3 control-label">用户密码</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="password" id="inputpassword" placeholder="用户密码">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputpassword_confirm" class="col-sm-3 control-label">确认密码</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="password_confirm" id="inputpassword_confirm" placeholder="确认密码">
+                                </div>
+                            </div>
+                            
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputstatus"> 是否启用 </label>
+                                <div class="col-sm-5">
+                                    <input type="checkbox" name="status" id="inputstatus" value="1" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label">头像</label>
+                                <div class="col-sm-5">
+                                    <input type="hidden" name="head" class="upload" value="/static/admin/images/default_head.gif" />
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputstatus"> 性别 </label>
+                                <div class="col-sm-5">
+                                    <input type="radio" name="status" id="inputstatus" value="0" />
+                                    保密
+                                    <input type="radio" name="status" id="inputstatus" value="1" />
+                                    男
+                                    <input type="radio" name="status" id="inputstatus" value="2" />
+                                    女
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputtel"> 电话号码 </label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="tel" id="inputtel" placeholder="电话号码">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="inputbirthday" class="col-sm-3 control-label">生日</label>
+                                <div class="col-sm-5">
+                                    <div class="widget-group">
+                                        <input type="text" class="form-control date" name="tel" id="inputbirthday" placeholder="生日">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+    $('form.ajax-form').formLuffyZhao([
+
+    ]);
+
+    $('.children').on('ifChecked',function (argument) {
+         if(!$(this).parents('.widget-box').find('.father').is('checked')){
+            $(this).parents('.widget-box').find('.father').iCheck('check');
+         }
+    });
+});
+</script>

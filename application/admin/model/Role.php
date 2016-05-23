@@ -85,10 +85,14 @@ class Role extends Model
                 throw new PDOException($roleModel->getError());
             }
 
-            $roleModel     = $roleModel->find($roleId);
-            $data['rules'] = array_map('intval', $data['rules']);
-            //插入关联表
-            $roleModel->rule()->saveAll($data['rules']);
+            if (isset($data['rules']) && is_array($data['rules']) && !empty($data['rules'])) {
+                $roleModel     = $roleModel->find($roleId);
+                $data['rules'] = array_map('intval', $data['rules']);
+                //插入关联表
+                $roleModel->rule()->saveAll($data['rules']);
+            }
+
+            return $roleId;
         });
     }
 
@@ -114,9 +118,12 @@ class Role extends Model
             //先删除关联数据
             Db::table('role_rule')->where(['role_id' => $this->id])->delete();
 
-            $data['rules'] = array_map('intval', $data['rules']);
-            //插入关联表
-            $this->rule()->saveAll($data['rules']);
+            if (isset($data['rules']) && is_array($data['rules']) && !empty($data['rules'])) {
+                $data['rules'] = array_map('intval', $data['rules']);
+                //插入关联表
+                $this->rule()->saveAll($data['rules']);
+            }
+
         });
     }
 

@@ -1,6 +1,7 @@
 <?php
 namespace app\common\controller;
 
+use think\Config;
 use think\Controller;
 use think\Db;
 use think\Session;
@@ -10,14 +11,19 @@ use think\Session;
  */
 class AdminBase extends Controller
 {
+    protected $userRow = [];
+    /**
+     * [__construct description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-23T15:07:02+0800
+     */
     public function __construct()
     {
         parent::__construct();
-
+        // 当前位置
         $this->getBreadcrumb();
-        // ajax请求返回json数据
-        // Config::set('default_ajax_return', true);
-
+        //userRow赋值
+        $this->userRow = Session::get(Config::get('login_session_identifier'));
     }
 
     /**

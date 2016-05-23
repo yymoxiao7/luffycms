@@ -35,7 +35,9 @@ class Role extends AdminBase
             $data      = Input::post();
             $roleModel = Loader::model('role');
 
-            if ($roleModel->addRole($data) !== false) {
+            if (($id = $roleModel->addRole($data)) !== false) {
+                \think\Loader::model('BackstageLog')->record("添加用户组,ID:[{$id}]");
+
                 return ['status' => 1, 'url' => Url::build('admin/role/index')];
             }
 
@@ -65,6 +67,8 @@ class Role extends AdminBase
             $data = Input::post();
 
             if ($roleRow->editRole($data) !== false) {
+                \think\Loader::model('BackstageLog')->record("修改用户组,ID:[{$id}]");
+
                 return ['status' => 1, 'url' => Url::build('admin/role/index')];
             }
 
@@ -95,6 +99,7 @@ class Role extends AdminBase
         if ($rouleModel->deleteRole($id) === false) {
             return ['status' => 0, 'data' => '删除失败'];
         }
+        \think\Loader::model('BackstageLog')->record("删除用户组,ID:[{$id}]");
 
         return ['status' => 1, 'url' => Url::build('admin/role/index')];
     }
