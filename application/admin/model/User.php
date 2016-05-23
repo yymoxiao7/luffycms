@@ -30,7 +30,7 @@ class User extends Model
     public function login(array $params)
     {
         $userRow = Db::table('user')->field([
-            'id', 'name', 'role_id', 'status', 'password', 'sex', 'birthday', 'tel',
+            'id', 'name', 'role_id', 'status', 'password', 'sex', 'birthday', 'tel', 'email',
         ])->where('email', $params['email'])->find();
 
         if (empty($userRow) || $userRow['status'] == 0 || $userRow['password'] != $this->setPasswordAttr($params['password'])) {

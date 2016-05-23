@@ -5,9 +5,9 @@ use \think\Model;
 
 class LoginSuccessLog extends Model
 {
-    protected $autoTimeField = ['create_time'];
-    protected $insert        = ['create_time', 'ip'];
-    protected $dateFormat    = 'Y-m-d';
+    protected $updateTime = 'create_time';
+    protected $insert     = ['ip'];
+    protected $dateFormat = 'Y-m-d';
 
     /**
      * 设置登录用户的ip

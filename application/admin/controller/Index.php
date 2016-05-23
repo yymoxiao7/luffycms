@@ -18,6 +18,8 @@ class Index extends AdminBase
     {
         $user     = Session::get(Config::get('login_session_identifier'));
         $ruleData = Loader::model('Rule')->getMenusByRoleId($user['role_id']);
+
+        $this->assign('userRow', $user);
         $this->assign('ruleData', $ruleData);
         return $this->fetch();
     }

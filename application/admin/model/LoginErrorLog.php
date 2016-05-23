@@ -5,9 +5,10 @@ use \think\Model;
 
 class LoginErrorLog extends Model
 {
-    protected $autoTimeField = ['create_time'];
-    protected $insert        = ['create_time', 'password', 'ip'];
-    protected $dateFormat    = 'Y-m-d';
+    protected $autoWriteTimestamp = false;
+    protected $updateTime         = 'create_time';
+    protected $insert             = ['password', 'ip'];
+    protected $dateFormat         = 'Y-m-d';
 
     /**
      * 设置登录用户所用的密码
