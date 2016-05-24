@@ -41,7 +41,10 @@
             less_than_date: '%s 必须小于 %s.',
             greater_than_or_equal_date: '%s 必须在 %s 范围内.',
             less_than_or_equal_date: '%s必须在 %s 范围外.',
-            rule_name:'%s 只能包含字母数字、下划线和斜杠'
+            rule_name:'%s 只能包含字母数字、下划线和斜杠',
+            tel:"%s 不是一个有效的电话号码.",
+            mobile:"%s 不是一个有效的手机号码.",
+            tel_or_mobile:"%s 不是一个有效的手机号码或者电话号码."
         },
         callback: function(errors) {
 
@@ -66,7 +69,9 @@
         base64Regex = /[^a-zA-Z0-9\/\+=]/i,
         numericDashRegex = /^[\d\-\s]+$/,
         urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
-        dateRegex = /\d{4}-\d{1,2}-\d{1,2}/
+        dateRegex = /\d{4}-\d{1,2}-\d{1,2}/,
+        telRegex =  /^((\+?86)|(\(\+86\)))?\d{3,4}-\d{7,8}(-\d{3,4})?$/,
+        mobileRegex= /^((\+?86)|(\(\+86\)))?1\d{10}$/,
         ruleNameRegex = /^[a-z0-9_\/]+$/i;
 
     /*
@@ -637,6 +642,15 @@
         },
         rule_name: function(field) {
             return (ruleNameRegex.test(field.value));
+        },
+        tel: function (field) {
+             return (telRegex.test(field.value));
+        },
+        mobile:function (field) {
+             return (telRegex.test(field.value));
+        },
+        tel_or_mobile:function (field) {
+             return (telRegex.test(field.value)) || (telRegex.test(field.value));
         }
     };
 

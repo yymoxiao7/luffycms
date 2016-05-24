@@ -37,6 +37,6 @@ $(document).ready(function() {
     }
 
     if (typeof $.fn.luffyuploadpic !== 'undefined') {
-        $("input[type='hidden'].upload").luffyuploadpic();
+        $("img.upload").luffyuploadpic();
     }
 });

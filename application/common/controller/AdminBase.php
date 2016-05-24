@@ -20,6 +20,9 @@ class AdminBase extends Controller
     public function __construct()
     {
         parent::__construct();
+
+        defined('STATIC_PATH') or define('STATIC_PATH', dirname(ROOT_PATH) . DS . 'static');
+
         // 当前位置
         $this->getBreadcrumb();
         //userRow赋值

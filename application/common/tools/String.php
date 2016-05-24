@@ -19,4 +19,16 @@ class String
         $len = strlen($str) / 2;
         return substr_replace($str, str_repeat('*', $len), floor(($len) / 2), $len);
     }
+
+    /**
+     * 获取文件访问地址
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-24T12:46:17+0800
+     * @param    string                   $value [description]
+     */
+    public static function fileWebLink($realPath)
+    {
+        $replace = dirname(ROOT_PATH);
+        return str_replace($replace, '', $realPath);
+    }
 }

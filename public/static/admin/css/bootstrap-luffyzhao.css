@@ -406,3 +406,10 @@ nav.navbar{
 .widget-main > label {
   line-height: 20px;
 }
+
+@media (min-width: 768px){
+    .modal-dialog-luffy .modal-dialog {
+        width: 80%;
+        margin: 30px auto;
+    }
+}

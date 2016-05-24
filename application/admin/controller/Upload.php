@@ -3,6 +3,8 @@ namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
 use \think\Input;
+use \think\Loader;
+use app\common\tools\String;
 
 class Upload extends AdminBase
 {
@@ -18,6 +20,49 @@ class Upload extends AdminBase
         $data['defaultImg'] = '/static/admin/images/default_head.gif';
 
         $this->assign('data', $data);
+        return $this->fetch();
+    }
+
+    /**
+     * 图片上传界面
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-24T09:37:42+0800
+     * @param    string                   $value [description]
+     * @return   [type]                          [description]
+     */
+    public function index($type,$id)
+    {
+        if($type == ''){
+            throw new \Exception("错误", 1);
+        }
+        if (IS_POST) {
+            $optput = ['error' => '上传失败'];
+
+            $file = Input::file('file');
+            $info = $file->move(STATIC_PATH . DS . 'upload' . DS);
+
+            if ($info) {
+                // 保存至UploadedFile表
+                $uploadId = Loader::model('UploadedFile')->record($info,$type);
+
+                $optput['file']   = String::fileWebLink($info->getLinkTarget());
+                $optput['upload_id'] =   (int)$uploadId;
+                $optput['error']   = null;
+            } else {
+                $optput['error'] = $file->getError();
+            }
+
+            return $optput;
+        }
+
+        $uploadRows = Loader::model('UploadedFile')->where([
+            'type' => $type,
+            'item_id' => 0
+        ])->select();
+
+        $this->assign('uploadRows',$uploadRows);
+        $this->assign('type',$type);
+        $this->assign('id',$id);
         return $this->fetch();
     }
 }

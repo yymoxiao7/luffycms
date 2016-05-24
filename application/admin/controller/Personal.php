@@ -13,6 +13,10 @@ class Personal extends AdminBase
      */
     public function profile()
     {
+        if (IS_AJAX) {
+
+        }
+        $this->assign('userRow', $this->userRow);
         return $this->fetch();
     }
 }

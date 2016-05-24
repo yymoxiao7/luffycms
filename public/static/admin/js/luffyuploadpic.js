@@ -13,37 +13,37 @@ if (typeof jQuery === 'undefined') {
 +function ($) {
   'use strict';
 
-  var luffyUploadPic = function (element,options) {
+  var luffyUploadPic = function (element) {
         var that = this;
 
-        this.element = $(element);
-        this.host = options.host || "/admin/upload/uploadpic";
-        this.width = options.width || this.element.data('width') || 100;
-        this.height = options.height || this.element.data('height') || 100;
-        this.backCall = options.backCall || this.element.data('backCall') || undefined;
-        this.defaultImg = options.defaultImg || this.element.data('defaultImg') || '/static/admin/images/default_head.gif';
-        
-        $('<iframe>',{
-            width:this.width,
-            height:this.height,
-            scrolling:"no",
-            frameborder:"0",
-            border:"0",
-            src:this.getUrl()
-        }).insertAfter(element);
+        that.element = $(element);
+
+        that.element.bind('click', function(event) {
+          var id = $(this).attr('id');
+          var type = $(this).data('type');
+
+          if(typeof(id) == 'undefined' || typeof(type) == 'undefined'){
+              console.error('参数不正确！');
+              return false;
+          }
+          jQuery.ajax({
+              type: 'get',
+              url:'/admin/Upload/index/type/'+type+'/id/'+id,
+              success: function(data) {
+                  bootbox.dialog({
+                      className: 'modal-dialog-luffy',
+                      message: data,
+                      title: "文件上传"
+                  });
+              }
+          });
+      });
+
   };
 
-  $.fn.luffyuploadpic = function (option) {
-    if (typeof option == 'undefined'){
-      option = {};
-    }
-    new luffyUploadPic(this,option);
+  $.fn.luffyuploadpic = function () {
+    new luffyUploadPic(this);
   };
 
-  luffyUploadPic.prototype = {
-    getUrl : function () {
-         return this.host + '?width=' + this.width + '&height=' + this.height + '&backCall='+ this.backCall + '&defaultImg=' + this.defaultImg;
-    }
-  };
 }(jQuery);
 
