@@ -31,4 +31,9 @@ class String
         $replace = dirname(ROOT_PATH);
         return str_replace($replace, '', $realPath);
     }
+
+    public static function password($string)
+    {
+        return md5($string);
+    }
 }

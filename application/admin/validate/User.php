@@ -8,13 +8,13 @@ class User extends Validate
     use \app\common\validate\Validate;
 
     protected $rule = [
-        'name'        => ['require', 'unique:user', 'length:3,25'],
-        'email'       => ['require', 'email', 'unique:user'],
+        'name'        => ['require', 'unique:user,name', 'length:3,25'],
+        'email'       => ['require', 'email', 'unique:user,email'],
         'email_login' => ['require', 'email'],
-        'password'    => ['require', 'length:6,20'],
-        'repassword'  => ['require', 'confirm:password'],
+        'password'    => ['length:6,20'],
+        'repassword'  => ['confirm:password'],
         'sex'         => ['in:0,1,2'],
-        'birthday'    => ['dateFormat:y-m-d'],
+        'birthday'    => ['dateFormat:Y-m-d'],
         'role_id'     => ['exist:role,id'],
         'status'      => ['in:0,1'],
     ];
@@ -32,9 +32,8 @@ class User extends Validate
     ];
 
     protected $scene = [
-        'add'          => ['name', 'email', 'password', 'role_id', 'sex', 'birthday'],
-        'edit'         => ['role_id', 'status', 'sex', 'birthday'],
-        'editpassword' => ['password', 'repassword'],
+        'add'          => ['name', 'email', 'password', 'repassword', 'status', 'role_id', 'sex', 'birthday'],
+        'edit_profile' => ['name', 'password', 'repassword', 'status', 'sex', 'birthday', 'head', 'role_id'],
         'editstatus'   => ['status'],
         'login'        => ['email_login', 'password'],
     ];

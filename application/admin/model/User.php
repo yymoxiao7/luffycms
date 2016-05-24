@@ -7,7 +7,7 @@ use \app\common\tools\String;
 
 class User extends Model
 {
-    protected $autoTimeField = ['password'];
+    protected $insert = ['password'];
 
     protected $dateFormat = 'Y-m-d';
     protected $type       = [
@@ -94,7 +94,7 @@ class User extends Model
      */
     protected function setPasswordAttr($password)
     {
-        return md5($password);
+        return String::password($password);
     }
 
 }
