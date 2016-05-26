@@ -31,6 +31,7 @@ class UploadedFile extends Model
         return String::fileWebLink($data['file_path'] . DS . $data['file_name']);
     }
 
+
     /**
      * 保存上传的文件到数据库
      * @author luffy<luffyzhao@vip.126.com>
@@ -48,5 +49,37 @@ class UploadedFile extends Model
             'type'      => $type,
         ]);
     }
+
+    /**
+     * 标记为使用
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-26T11:19:42+0800
+     * @param    [type]                   $data   [数据]
+     * @param    [type]                   $uploadId [主键ID]
+     * @return   [type]                             [description]
+     */
+    public function used($data, $uploadId, $delete = true)
+    {
+        if(!isset($data['type']) || !isset($data['item_id'])){
+            throw new \Exception("参数出错");
+            return false;
+        }
+        if($delete == true){
+            $uploadFileRows = $this->where($data)->select();
+            if($uploadFileRows){
+                foreach ($uploadFileRows as $value) {
+                    $file = $value['file_path'] . DS . $value['file_name'];
+                    if(file_exists($file)){
+                        unlink($file);
+                    }
+
+                    $value->delete();
+                }
+            }
+        }
+        return $this->save($data,['id'=>$uploadId]);
+    }
+
+
 
 }

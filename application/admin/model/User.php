@@ -3,11 +3,14 @@ namespace app\admin\model;
 
 use \think\Db;
 use \think\Model;
+use \think\Loader;
+use \think\Session;
+use \think\Config;
 use \app\common\tools\String;
 
 class User extends Model
 {
-    protected $insert = ['password'];
+    protected $auto = ['password'];
 
     protected $dateFormat = 'Y-m-d';
     protected $type       = [
@@ -15,7 +18,6 @@ class User extends Model
         'role_id'  => 'integer',
         'status'   => 'integer',
         'sex'      => 'integer',
-        'birthday' => 'datetime',
     ];
 
     /**
@@ -45,19 +47,72 @@ class User extends Model
             }
 
             //登录失败要记录在日志里
-            \think\Loader::model('BackstageLog')->record("登录失败,email:[{$params['email']}] password:[".String::replaceToStar($params['password']) . ']');
+            Loader::model('BackstageLog')->record("登录失败,email:[{$params['email']}] password:[".String::replaceToStar($params['password']) . ']');
 
             return false;
         }
 
         unset($userRow['password']);
 
-        \Think\Session::set(\Think\Config::get('login_session_identifier'), $userRow);
+        Session::set(Config::get('login_session_identifier'), $userRow);
 
         //登录成功要记录在日志里
-        \think\Loader::model('BackstageLog')->record('登录');
+        Loader::model('BackstageLog')->record('登录');
 
         return $userRow;
+    }
+
+    /**
+     * [profileEdit description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-26T10:53:30+0800
+     * @param    string                   $value [description]
+     * @return   [type]                          [description]
+     */
+    public function profileEdit(array $data)
+    {
+        if(isset($data['password']) && $data['password'] == ''){
+            unset($data['password']);
+        }
+
+        $pk = $this->getPk();
+        if(!isset($data[$pk])){
+            $this->error = '参数不对！';
+            return false;
+        }
+
+        return Db::transaction(function () use ($data, $pk) {
+
+            // 头像处理
+            if (isset($data['profile_head']) && is_numeric($data['profile_head'])) {
+                $fileModel = Loader::model('UploadedFile')->find($data['profile_head']);
+                if ($fileModel) {
+                    $data['head'] = $fileModel->file;
+                }
+            }
+
+            $this->profileEditField()->save($data,[$pk=>$data[$pk]]);
+
+            //  头像保存
+            if (isset($data['profile_head']) && is_numeric($data['profile_head'])) {
+                Loader::model('UploadedFile')->used([
+                    'item_id' => $data[$pk],
+                    'type' => 'profile'
+                ],$data['profile_head']);
+            }
+
+        });
+    }
+
+    /**
+     * [profileEditField description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-26T17:36:24+0800
+     * @return   [type]                   [description]
+     */
+    public function profileEditField()
+    {
+        return $this->allowField(['name', 'email', 'password', 'status', 'sex', 'head', 'birthday', 'tel']);
     }
 
     /**
@@ -92,8 +147,10 @@ class User extends Model
      * @dateTime 2016-04-19T15:58:11+0800
      * @param    [type]                   $value [description]
      */
-    protected function setPasswordAttr($password)
+    protected function setPasswordAttr($password,$data)
     {
+        //e10adc3949ba59abbe56e057f20f883e
+        //123456
         return String::password($password);
     }
 

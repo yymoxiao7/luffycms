@@ -647,10 +647,10 @@
              return (telRegex.test(field.value));
         },
         mobile:function (field) {
-             return (telRegex.test(field.value));
+             return (mobileRegex.test(field.value));
         },
         tel_or_mobile:function (field) {
-             return (telRegex.test(field.value)) || (telRegex.test(field.value));
+             return ((mobileRegex.test(field.value)) || (telRegex.test(field.value)));
         }
     };
 

@@ -179,7 +179,7 @@ class Rule extends Model
 
         return Db::transaction(function () use ($ruleModel) {
             // 先删除关联中间表的数据
-            \think\Db::table('role_rule')->where('rule_id', $ruleModel->id)->delete();
+            Db::table('role_rule')->where('rule_id', $ruleModel->id)->delete();
 
             $ruleModel->delete();
         });

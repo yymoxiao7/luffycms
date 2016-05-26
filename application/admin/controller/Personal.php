@@ -2,8 +2,10 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
+use think\Db;
 use think\Input;
 use think\Loader;
+use think\Url;
 
 class Personal extends AdminBase
 {
@@ -17,32 +19,25 @@ class Personal extends AdminBase
     {
         if (IS_AJAX) {
 
-            $params = Input::post();
-            // 头像处理
-            if (isset($params['profile_head']) && is_numeric($params['profile_head'])) {
-                $fileModel = Loader::model('UploadedFile')->find($params['profile_head']);
-                if ($fileModel) {
-                    $params['head'] = $fileModel->file;
-                }
-                unset($params['profile_head']);
-            }
-            //密码处理
-            if (isset($params['password']) && $params['password']) {
-
-            } else {
-                unset($params['password']);
-            }
-
+            $params       = Input::post();
             $params['id'] = $this->userRow['id'];
 
-            if (Loader::model('User')->validate('User.edit_profile')->save($params, ['id' => $this->userRow['id']]) === false) {
+            if (loader::validate('User')->scene('edit_profile')->check($params) === false) {
+                return ['status' => 0, 'data' => loader::validate('User')->getError()];
+            }
+
+            if (Loader::model('User')->profileEdit($params) === false) {
                 return ['status' => 0, 'data' => Loader::model('User')->getError()];
             }
+
+            Loader::model('BackstageLog')->record("个人资料修改]");
 
             return ['status' => 1, 'url' => Url::build('admin/personal/profile')];
 
         }
-        $this->assign('userRow', $this->userRow);
+        $userRow = Db::table('user')->find($this->userRow['id']);
+
+        $this->assign('userRow', $userRow);
         return $this->fetch();
     }
 }
