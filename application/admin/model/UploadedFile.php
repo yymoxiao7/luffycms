@@ -1,10 +1,10 @@
 <?php
 namespace app\admin\model;
 
+use app\common\tools\Strings;
 use think\Config;
 use think\Model;
 use think\Session;
-use app\common\tools\String;
 
 class UploadedFile extends Model
 {
@@ -15,7 +15,7 @@ class UploadedFile extends Model
      * [setUserId description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-23T14:27:19+0800
-     * @param    string                   $value [description]
+     * @param    strings                   $value [description]
      */
     protected function setUserIdAttr()
     {
@@ -28,9 +28,8 @@ class UploadedFile extends Model
 
     protected function getFileAttr($value, $data)
     {
-        return String::fileWebLink($data['file_path'] . DS . $data['file_name']);
+        return Strings::fileWebLink($data['file_path'] . DS . $data['file_name']);
     }
-
 
     /**
      * 保存上传的文件到数据库
@@ -60,16 +59,16 @@ class UploadedFile extends Model
      */
     public function used($data, $uploadId, $delete = true)
     {
-        if(!isset($data['type']) || !isset($data['item_id'])){
+        if (!isset($data['type']) || !isset($data['item_id'])) {
             throw new \Exception("参数出错");
             return false;
         }
-        if($delete == true){
+        if ($delete == true) {
             $uploadFileRows = $this->where($data)->select();
-            if($uploadFileRows){
+            if ($uploadFileRows) {
                 foreach ($uploadFileRows as $value) {
                     $file = $value['file_path'] . DS . $value['file_name'];
-                    if(file_exists($file)){
+                    if (file_exists($file)) {
                         unlink($file);
                     }
 
@@ -77,9 +76,7 @@ class UploadedFile extends Model
                 }
             }
         }
-        return $this->save($data,['id'=>$uploadId]);
+        return $this->save($data, ['id' => $uploadId]);
     }
-
-
 
 }

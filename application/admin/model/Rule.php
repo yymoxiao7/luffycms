@@ -3,6 +3,8 @@ namespace app\admin\model;
 
 use think\Db;
 use think\Model;
+use think\Config;
+use think\Session;
 
 class Rule extends Model
 {
@@ -80,6 +82,41 @@ class Rule extends Model
             ->where('rr.role_id', $roleId)
             ->order('r.parent_id ASC , r.sort ASC')
             ->select();
+    }
+
+    /**
+     * 检查权限
+     * @param  integer $roleId [description]
+     * @param  [type]  $name   [description]
+     * @return [type]          [description]
+     */
+    public function checkRule($roleId = 0, $name = '')
+    {
+        // 没有传role_id 获取登陆用户的用户组
+        if ($roleId == 0) {
+            if(Session::has(Config::get('login_session_identifier')){
+                $roleId = Session::get(Config::get('login_session_identifier.id');
+            }
+        }
+        // 没有传auth地址获取当前 
+        if($name = ''){
+            $name = CONTROLLER_NAME . "/" . ACTION_NAME;
+        }
+
+        $rule = Db::table('role_rule')
+            ->alias('rr')
+            ->join('rule as r', 'rr.rule_id=r.id')
+            ->where('rr.role_id', $roleId)
+            ->where('r.islink', 1)
+            ->where('r.name',$name)
+            ->order('r.parent_id ASC , r.sort ASC')
+            ->count('r.id');
+
+        if($rule > 0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**

@@ -32,4 +32,9 @@ class Index extends AdminBase
 
         return $this->fetch();
     }
+
+    public function auth()
+    {
+        return "没有权限！";
+    }
 }

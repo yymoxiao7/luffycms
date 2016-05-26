@@ -3,6 +3,7 @@ namespace app\admin\middleware;
 
 use think\response\Redirect;
 use \think\Config;
+use \think\Loader;
 use \think\Session;
 
 class Login
@@ -27,9 +28,9 @@ class Login
                     }
                 }
 
-                //通过user里的id 验证用户是否有操作的权限
-                // echo '没有权限！';
-                // exit;
+                if (Loader::model('Rule')->checkRule() === false) {
+                    (new Redirect('/admin/index/auth'))->send();
+                }
             }
         } else if (CONTROLLER_NAME != 'common') {
 

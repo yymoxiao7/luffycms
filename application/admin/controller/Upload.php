@@ -2,9 +2,9 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
+use app\common\tools\Strings;
 use \think\Input;
 use \think\Loader;
-use app\common\tools\String;
 
 class Upload extends AdminBase
 {
@@ -27,12 +27,12 @@ class Upload extends AdminBase
      * 图片上传界面
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-24T09:37:42+0800
-     * @param    string                   $value [description]
+     * @param    strings                   $value [description]
      * @return   [type]                          [description]
      */
-    public function index($type,$id)
+    public function index($type, $id)
     {
-        if($type == ''){
+        if ($type == '') {
             throw new \Exception("错误", 1);
         }
         if (IS_POST) {
@@ -43,11 +43,11 @@ class Upload extends AdminBase
 
             if ($info) {
                 // 保存至UploadedFile表
-                $uploadId = Loader::model('UploadedFile')->record($info,$type);
+                $uploadId = Loader::model('UploadedFile')->record($info, $type);
 
-                $optput['file']   = String::fileWebLink($info->getLinkTarget());
-                $optput['upload_id'] =   (int)$uploadId;
-                $optput['error']   = null;
+                $optput['file']      = Strings::fileWebLink($info->getLinkTarget());
+                $optput['upload_id'] = (int) $uploadId;
+                $optput['error']     = null;
             } else {
                 $optput['error'] = $file->getError();
             }
@@ -56,13 +56,13 @@ class Upload extends AdminBase
         }
 
         $uploadRows = Loader::model('UploadedFile')->where([
-            'type' => $type,
-            'item_id' => 0
+            'type'    => $type,
+            'item_id' => 0,
         ])->select();
 
-        $this->assign('uploadRows',$uploadRows);
-        $this->assign('type',$type);
-        $this->assign('id',$id);
+        $this->assign('uploadRows', $uploadRows);
+        $this->assign('type', $type);
+        $this->assign('id', $id);
         return $this->fetch();
     }
 }
