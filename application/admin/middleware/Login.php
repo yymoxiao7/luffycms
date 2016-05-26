@@ -23,7 +23,7 @@ class Login
             } else {
                 if (Config::has('no_auth_controller_name') && ($noAuthControllerName = Config::get('no_auth_controller_name')) != '') {
                     $noAuthControllerNames = explode(',', $noAuthControllerName);
-                    if (is_array(CONTROLLER_NAME, $noAuthControllerNames)) {
+                    if (in_array(CONTROLLER_NAME, $noAuthControllerNames)) {
                         return true;
                     }
                 }

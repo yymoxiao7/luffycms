@@ -1,9 +1,9 @@
 <?php
 namespace app\admin\model;
 
+use think\Config;
 use think\Db;
 use think\Model;
-use think\Config;
 use think\Session;
 
 class Rule extends Model
@@ -94,12 +94,12 @@ class Rule extends Model
     {
         // 没有传role_id 获取登陆用户的用户组
         if ($roleId == 0) {
-            if(Session::has(Config::get('login_session_identifier')){
-                $roleId = Session::get(Config::get('login_session_identifier.id');
+            if (Session::has(Config::get('login_session_identifier'))) {
+                $roleId = Session::get(Config::get('login_session_identifier') . ".id");
             }
         }
-        // 没有传auth地址获取当前 
-        if($name = ''){
+        // 没有传auth地址获取当前
+        if ($name = '') {
             $name = CONTROLLER_NAME . "/" . ACTION_NAME;
         }
 
@@ -108,13 +108,13 @@ class Rule extends Model
             ->join('rule as r', 'rr.rule_id=r.id')
             ->where('rr.role_id', $roleId)
             ->where('r.islink', 1)
-            ->where('r.name',$name)
+            ->where('r.name', $name)
             ->order('r.parent_id ASC , r.sort ASC')
             ->count('r.id');
 
-        if($rule > 0){
+        if ($rule > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
