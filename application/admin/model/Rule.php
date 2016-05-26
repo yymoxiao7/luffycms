@@ -95,11 +95,11 @@ class Rule extends Model
         // 没有传role_id 获取登陆用户的用户组
         if ($roleId == 0) {
             if (Session::has(Config::get('login_session_identifier'))) {
-                $roleId = Session::get(Config::get('login_session_identifier') . ".id");
+                $roleId = Session::get(Config::get('login_session_identifier') . ".role_id");
             }
         }
         // 没有传auth地址获取当前
-        if ($name = '') {
+        if ($name == '') {
             $name = CONTROLLER_NAME . "/" . ACTION_NAME;
         }
 
@@ -107,9 +107,7 @@ class Rule extends Model
             ->alias('rr')
             ->join('rule as r', 'rr.rule_id=r.id')
             ->where('rr.role_id', $roleId)
-            ->where('r.islink', 1)
             ->where('r.name', $name)
-            ->order('r.parent_id ASC , r.sort ASC')
             ->count('r.id');
 
         if ($rule > 0) {
