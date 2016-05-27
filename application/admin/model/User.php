@@ -138,6 +138,7 @@ class User extends Model
                 ], $data['profile_head']);
             }
 
+            return $userId;
         });
     }
 

@@ -181,11 +181,10 @@ class Rule extends Model
      */
     public function getMenusByParentId($parentId = 0, $islink = true)
     {
-        $ruleDb = Db::table('rule');
         if ($islink) {
-            $ruleDb->where('islink', 1);
+            $this->where('islink', 1);
         }
-        return $ruleDb
+        return $this
             ->field('id,title')
             ->where('parent_id', $parentId)
             ->order('parent_id ASC , sort ASC')
@@ -199,7 +198,7 @@ class Rule extends Model
      * @param    [type]                   $id [description]
      * @return   [type]                       [description]
      */
-    public function deleteRole($id)
+    public function deleteRule($id)
     {
         $ruleModel = $this->find($id);
         if ($ruleModel == false) {

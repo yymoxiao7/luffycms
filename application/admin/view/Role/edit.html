@@ -58,6 +58,19 @@
                                                     {/if}
                                                         <span class="lbl"> {$rule.title}</span>
                                                     </label>
+
+                                                    {volist name="$rule->parent" id="ru"}
+                                                    <label class="col-xs-4">
+                                                    {if condition="in_array($ru['id'], $myRuleRows)"}
+                                                        <input name="rules[]" class="ace ace-checkbox-2 children" type="checkbox" checked="checked" value="{$ru.id}">
+                                                        {else /}
+                                                        <input name="rules[]" class="ace ace-checkbox-2 children" type="checkbox" value="{$ru.id}">
+                                                    {/if}
+                                                        <span class="lbl"> {$ru.title}</span>
+                                                    </label>
+                                                    {/volist}
+
+
                                                     {/volist}
                                                 </div>
                                             </div>

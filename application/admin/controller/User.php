@@ -41,9 +41,11 @@ class User extends AdminBase
                 return ['status' => 0, 'data' => loader::validate('User')->getError()];
             }
 
-            if (Loader::model('User')->userAdd($params) === false) {
+            if (($userId = Loader::model('User')->userAdd($params)) === false) {
                 return ['status' => 0, 'data' => Loader::model('User')->getError()];
             }
+
+            Loader::model('BackstageLog')->record("添加后台用户：[{$userId}]");
 
             return ['status' => 1, 'url' => Url::build('admin/user/index')];
         }
@@ -75,6 +77,7 @@ class User extends AdminBase
             if (Loader::model('User')->profileEdit($params) === false) {
                 return ['status' => 0, 'data' => Loader::model('User')->getError()];
             }
+            Loader::model('BackstageLog')->record("修改后台用户：[{$id}]");
 
             return ['status' => 1, 'url' => Url::build('admin/user/index')];
 
@@ -101,6 +104,7 @@ class User extends AdminBase
             return ['status' => 0, 'data' => Loader::model('User')->getError()];
         }
 
+        Loader::model('BackstageLog')->record("删除后台用户：[{$id}]");
         return ['status' => 1, 'url' => Url::build('admin/user/index')];
 
     }

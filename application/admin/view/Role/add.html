@@ -41,11 +41,17 @@
                                             </div>
                                             <div class="widget-body collapse in">
                                                 <div class="widget-main row">
-                                                   {volist name="$rules['sub']" id="rule"}
+                                                   {volist name="$rules->parent" id="rule"}
                                                     <label class="col-xs-4">
                                                         <input name="rules[]" class="ace ace-checkbox-2 children" type="checkbox" value="{$rule.id}">
                                                         <span class="lbl"> {$rule.title}</span>
                                                     </label>
+                                                    {volist name="$rule->parent" id="ru"}
+                                                    <label class="col-xs-4">
+                                                        <input name="rules[]" class="ace ace-checkbox-2 children" type="checkbox" value="{$ru.id}">
+                                                        <span class="lbl"> {$ru.title}</span>
+                                                    </label>
+                                                    {/volist}
                                                     {/volist}
                                                 </div>
                                             </div>

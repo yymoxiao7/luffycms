@@ -96,7 +96,7 @@ class Rule extends AdminBase
     {
         $ruleModel = Loader::model('Rule');
 
-        if ($ruleModel->deleteRole($id) === false) {
+        if ($ruleModel->deleteRule($id) === false) {
             return ['status' => 0, 'data' => $ruleModel->getError()];
         }
         Loader::model('BackstageLog')->record("删除菜单,ID:[{$id}]");

@@ -14,6 +14,9 @@
                                         <option value="0">顶级菜单</option>
                                         {volist name="ruleRows" id="vo"}
                                         <option value="{$vo.id}" {if condition="$vo['id'] eq $ruleRow['parent_id']" } selected="selected" {/if}>{$vo.title}</option>
+                                        {volist name="$vo->parent" id="v"}
+                                        <option value="{$v.id}"  {if condition="$v['id'] eq $ruleRow['parent_id']" } selected="selected" {/if}>------{$v.title}</option>
+                                        {/volist}
                                         {/volist}
                                     </select>
                                 </div>

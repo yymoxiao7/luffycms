@@ -6,7 +6,7 @@ $._messengerDefaults = {
 
 $.extend({
     buttonObject: false,
-    formLuffyZhaoErrorMessages:[],
+    formLuffyZhaoErrorMessages: [],
     /**
      * 错误信息提示
      * @author luffy<luffyzhao@vip.126.com>
@@ -50,10 +50,12 @@ $.extend({
      * @return {[type]} [description]
      */
     buttonEnable: function() {
-        this.buttonObject.removeClass('btn-warning');
-        this.buttonObject.addClass('btn-info');
-        this.buttonObject.html('提交');
-        this.buttonObject.removeAttr('disabled');
+        if (this.buttonObject != false) {
+            this.buttonObject.removeClass('btn-warning');
+            this.buttonObject.addClass('btn-info');
+            this.buttonObject.html('提交');
+            this.buttonObject.removeAttr('disabled');
+        }
     },
     /**
      * ajax请求成功数据处理
@@ -68,7 +70,7 @@ $.extend({
                 result.url = '/admin/index/index';
             }
 
-            if(typeof result.data == 'undefined'){
+            if (typeof result.data == 'undefined') {
                 result.data = '成功！';
             }
 
@@ -80,7 +82,7 @@ $.extend({
                 1000);
 
 
-        } else if(result.status == 2){
+        } else if (result.status == 2) {
             if (typeof result.url == 'undefined') {
                 result.url = '/admin/index/index';
             }
@@ -89,7 +91,11 @@ $.extend({
                     location.href = result.url;
                 },
                 1000);
-        }else{
+        } else if (result.status == 3) {
+            $.messageSuccess(result.data);
+        } else if (result.status == 4) {
+            $.messageError(result.data);
+        } else {
             if (typeof result.data == 'string') {
                 $.formLuffyZhaoErrorMessages.push($.messageError(result.data));
             } else {
@@ -120,7 +126,7 @@ $.fn.extend({
      * @return {[type]} [description]
      */
     formLuffyZhao: function(fields, is_ajax) {
-        var me = $(this);        
+        var me = $(this);
         if (typeof(is_ajax) == 'undefined') {
             is_ajax = true;
         }

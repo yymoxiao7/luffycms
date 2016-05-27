@@ -22,7 +22,7 @@
                             <th>操作</th>
                         </tr>
                         {volist name="$lists" id="vo"}
-                        <tr {if condition="$vo['parent_id'] eq 0"} class="success" {/if}>
+                        <tr class="success">
                             <td><input class="check-item" type="checkbox" value="{$vo.id}"></td>
                             <td class="text-left">
                             {if condition="$vo['parent_id'] neq 0"}
@@ -42,7 +42,7 @@
                             </td>
                         </tr>
                             {volist name="$vo->parent" id="v"}
-                                <tr {if condition="$v['parent_id'] eq 0"} class="success" {/if}>
+                                <tr class="active">
                                     <td><input class="check-item" type="checkbox" value="{$v.id}"></td>
                                     <td class="text-left">
                                     {if condition="$v['parent_id'] neq 0"}
@@ -61,6 +61,27 @@
                                         <a class="btn btn-xs btn-default delete" href="{:url('admin/rule/destroy',['id'=>$v['id']])}">删除</a>
                                     </td>
                                 </tr>
+                                {volist name="$v->parent" id="ss"}
+                                <tr {if condition="$ss['parent_id'] eq 0"} class="success" {/if}>
+                                    <td><input class="check-item" type="checkbox" value="{$ss.id}"></td>
+                                    <td class="text-left">
+                                    {if condition="$ss['parent_id'] neq 0"}
+                                    &nbsp;&nbsp; &nbsp;&nbsp;┗━━
+                                    {/if}
+                                    {$ss.title}
+                                    </td>
+                                    <td>
+                                        {$ss.name}
+                                    </td>
+                                    <td>{$ss.icon}</td>
+                                    <td>{$ss.islink}</td>
+                                    <td>{$ss.sort}</td>
+                                    <td>
+                                        <a class="btn btn-xs btn-default" href="{:url('admin/rule/edit',['id'=>$ss['id']])}">编辑</a>
+                                        <a class="btn btn-xs btn-default delete" href="{:url('admin/rule/destroy',['id'=>$ss['id']])}">删除</a>
+                                    </td>
+                                </tr>
+                            {/volist}
                             {/volist}
                         {/volist}
                     </table>

@@ -29,7 +29,7 @@ class Index extends AdminBase
      */
     public function main()
     {
-
+        echo \app\common\tools\DbManage::backup('user', 'dd', 300);
         return $this->fetch();
     }
 
