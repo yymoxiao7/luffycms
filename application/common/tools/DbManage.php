@@ -17,6 +17,25 @@ class DbManage
     private static $sqlEnd = ";";
 
     /**
+     * [backup description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-27T17:54:27+0800
+     * @param    string                   $value [description]
+     * @return   [type]                          [description]
+     */
+    public static function backup($table, $dir = "backupMysql")
+    {
+        $dir = RUNTIME_PATH . $dir . DS . $table . DS;
+        if (!file_exists($dir)) {
+            mkdir($dir, 0755);
+        }
+        $filename = date("Y-m-d") . ".sql";
+
+        $sql = self::_startBackup($table);
+
+        return file_put_contents($dir . $filename, $sql);
+    }
+    /**
      * 备份数据表
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-27T15:35:56+0800
@@ -25,7 +44,7 @@ class DbManage
      * @param    [type]                   $size  [description]
      * @return   [type]                          [description]
      */
-    public static function backup($table, $dir, $size)
+    private static function _startBackup($table)
     {
         try {
             $tableColumns = Db::execute("SHOW COLUMNS FROM `{$table}`");
@@ -34,24 +53,24 @@ class DbManage
         }
 
         // 插入dump信息
-        $tableSql = self::_retrieve();
+        $sql = self::_retrieve();
 
-        $tableSql .= self::_insertTableStructure($table);
+        $sql .= self::_insertTableStructure($table);
 
         // 数据总条数
         $count = Db::table($table)->count();
         if ($count == 0) {
 
-            return true;
+            return $sql;
         }
 
         // 数据总页数
         $pageSize = ceil($count / self::$size);
 
         //数据备份
-        self::_insertRecord($table, $pageSize);
+        $sql .= self::_insertRecord($table, $pageSize);
 
-        return true;
+        return $sql;
 
     }
 
@@ -121,13 +140,28 @@ class DbManage
      * @param    [type]                   $record [description]
      * @return   [type]                           [description]
      */
-    private static function _insertRecord($table, $pageSize, $start = 0)
+    private static function _insertRecord($table, $pageSize)
     {
-        $sql = '';
+        $sql = "INSERT INTO `{$table}` VALUES " . self::$ds;
 
-        for ($i = $start; $i < $pageSize; $i++) {
-            $rows = Db::table($table)->limit($i, self::$size)->select();
+        for ($i = 0; $i < $pageSize; $i++) {
+            $rows       = Db::table($table)->limit($i, self::$size)->select();
+            $delimiter1 = "";
+            foreach ($rows as $row) {
+                $sql .= "{$delimiter1}(";
+                $delimiter2 = "";
+                foreach ($row as $value) {
+                    $sql .= "{$delimiter2}" . Db::quote($value);
+                    $delimiter2 = ",";
+                }
+                $sql .= ")" . self::$ds;
+                $delimiter1 = ",";
+            }
         }
+
+        $sql .= self::$sqlEnd;
+
+        return $sql;
     }
 
     /**
