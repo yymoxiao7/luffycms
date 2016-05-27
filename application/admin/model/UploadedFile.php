@@ -64,19 +64,30 @@ class UploadedFile extends Model
             return false;
         }
         if ($delete == true) {
-            $uploadFileRows = $this->where($data)->select();
-            if ($uploadFileRows) {
-                foreach ($uploadFileRows as $value) {
-                    $file = $value['file_path'] . DS . $value['file_name'];
-                    if (file_exists($file)) {
-                        unlink($file);
-                    }
-
-                    $value->delete();
-                }
-            }
+            $this->de($data);
         }
         return $this->save($data, ['id' => $uploadId]);
+    }
+
+    /**
+     * [destroy description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-27T10:46:28+0800
+     * @param    [type]                   $data [数据]
+     * @return   [type]                         [description]
+     */
+    public function de(array $data)
+    {
+        $uploadFileRows = $this->where($data)->select();
+        if ($uploadFileRows) {
+            foreach ($uploadFileRows as $value) {
+                $file = $value['file_path'] . DS . $value['file_name'];
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+                $value->delete();
+            }
+        }
     }
 
 }

@@ -29,7 +29,11 @@ class Login
                 }
 
                 if (Loader::model('Rule')->checkRule() === false) {
-                    (new Redirect('/admin/index/auth'))->send();
+                    if (IS_AJAX) {
+                        return ['status' => 2, 'url' => '/admin/index/auth'];
+                    } else {
+                        (new Redirect('/admin/index/auth'))->send();
+                    }
                 }
             }
         } else if (CONTROLLER_NAME != 'common') {

@@ -1,23 +1,33 @@
 {layout name="layout" /}
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading">用户组添加</div>
+            <div class="panel-heading">菜单添加</div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-8">
-                        <form action="{:url('admin/personal/profile')}" class="form-horizontal ajax-form" method="post" name="rule">
+                        <form action="{:url('admin/user/add')}" class="form-horizontal ajax-form" method="post" name="user">
+                            <div class="form-group">
+                                <label for="inputrole_id" class="col-sm-3 control-label">用户组</label>
+                                <div class="col-sm-5">
+                                    <select name="role_id" id="inputrole_id" class="form-control">
+                                        <option value="0">请选择用户组</option>
+                                        {volist name="roleRows" id="vo"}
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="inputemail" class="col-sm-3 control-label">用户邮件地址</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="email" id="inputemail" disabled="disabled" value="{$userRow.email}" placeholder="用户邮件地址"/>
+                                    <input type="text" class="form-control" name="email" id="inputemail" value="" placeholder="用户邮件地址"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputname" class="col-sm-3 control-label">用户姓名</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="name" id="inputname" value="{$userRow.name}" placeholder="菜单名称">
+                                    <input type="text" class="form-control" name="name" id="inputname" value="" placeholder="用户姓名">
                                 </div>
                             </div>
 
@@ -38,41 +48,25 @@
                             <div class="form-group">
                                 <label for="" class="col-sm-3 control-label">头像</label>
                                 <div class="col-sm-5">                                    
-                                    <img src="{$userRow.head|default="/static/admin/images/default_head.gif"}" width="100" height="100" id="profile_head" data-type="profile" class="img-circle upload">
+                                    <img src="/static/admin/images/default_head.gif" width="100" height="100" id="profile_head" data-type="profile" class="img-circle upload">
                                 </div>
                             </div>
 
                              <div class="form-group">
                                 <label class="col-sm-3 control-label" for="inputstatus"> 是否启用 </label>
                                 <div class="col-sm-5">
-                                    {if condition="$userRow['status'] eq 1"}
-                                    <input type="checkbox" name="status" id="inputstatus" value="1" checked="checked" />
-                                    {else /}
                                     <input type="checkbox" name="status" id="inputstatus" value="1" />
-                                    {/if}
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="inputsex"> 性别 </label>
                                 <div class="col-sm-5">
-                                {if condition="$userRow['sex'] eq 0"}
-                                    <input type="radio" name="sex" id="inputsex" value="0" checked="checked" />
-                                {else /}
                                     <input type="radio" name="sex" id="inputsex" value="0" />
-                                {/if}
                                     保密
-                                {if condition="$userRow['sex'] eq 1"}
-                                    <input type="radio" name="sex" id="inputsex" value="1" checked="checked" />
-                                {else /}
                                     <input type="radio" name="sex" id="inputsex" value="1" />
-                                {/if}
                                     男
-                                {if condition="$userRow['sex'] eq 2"}
-                                    <input type="radio" name="sex" id="inputsex" value="2" checked="checked" />
-                                {else /}
                                     <input type="radio" name="sex" id="inputsex" value="2" />
-                                {/if}
                                     女
                                 </div>
                             </div>
@@ -80,7 +74,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="inputtel"> 联系号码 </label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="tel" value="{$userRow.tel}" id="inputtel" placeholder="电话号码">
+                                    <input type="text" class="form-control" name="tel" value="" id="inputtel" placeholder="联系号码">
                                 </div>
                             </div>
 
@@ -88,10 +82,11 @@
                                 <label for="inputbirthday" class="col-sm-3 control-label">生日</label>
                                 <div class="col-sm-5">
                                     <div class="widget-group">
-                                        <input type="text" class="form-control date" value="{$userRow.birthday}" name="birthday" id="inputbirthday" placeholder="生日">
+                                        <input type="text" class="form-control date" value="" name="birthday" id="inputbirthday" placeholder="生日">
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
                                     <button type="submit" class="btn btn-primary">提交</button>
@@ -103,11 +98,14 @@
             </div>
         </div>
     </div>
-
 </div>
 <script type="text/javascript">
 $(function(argument) {
-    $('form.ajax-form').formLuffyZhao([{
+$('form.ajax-form').formLuffyZhao([{
+        name: "email",
+        display: '用户邮箱地址',
+        rules: 'required|email'
+    },{
         name: "name",
         display: '用户姓名',
         rules: 'required|ruleNameRegex'
@@ -118,7 +116,7 @@ $(function(argument) {
     },{
         name: "password",
         display: '密码',
-        rules: 'min_length[6]|max_length[20]'
+        rules: 'required|min_length[6]|max_length[20]'
     },{
         name:"birthday",
         display:"生日",
@@ -129,6 +127,5 @@ $(function(argument) {
         rules:"tel_or_mobile"
     }
     ]);
-    
 });
 </script>

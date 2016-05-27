@@ -10,7 +10,7 @@ use \think\Session;
 
 class User extends Model
 {
-    protected $auto = ['password'];
+    protected $insert = ['password'];
 
     protected $dateFormat = 'Y-m-d';
     protected $type       = [
@@ -19,6 +19,11 @@ class User extends Model
         'status'  => 'integer',
         'sex'     => 'integer',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo('Role');
+    }
 
     /**
      * 用户登录
@@ -73,6 +78,8 @@ class User extends Model
     {
         if (isset($data['password']) && $data['password'] == '') {
             unset($data['password']);
+        } else {
+            $data['password'] = $this->setPasswordAttr($data['password']);
         }
 
         $pk = $this->getPk();
@@ -82,7 +89,6 @@ class User extends Model
         }
 
         return Db::transaction(function () use ($data, $pk) {
-
             // 头像处理
             if (isset($data['profile_head']) && is_numeric($data['profile_head'])) {
                 $fileModel = Loader::model('UploadedFile')->find($data['profile_head']);
@@ -105,14 +111,76 @@ class User extends Model
     }
 
     /**
+     * [userAdd description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-27T10:16:00+0800
+     * @param    array                    $data [description]
+     * @return   [type]                         [description]
+     */
+    public function userAdd(array $data)
+    {
+        return Db::transaction(function () use ($data) {
+            // 头像处理
+            if (isset($data['profile_head']) && is_numeric($data['profile_head'])) {
+                $fileModel = Loader::model('UploadedFile')->find($data['profile_head']);
+                if ($fileModel) {
+                    $data['head'] = $fileModel->file;
+                }
+            }
+
+            $userId = $this->userAddField()->save($data);
+
+            //  头像保存
+            if (isset($data['profile_head']) && is_numeric($data['profile_head'])) {
+                Loader::model('UploadedFile')->used([
+                    'item_id' => $userId,
+                    'type'    => 'profile',
+                ], $data['profile_head']);
+            }
+
+        });
+    }
+
+    /**
+     * [deleteUser description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-27T10:44:48+0800
+     * @param    [type]                   $id [description]
+     * @return   [type]                       [description]
+     */
+    public function deleteUser($id)
+    {
+        return Db::transaction(function () use ($id) {
+            $this->where(['id' => $id])->delete();
+
+            Loader::model('UploadedFile')->de([
+                'type'    => 'profile',
+                'item_id' => $id,
+            ]);
+        });
+
+    }
+
+    /**
+     * [userAddField description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-27T10:18:01+0800
+     * @return   [type]                   [description]
+     */
+    public function userAddField()
+    {
+        return $this->allowField(['name', 'email', 'password', 'status', 'sex', 'head', 'birthday', 'tel', 'role_id']);
+    }
+
+    /**
      * [profileEditField description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-26T17:36:24+0800
      * @return   [type]                   [description]
      */
-    public function profileEditField()
+    protected function profileEditField()
     {
-        return $this->allowField(['name', 'email', 'password', 'status', 'sex', 'head', 'birthday', 'tel']);
+        return $this->allowField(['name', 'password', 'status', 'sex', 'head', 'birthday', 'tel', 'role_id']);
     }
 
     /**

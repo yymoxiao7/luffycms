@@ -30,7 +30,7 @@ class Personal extends AdminBase
                 return ['status' => 0, 'data' => Loader::model('User')->getError()];
             }
 
-            Loader::model('BackstageLog')->record("个人资料修改]");
+            Loader::model('BackstageLog')->record("个人资料修改");
 
             return ['status' => 1, 'url' => Url::build('admin/personal/profile')];
 

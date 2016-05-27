@@ -1,23 +1,37 @@
 {layout name="layout" /}
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading">用户组添加</div>
+            <div class="panel-heading">菜单添加</div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-8">
-                        <form action="{:url('admin/personal/profile')}" class="form-horizontal ajax-form" method="post" name="rule">
+                        <form action="{:url('admin/user/edit',['id'=>$userRow['id']])}" class="form-horizontal ajax-form" method="post" name="user">
+                            <div class="form-group">
+                                <label for="inputrole_id" class="col-sm-3 control-label">用户组</label>
+                                <div class="col-sm-5">
+                                    <select name="role_id" id="inputrole_id" class="form-control">
+                                        <option value="0">请选择用户组</option>
+                                        {volist name="roleRows" id="vo"}
+                                        {if condition="$vo['id'] eq $userRow['role_id']"}
+                                        <option value="{$vo.id}" selected="selected">{$vo.name}</option>
+                                        {else /}
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                        {/if}
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="inputemail" class="col-sm-3 control-label">用户邮件地址</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="email" id="inputemail" disabled="disabled" value="{$userRow.email}" placeholder="用户邮件地址"/>
+                                    <input type="text" class="form-control" disabled="disabled" name="email" id="inputemail" value="{$userRow.email}" placeholder="用户邮件地址"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputname" class="col-sm-3 control-label">用户姓名</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="name" id="inputname" value="{$userRow.name}" placeholder="菜单名称">
+                                    <input type="text" class="form-control" name="name" id="inputname" value="{$userRow.name}" placeholder="用户姓名">
                                 </div>
                             </div>
 
@@ -80,7 +94,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="inputtel"> 联系号码 </label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="tel" value="{$userRow.tel}" id="inputtel" placeholder="电话号码">
+                                    <input type="text" class="form-control" name="tel" value="{$userRow.tel}" id="inputtel" placeholder="联系号码">
                                 </div>
                             </div>
 
@@ -92,6 +106,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
                                     <button type="submit" class="btn btn-primary">提交</button>
@@ -103,11 +118,10 @@
             </div>
         </div>
     </div>
-
 </div>
 <script type="text/javascript">
 $(function(argument) {
-    $('form.ajax-form').formLuffyZhao([{
+$('form.ajax-form').formLuffyZhao([{
         name: "name",
         display: '用户姓名',
         rules: 'required|ruleNameRegex'
@@ -129,6 +143,5 @@ $(function(argument) {
         rules:"tel_or_mobile"
     }
     ]);
-    
 });
 </script>

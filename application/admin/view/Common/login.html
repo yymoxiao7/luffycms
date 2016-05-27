@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/static/admin/css/bootstrap-luffyzhao-login.css">
     <link rel="stylesheet" href="/static/admin/js/messenger/css/messenger.css">
     <link rel="stylesheet" href="/static/admin/js/messenger/css/messenger-theme-air.css">
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -42,8 +41,7 @@
                                 <input class="span2 form-control" type="password" name="password" placeholder="Password">
                             </div>
                         </div>
-                        
-                        <button type="submit" class="btn btn-info  btn-block" >登录</button>
+                        <button type="submit" class="btn btn-info  btn-block">登录</button>
                     </form>
                 </div>
                 <div class="panel-footer text-center">
@@ -55,26 +53,22 @@
 </body>
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
-
 <script type="text/javascript" src="/static/admin/js/messenger/js/messenger.min.js"></script>
-
 <script type="text/javascript" src="/static/admin/js/validate.js"></script>
-
 <script type="text/javascript" src="/static/admin/js/global.js"></script>
-
 <script type="text/javascript">
-
-    $('form.ajax-form').formLuffyZhao([
-    {
-        name:"email_login",
-        display: '登录邮箱',
-        rules: 'required|valid_email'
-    },
-    {
-        name:"password",
-        display:"密码",
-        rules:"required"
-    }]);
-
+$('form.ajax-form').formLuffyZhao([{
+    name: "email_login",
+    display: '登录邮箱',
+    rules: 'required|valid_email'
+}, {
+    name: "password",
+    display: "密码",
+    rules: "required"
+}]);
+if (top.location != self.location) {
+    top.location = self.location; //防止页面被框架包含  
+}
 </script>
+
 </html>
