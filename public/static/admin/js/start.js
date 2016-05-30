@@ -23,6 +23,8 @@ $(document).ready(function() {
 
     $('.ajax-get').bind('click', function(event) {
         event.preventDefault();
+        $.buttonObject = $(this);
+        $.buttonDisabled();
         var $this = $(this);
         bootbox.confirm({
             size: 'small',
@@ -46,6 +48,8 @@ $(document).ready(function() {
         event.preventDefault();
         var $this = $(this);
         $('.table .check:checked').each(function(index, el) {
+            $.buttonObject = $this;
+            $.buttonDisabled();
             var value = $(this).val(),
                 name = $(this).attr('name');
             $.ajax({

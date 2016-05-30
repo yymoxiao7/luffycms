@@ -8,7 +8,7 @@ use think\Session;
 
 class UploadedFile extends Model
 {
-    protected $updateTime = 'create_time';
+    protected $updateTime = false;
     protected $insert     = ['user_id'];
 
     /**

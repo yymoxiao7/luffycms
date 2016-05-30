@@ -25,11 +25,11 @@ class DbManage
      */
     public static function backup($table, $dir = "backupMysql")
     {
-        $dir = RUNTIME_PATH . $dir . DS . $table . DS;
+        $dir = RUNTIME_PATH . $dir . DS . date('Y-m-d') . DS;
         if (!file_exists($dir)) {
             mkdir($dir, 0755);
         }
-        $filename = date("Y-m-d") . ".sql";
+        $filename = $table . ".sql";
 
         $sql = self::_startBackup($table);
 

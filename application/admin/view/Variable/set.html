@@ -1,0 +1,60 @@
+{layout name="layout" /}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">修改变量值</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <form action="{:url('admin/variable/add')}" class="form-horizontal ajax-form" method="post" name="rule">
+                            <div class="form-group">
+                                <label for="inputkey" class="col-sm-3 control-label">变量调用名称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="key" id="inputkey" value="{$variableRow.key}" disabled="disabled" placeholder="变量调用名称">
+                                </div>
+                            </div>
+
+                            {if condition="$variableRow->getData('input_types') eq 'editor'"}
+                            <div class="form-group">
+                                <label for="inputkey" class="col-sm-3 control-label">变量内容</label>
+                                <div class="col-sm-8">
+                                    <script charset="utf-8" src="/static/admin/js/kindeditor/kindeditor-all.js"></script>
+                                    <script charset="utf-8" src="/static/admin/js/kindeditor/lang/zh-CN.js"></script>
+                                    <textarea id="type-for-editor" name="value">{$variableRow.value}</textarea>
+                                    <script>
+                                        KindEditor.ready(function(K) {
+                                                window.editor = K.create('#type-for-editor',{
+                                                    themeType :'simple',
+                                                    width :'100%',
+                                                    height:'320px',
+                                                    items : [
+                                                    'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                                                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                                                    'insertunorderedlist', '|', 'emoticons', 'multiimage', 'link']
+                                                });
+                                        });
+                                </script>
+                                </div>
+                            </div>
+                            {/if}
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+    $('form.ajax-form').formLuffyZhao([
+    ]);
+
+});
+</script>

@@ -7,7 +7,7 @@ use \think\Session;
 
 class BackstageLog extends Model
 {
-    protected $updateTime = 'create_time';
+    protected $updateTime = false;
     protected $insert     = ['ip', 'user_id'];
 
     /**

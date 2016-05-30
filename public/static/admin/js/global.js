@@ -40,9 +40,11 @@ $.extend({
      */
     buttonDisabled: function() {
         this.buttonObject.attr('disabled', 'disabled');
-        this.buttonObject.removeClass('btn-info');
-        this.buttonObject.addClass('btn-warning');
-        this.buttonObject.html('<i class="icon-spinner icon-spin"></i> 请稍后...');
+        if(this.buttonObject.find('.icon-spinner').length == 0){
+            this.buttonObject.html('<i class="icon-spinner icon-spin"></i>'+this.buttonObject.html());
+        }else{
+            this.buttonObject.find('.icon-spinner').show();
+        }
     },
 
     /**
@@ -51,9 +53,7 @@ $.extend({
      */
     buttonEnable: function() {
         if (this.buttonObject != false) {
-            this.buttonObject.removeClass('btn-warning');
-            this.buttonObject.addClass('btn-info');
-            this.buttonObject.html('提交');
+            this.buttonObject.find('.icon-spinner').hide();
             this.buttonObject.removeAttr('disabled');
         }
     },
