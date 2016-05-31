@@ -88,26 +88,13 @@ class User extends Model
             return false;
         }
 
-        return Db::transaction(function () use ($data, $pk) {
-            // 头像处理
-            if (isset($data['profile_head']) && is_numeric($data['profile_head'])) {
-                $fileModel = Loader::model('UploadedFile')->find($data['profile_head']);
-                if ($fileModel) {
-                    $data['head'] = $fileModel->file;
-                }
-            }
+        $profile = $this->find($data[$pk]);
+        if (isset($data['head']) && $profile['head'] != $data['head']) {
+            $this->deleteHead($profile['head']);
+        }
 
-            $this->profileEditField()->save($data, [$pk => $data[$pk]]);
+        return $this->profileEditField()->save($data, [$pk => $data[$pk]]);
 
-            //  头像保存
-            if (isset($data['profile_head']) && is_numeric($data['profile_head'])) {
-                Loader::model('UploadedFile')->used([
-                    'item_id' => $data[$pk],
-                    'type'    => 'profile',
-                ], $data['profile_head']);
-            }
-
-        });
     }
 
     /**
@@ -119,27 +106,7 @@ class User extends Model
      */
     public function userAdd(array $data)
     {
-        return Db::transaction(function () use ($data) {
-            // 头像处理
-            if (isset($data['profile_head']) && is_numeric($data['profile_head'])) {
-                $fileModel = Loader::model('UploadedFile')->find($data['profile_head']);
-                if ($fileModel) {
-                    $data['head'] = $fileModel->file;
-                }
-            }
-
-            $userId = $this->userAddField()->save($data);
-
-            //  头像保存
-            if (isset($data['profile_head']) && is_numeric($data['profile_head'])) {
-                Loader::model('UploadedFile')->used([
-                    'item_id' => $userId,
-                    'type'    => 'profile',
-                ], $data['profile_head']);
-            }
-
-            return $userId;
-        });
+        return $this->userAddField()->save($data);
     }
 
     /**
@@ -151,15 +118,9 @@ class User extends Model
      */
     public function deleteUser($id)
     {
-        return Db::transaction(function () use ($id) {
-            $this->where(['id' => $id])->delete();
-
-            Loader::model('UploadedFile')->de([
-                'type'    => 'profile',
-                'item_id' => $id,
-            ]);
-        });
-
+        $profile = $this->find($id);
+        $this->deleteHead($profile['head']);
+        return $profile->delete();
     }
 
     /**
@@ -173,6 +134,19 @@ class User extends Model
         return $this->allowField(['name', 'email', 'password', 'status', 'sex', 'head', 'birthday', 'tel', 'role_id']);
     }
 
+    /**
+     * [deleteHead description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-31T10:16:45+0800
+     * @param    [type]                   $head [description]
+     * @return   [type]                         [description]
+     */
+    protected function deleteHead($head)
+    {
+        if ($head != '' && file_exists(($file = Strings::fileWebToServer($head)))) {
+            unlink($file);
+        }
+    }
     /**
      * [profileEditField description]
      * @author luffy<luffyzhao@vip.126.com>

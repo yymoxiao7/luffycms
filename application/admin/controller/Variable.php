@@ -21,6 +21,7 @@ class Variable extends AdminBase
         $variableMobel = Loader::model('Variable');
         $variableRows  = $variableMobel::paginate(25);
 
+        $this->assign('default_image', $variableMobel->getValueBykey('default_image'));
         $this->assign('variableRows', $variableRows);
         $this->assign('pages', $variableRows->render());
         return $this->fetch();
@@ -54,6 +55,37 @@ class Variable extends AdminBase
     }
 
     /**
+     * [edit description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-31T11:18:09+0800
+     * @param    [type]                   $key [description]
+     * @return   [type]                        [description]
+     */
+    public function edit($key)
+    {
+        if (IS_AJAX) {
+            $params = Input::param();
+
+            if (loader::validate('Variable')->scene('edit')->check($params) === false) {
+                return ['status' => 0, 'data' => loader::validate('Variable')->getError()];
+            }
+
+            if (($key = Loader::model('Variable')->editVariable($params)) === false) {
+                return ['status' => 0, 'data' => Loader::model('Variable')->getError()];
+            }
+
+            Loader::model('BackstageLog')->record("修改自定义变量：[{$key}]");
+
+            return ['status' => 1, 'url' => Url::build('admin/variable/index')];
+
+        }
+
+        $this->assign('inputTypes', Db::table('variable_type')->select());
+        $this->assign('variableRow', Loader::model('Variable')->get($key));
+        return $this->fetch();
+    }
+
+    /**
      * 设置变量的值
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-30T15:48:17+0800
@@ -61,9 +93,34 @@ class Variable extends AdminBase
      */
     public function set($key)
     {
-        $variableMobel = Loader::model('Variable');
 
-        $this->assign('variableRow', $variableMobel->get($key));
+        if (IS_AJAX) {
+            $params = Input::param();
+            if (($key = Loader::model('Variable')->setVariable($params)) === false) {
+                return ['status' => 0, 'data' => Loader::model('Variable')->getError()];
+            }
+            Loader::model('BackstageLog')->record("设置自定义变量的值：[{$key}]");
+            return ['status' => 1, 'url' => Url::build('admin/variable/index')];
+        }
+
+        $this->assign('variableRow', Loader::model('Variable')->get($key));
         return $this->fetch();
+    }
+
+    /**
+     * [destroy description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-31T11:29:43+0800
+     * @param    [type]                   $key [description]
+     * @return   [type]                        [description]
+     */
+    public function destroy($key)
+    {
+        if (Loader::model('Variable')->deleteVariable($key) === false) {
+            return ['status' => 0, 'data' => Loader::model('Variable')->getError()];
+        }
+
+        Loader::model('BackstageLog')->record("删除自定义变量：[{$key}]");
+        return ['status' => 1, 'url' => Url::build('admin/variable/index')];
     }
 }

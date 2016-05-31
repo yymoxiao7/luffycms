@@ -32,6 +32,25 @@ class Strings
         return str_replace($replace, '', $realPath);
     }
 
+    /**
+     * 通过文件访问地址获取 文件绝对地址
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-31T10:10:03+0800
+     * @param    string                   $value [description]
+     * @return   [type]                          [description]
+     */
+    public static function fileWebToServer($webLink)
+    {
+        $replace = dirname(ROOT_PATH);
+        return $replace . $webLink;
+    }
+    /**
+     * [password description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-31T10:09:45+0800
+     * @param    [type]                   $string [description]
+     * @return   [type]                           [description]
+     */
     public static function password($string)
     {
         return md5($string);

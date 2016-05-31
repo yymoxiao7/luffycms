@@ -8,7 +8,7 @@ class Variable extends Validate
     use \app\common\validate\Validate;
 
     protected $rule = [
-        'key'         => ['require', 'unique:variable,key', 'length:3,25'],
+        'key'         => ['require', 'length:3,25'],
         'input_types' => ['require', 'exist:variable_type,type'],
     ];
 
@@ -20,7 +20,8 @@ class Variable extends Validate
     ];
 
     protected $scene = [
-        'add' => ['key', 'input_types'],
+        'add'  => ['key', 'input_types'],
+        'edit' => ['input_types'],
     ];
 
 }

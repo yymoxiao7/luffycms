@@ -17,7 +17,7 @@ class Rule extends AdminBase
     public function index()
     {
         $ruleModel = Loader::model('Rule');
-        $lists     = $ruleModel->where('parent_id', 0)->select();
+        $lists     = $ruleModel->where('parent_id', 0)->order('sort', 'asc')->select();
 
         $this->assign('lists', $lists);
         return $this->fetch();

@@ -3,8 +3,8 @@ namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
 use app\common\tools\Strings;
-use \think\Input;
-use \think\Loader;
+use think\Input;
+use think\Loader;
 
 class Upload extends AdminBase
 {
@@ -16,11 +16,28 @@ class Upload extends AdminBase
      */
     public function uploadpic()
     {
-        $data               = Input::param();
-        $data['defaultImg'] = '/static/admin/images/default_head.gif';
+        if (IS_POST) {
+            $optput = ['error' => 1, 'message' => '上传失败'];
 
-        $this->assign('data', $data);
-        return $this->fetch();
+            $file = Input::file('imgFile');
+            if (Loader::model('ImagesInfo')->imageSize('editor', $file) === false) {
+                $optput['message'] = Loader::model('ImagesInfo')->getError();
+            } else {
+                $info = $file->move(STATIC_PATH . DS . 'editor' . DS);
+
+                if ($info) {
+
+                    Loader::model('ImagesInfo')->handingImage('editor', $info);
+
+                    $optput['url']   = Strings::fileWebLink($info->getLinkTarget());
+                    $optput['error'] = 0;
+                } else {
+                    $optput['message'] = $file->getError();
+                }
+            }
+
+            return json_encode($optput, JSON_HEX_QUOT);
+        }
     }
 
     /**
@@ -30,38 +47,30 @@ class Upload extends AdminBase
      * @param    strings                   $value [description]
      * @return   [type]                          [description]
      */
-    public function index($type, $id)
+    public function index($id = 'editor')
     {
-        if ($type == '') {
-            throw new \Exception("错误", 1);
-        }
         if (IS_POST) {
             $optput = ['error' => '上传失败'];
 
-            $file = Input::file('file');
-            $info = $file->move(STATIC_PATH . DS . 'upload' . DS);
-
-            if ($info) {
-                // 保存至UploadedFile表
-                $uploadId = Loader::model('UploadedFile')->record($info, $type);
-
-                $optput['file']      = Strings::fileWebLink($info->getLinkTarget());
-                $optput['upload_id'] = (int) $uploadId;
-                $optput['error']     = null;
+            $file = Input::file('imgFile');
+            if (Loader::model('ImagesInfo')->imageSize($id, $file) === false) {
+                $optput['error'] = Loader::model('ImagesInfo')->getError();
             } else {
-                $optput['error'] = $file->getError();
+                $info = $file->move(STATIC_PATH . DS . $id . DS);
+
+                if ($info) {
+
+                    Loader::model('ImagesInfo')->handingImage($id, $info);
+
+                    $optput['file']  = Strings::fileWebLink($info->getLinkTarget());
+                    $optput['error'] = null;
+                } else {
+                    $optput['error'] = $file->getError();
+                }
             }
 
             return $optput;
         }
-
-        $uploadRows = Loader::model('UploadedFile')->where([
-            'type'    => $type,
-            'item_id' => 0,
-        ])->select();
-
-        $this->assign('uploadRows', $uploadRows);
-        $this->assign('type', $type);
         $this->assign('id', $id);
         return $this->fetch();
     }

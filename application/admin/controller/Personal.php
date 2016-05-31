@@ -37,6 +37,7 @@ class Personal extends AdminBase
         }
         $userRow = Db::table('user')->find($this->userRow['id']);
 
+        $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
         $this->assign('userRow', $userRow);
         return $this->fetch();
     }

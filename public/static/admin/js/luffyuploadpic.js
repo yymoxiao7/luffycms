@@ -20,15 +20,14 @@ if (typeof jQuery === 'undefined') {
 
         that.element.bind('click', function(event) {
           var id = $(this).attr('id');
-          var type = $(this).data('type');
 
-          if(typeof(id) == 'undefined' || typeof(type) == 'undefined'){
+          if(typeof(id) == 'undefined'){
               console.error('参数不正确！');
               return false;
           }
           jQuery.ajax({
               type: 'get',
-              url:'/admin/Upload/index/type/'+type+'/id/'+id,
+              url:'/admin/Upload/index/id/'+id,
               success: function(data) {
                   bootbox.dialog({
                       className: 'modal-dialog-luffy',

@@ -138,7 +138,9 @@ $.fn.extend({
             $.formLuffyZhaoErrorMessages = [];
 
             $.buttonObject = $(this).find('button[type="submit"]');
-
+            if(typeof(window.editor) != 'undefined'){
+                window.editor.sync();
+            }
             var action = $(this).attr('action'),
                 method = $(this).attr('method'),
                 data = $(this).serialize();

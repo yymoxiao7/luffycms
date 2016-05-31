@@ -25,9 +25,6 @@
                         <tr class="success">
                             <td><input class="check-item" type="checkbox" value="{$vo.id}"></td>
                             <td class="text-left">
-                            {if condition="$vo['parent_id'] neq 0"}
-                            &nbsp;&nbsp;┗━
-                            {/if}
                             {$vo.title}
                             </td>
                             <td>
@@ -45,9 +42,7 @@
                                 <tr class="active">
                                     <td><input class="check-item" type="checkbox" value="{$v.id}"></td>
                                     <td class="text-left">
-                                    {if condition="$v['parent_id'] neq 0"}
                                     &nbsp;&nbsp;┗━
-                                    {/if}
                                     {$v.title}
                                     </td>
                                     <td>
@@ -65,9 +60,7 @@
                                 <tr {if condition="$ss['parent_id'] eq 0"} class="success" {/if}>
                                     <td><input class="check-item" type="checkbox" value="{$ss.id}"></td>
                                     <td class="text-left">
-                                    {if condition="$ss['parent_id'] neq 0"}
                                     &nbsp;&nbsp; &nbsp;&nbsp;┗━━
-                                    {/if}
                                     {$ss.title}
                                     </td>
                                     <td>

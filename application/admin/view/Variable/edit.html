@@ -6,11 +6,11 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-8">
-                        <form action="{:url('admin/variable/add')}" class="form-horizontal ajax-form" method="post" name="rule">
+                        <form action="{:url('admin/variable/edit')}" class="form-horizontal ajax-form" method="post" name="rule">
                             <div class="form-group">
                                 <label for="inputkey" class="col-sm-3 control-label">变量调用名称</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="key" id="inputkey" placeholder="变量调用名称">
+                                    <input type="text" class="form-control" name="key" value="{$variableRow.key}" readonly="readonly" id="inputkey" placeholder="变量调用名称">
                                 </div>
                             </div>
 
@@ -20,7 +20,11 @@
                                     <select class="form-control" name="input_types" id="inputinput_types">
                                     <option value="">请选择输入框类型</option>
                                     {volist name="$inputTypes" id="inputType"}
+                                    {if condition="$inputType.type eq $variableRow->getData('input_types')"}
+                                    <option value="{$inputType.type}" selected="selected">{$inputType.name}</option>
+                                    {else /}
                                     <option value="{$inputType.type}">{$inputType.name}</option>
+                                    {/if}
                                     {/volist}
                                     </select>
                                 </div>
@@ -29,7 +33,7 @@
                             <div class="form-group">
                                 <label for="inputcheck" class="col-sm-3 control-label">验证规则</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="check" id="inputcheck" placeholder="验证规则">
+                                    <input type="text" class="form-control" name="check" value="{$variableRow.check}" id="inputcheck" placeholder="验证规则">
                                 </div>
                             </div>
                             
@@ -37,7 +41,7 @@
                             <div class="form-group">
                                 <label for="inputdescription" class="col-sm-3 control-label">描述</label>
                                 <div class="col-sm-5">
-                                    <textarea class="form-control" name="description" id="inputdescription"></textarea>
+                                    <textarea class="form-control" name="description" id="inputdescription">{$variableRow.description}</textarea>
                                 </div>
                             </div>
 

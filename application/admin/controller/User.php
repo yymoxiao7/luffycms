@@ -52,6 +52,8 @@ class User extends AdminBase
 
         $roleModel = Loader::model('Role');
         $roleRows  = $roleModel::all();
+
+        $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
         $this->assign('roleRows', $roleRows);
         return $this->fetch();
     }
@@ -86,6 +88,8 @@ class User extends AdminBase
         $roleModel = Loader::model('Role');
         $userRow   = Db::table('user')->find($id);
         $roleRows  = $roleModel::all();
+
+        $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
         $this->assign('roleRows', $roleRows);
         $this->assign('userRow', $userRow);
         return $this->fetch();

@@ -19,29 +19,17 @@
 <div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#file-upload" aria-controls="file-upload" role="tab" data-toggle="tab">上传新的文件</a></li>
-        <li role="presentation"><a href="#noused-file" aria-controls="noused-file" role="tab" data-toggle="tab">从没有使用的文件先择 ({:count($uploadRows)})</a></li>
+        <li role="presentation" class="active"><a href="#file-upload" aria-controls="file-upload" role="tab" data-toggle="tab">上传新的文件</a></li>        
     </ul>
     <!-- Tab panes -->
     <div class="tab-content" style="height:400px;overflow-y: scroll;overflow-x: hidden;">
         <div role="tabpanel" class="tab-pane active" id="file-upload">
             <div class="row" style="margin:10px 0;">
                 <div class="col-sm-12">
-                    <input id="upload-input" type="file" class="file-loading" name="file">
+                    <input id="upload-input" type="file" class="file-loading" name="imgFile">
                 </div>
             </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="noused-file">
-            <div class="row" style="margin-top:10px;">
-                <div class="col-sm-12">
-                   {volist name="$uploadRows" id="uploadRow"}
-                    <div class="file-preview-frame list-pic" style="cursor:pointer;">
-                        <img src="{$uploadRow->file}" data-id="{$uploadRow->id}" style="max-width:200px; max-height:200px;" class="img-thumbnail">
-                    </div>
-                    {/volist}
-                </div>
-            </div>
-        </div>
+        </div>        
     </div>
 </div>
 <script type="text/javascript">
@@ -49,7 +37,7 @@ $(function(argument) {
   $("#upload-input").fileinput({
       maxFileCount: 1, //表示允许同时上传的最大文件个数
       allowedFileExtensions: ["jpg", "png", "gif"],
-      uploadUrl: "/admin/upload/index/type/{$type}/id/{$id}", // your upload server url
+      uploadUrl: "/admin/upload/index/id/{$id}", // your upload server url
       overwriteInitial:false,
       language: 'zh',
       enctype: 'multipart/form-data',
@@ -63,22 +51,22 @@ $(function(argument) {
     $('#{$id}').after($('<input>',{
       type:'hidden',
       name:'{$id}',
-      value:response.upload_id
+      value:response.file
     }));
   });
 
 
-  // 从列表中选择
-  $('.list-pic img').click(function(event) {
-    bootbox.hideAll();
-    $("input[name='{$id}']").remove();
-    $('#{$id}').attr('src',$(this).attr('src'));
-    $('#{$id}').after($('<input>',{
-      type:'hidden',
-      name:'{$id}',
-      value:$(this).data('id')
-    }));
-  });
+  // // 从列表中选择
+  // $('.list-pic img').click(function(event) {
+  //   bootbox.hideAll();
+  //   $("input[name='{$id}']").remove();
+  //   $('#{$id}').attr('src',$(this).attr('src'));
+  //   $('#{$id}').after($('<input>',{
+  //     type:'hidden',
+  //     name:'{$id}',
+  //     value:$(this).data('id')
+  //   }));
+  // });
 });
 
 </script>
