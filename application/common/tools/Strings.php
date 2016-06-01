@@ -44,6 +44,24 @@ class Strings
         $replace = dirname(ROOT_PATH);
         return $replace . $webLink;
     }
+
+    /**
+     * 删除文件
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-06-01T15:31:35+0800
+     * @param    string                   $value [description]
+     * @return   [type]                          [description]
+     */
+    public static function deleteFile($filename)
+    {
+        if (!file_exists($filename)) {
+            $filename = self::fileWebToServer($filename);
+        }
+
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
+    }
     /**
      * [password description]
      * @author luffy<luffyzhao@vip.126.com>

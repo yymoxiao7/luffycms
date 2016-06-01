@@ -53,6 +53,7 @@
                                 <label for="" class="col-sm-3 control-label">头像</label>
                                 <div class="col-sm-5">                                    
                                     <img src="{$userRow.head|default=$default_image}" style="max-width:100px; max-height:100px;" id="head" class="img-circle upload">
+                                    <input type="hidden" name="head" value="{$userRow.head}" />
                                 </div>
                             </div>
 

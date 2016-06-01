@@ -2,6 +2,10 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
+use \think\Db;
+use \think\Input;
+use \think\Loader;
+use \think\Url;
 
 /**
  *
@@ -16,6 +20,88 @@ class Links extends AdminBase
      */
     public function index()
     {
-        # code...
+        $linksModel = Loader::model('Links');
+        $linksRows  = $linksModel::paginate(25);
+
+        $this->assign('linksRows', $linksRows);
+        $this->assign('pages', $linksRows->render());
+        return $this->fetch();
+    }
+
+    /**
+     * 添加友情链接
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-06-01T09:32:15+0800
+     */
+    public function add()
+    {
+        if (IS_AJAX) {
+            $params = Input::param();
+
+            if (loader::validate('Links')->scene('add')->check($params) === false) {
+                return ['status' => 0, 'data' => loader::validate('Links')->getError()];
+            }
+
+            if (($linksId = Loader::model('Links')->linksAdd($params)) === false) {
+                return ['status' => 0, 'data' => Loader::model('Links')->getError()];
+            }
+
+            Loader::model('BackstageLog')->record("添加友情链接：[{$linksId}]");
+
+            return ['status' => 1, 'url' => Url::build('admin/links/index')];
+        }
+        $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
+        return $this->fetch();
+    }
+
+    /**
+     * 修改友情链接
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-06-01T09:58:49+0800
+     * @param    [type]                   $id [description]
+     * @return   [type]                       [description]
+     */
+    public function edit($id)
+    {
+        if (IS_AJAX) {
+            $params = Input::param();
+
+            $params['id'] = $id;
+            if (loader::validate('Links')->scene('edit')->check($params) === false) {
+                return ['status' => 0, 'data' => loader::validate('Links')->getError()];
+            }
+
+            if (($linksId = Loader::model('Links')->linksEdit($params)) === false) {
+                return ['status' => 0, 'data' => Loader::model('Links')->getError()];
+            }
+
+            Loader::model('BackstageLog')->record("修改友情链接：[{$id}]");
+
+            return ['status' => 1, 'url' => Url::build('admin/links/index')];
+        }
+
+        $linksRow = Db::table('links')->find($id);
+        $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
+        $this->assign('linksRow', $linksRow);
+        return $this->fetch();
+    }
+
+    /**
+     * 删除友情链接
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-06-01T10:16:48+0800
+     * @param    [type]                   $id [description]
+     * @return   [type]                       [description]
+     */
+    public function destroy($id)
+    {
+        $linksModel = Loader::model('Links');
+
+        if ($linksModel->deleteLinks($id) === false) {
+            return ['status' => 0, 'data' => $linksModel->getError()];
+        }
+        Loader::model('BackstageLog')->record("删除菜单,ID:[{$id}]");
+
+        return ['status' => 1, 'url' => Url::build('admin/links/index')];
     }
 }

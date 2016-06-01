@@ -1,0 +1,89 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">焦点图位置列表</div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th><input class="check-all" type="checkbox" value=""></th>
+                            <th>调用代码</th>
+                            <th>名称</th>
+                            <th>焦点图个数</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                        {volist name="positionRows" id="positionRow"}
+                        <tr>
+                            <td><input class="check" type="checkbox" value="{$positionRow->id}"></td>
+                            <td>{$positionRow->code}</td>
+                            <td>{$positionRow->name}</td>
+                            <td>{$positionRow->focus()->count()}</td>
+                            <td>{$positionRow->update_time}</td>
+                            <td>
+                                <a class="btn btn-xs btn-default" href="{:url('admin/focusposition/edit',['id'=>$positionRow['id']])}">编辑</a>
+                                <a class="btn btn-xs btn-default delete" href="{:url('admin/focusposition/destroy',['id'=>$positionRow['id']])}">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+            {$pages}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">焦点图位置添加</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <form action="{:url('admin/focusposition/add')}" class="form-horizontal ajax-form" method="post" name="rule">
+                            <div class="form-group">
+                                <label for="inputname" class="col-sm-3 control-label">调用代码</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="code" id="inputname" placeholder="调用代码">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputurl"> 调用名称 </label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="name" id="inputurl" placeholder="调用名称">
+                                </div>
+                            </div>
+                          
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+    $('form.ajax-form').formLuffyZhao([{
+        name: "code",
+        display: '调用代码',
+        rules: 'required'
+    },{
+        name: "name",
+        display: '调用名称',
+        rules: 'required'
+    }
+    ]);
+
+});
+</script>

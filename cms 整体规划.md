@@ -23,3 +23,21 @@
         友情链接管理
         焦点图位置管理
         焦点图管理
+focus
+    id
+    position_id
+    title
+    url
+    remark
+    status
+    sort
+    create_time
+    update_time
+
+
+focus_position
+    id
+    code
+    name
+    create_time
+    update_time
