@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Input;
 use think\Loader;
+use think\Request;
 use think\Url;
 
 /**
@@ -20,7 +21,8 @@ class Common extends Controller
      */
     public function login()
     {
-        if (IS_AJAX) {
+        $request = Request::instance();
+        if ($request->isAjax()) {
             $data   = Input::param();
             $result = $this->validate($data, "User.login");
 

@@ -4,6 +4,7 @@ namespace app\admin\model;
 use think\Config;
 use think\Db;
 use think\Model;
+use think\Request;
 use think\Session;
 
 class Rule extends Model
@@ -100,7 +101,9 @@ class Rule extends Model
         }
         // 没有传auth地址获取当前
         if ($name == '') {
-            $name = CONTROLLER_NAME . "/" . ACTION_NAME;
+            $request = Request::instance();
+            $name    = $request->controller() . '/' . $request->action();
+            // $name = CONTROLLER_NAME . "/" . ACTION_NAME;
         }
 
         $rule = Db::table('role_rule')

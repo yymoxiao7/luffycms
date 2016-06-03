@@ -10,7 +10,7 @@ class Rule extends Validate
     protected $rule = [
         'name'      => ['require', 'unique:rule,name', 'length:3,25'],
         'title'     => ['require', 'length:3,25'],
-        'parent_id' => ['require', 'exist:rule,id'],
+        'parent_id' => ['require', 'existPid:rule'],
         'islink'    => ['in:0,1'],
         'sort'      => ['number', 'between:0,255'],
         'icon'      => ['requireIf:islink,1'],

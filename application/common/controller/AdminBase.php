@@ -4,6 +4,7 @@ namespace app\common\controller;
 use think\Config;
 use think\Controller;
 use think\Db;
+use think\Request;
 use think\Session;
 
 /**
@@ -21,6 +22,7 @@ class AdminBase extends Controller
     {
         parent::__construct();
 
+        defined('IS_AJAX') or define('IS_AJAX', Request::instance()->isAjax());
         defined('STATIC_PATH') or define('STATIC_PATH', dirname(ROOT_PATH) . DS . 'static');
 
         // 当前位置
@@ -51,7 +53,9 @@ class AdminBase extends Controller
     protected function getBreadcrumb()
     {
         $breadcrumb = [];
-        $rule       = CONTROLLER_NAME . '/' . ACTION_NAME;
+
+        $request = Request::instance();
+        $rule    = $request->controller() . '/' . $request->action();
 
         $isHere = Db::table('rule')
             ->field('parent_id,title,name')
