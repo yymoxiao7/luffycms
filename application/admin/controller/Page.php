@@ -89,4 +89,23 @@ class Page extends AdminBase
         $this->assign('pageRow', $pageRow);
         return $this->fetch();
     }
+
+    /**
+     * [destroy description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-06-06T17:27:00+0800
+     * @param    string                   $value [description]
+     * @return   [type]                          [description]
+     */
+    public function destroy($id)
+    {
+        $pageModel = Loader::model('Pages');
+
+        if ($pageModel->deletePage($id) === false) {
+            return ['status' => 0, 'data' => $pageModel->getError()];
+        }
+        Loader::model('BackstageLog')->record("删除单页面,ID:[{$id}]");
+
+        return ['status' => 1, 'url' => Url::build('admin/page/index')];
+    }
 }
