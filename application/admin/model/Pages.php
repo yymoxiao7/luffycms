@@ -91,7 +91,7 @@ class Pages extends Model
             return $description;
         }
 
-        return isset($data['content']) ? mb_substr($data['content'], 0, 100) : '';
+        return isset($data['content']) ? mb_substr(strip_tags($data['content']), 0, 100, 'utf-8') : '';
     }
 
     /**

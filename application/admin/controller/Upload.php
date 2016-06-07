@@ -5,6 +5,7 @@ use app\common\controller\AdminBase;
 use app\common\tools\Strings;
 use think\Input;
 use think\Loader;
+use think\Request;
 
 class Upload extends AdminBase
 {
@@ -16,7 +17,7 @@ class Upload extends AdminBase
      */
     public function uploadpic()
     {
-        if (IS_POST) {
+        if (Request::instance()->isPost()) {
             $optput = ['error' => 1, 'message' => '上传失败'];
 
             $file = Input::file('imgFile');
@@ -49,7 +50,7 @@ class Upload extends AdminBase
      */
     public function index($id = 'editor')
     {
-        if (IS_POST) {
+        if (Request::instance()->isPost()) {
             $optput = ['error' => '上传失败'];
 
             $file = Input::file('imgFile');

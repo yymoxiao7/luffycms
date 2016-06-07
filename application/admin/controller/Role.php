@@ -33,7 +33,11 @@ class Role extends AdminBase
     {
         if (IS_AJAX) {
             $data      = Input::post();
-            $roleModel = Loader::model('role');
+            $roleModel = Loader::model('Role');
+
+            if (loader::validate('Role')->scene('add')->check($data) === false) {
+                return ['status' => 0, 'data' => loader::validate('Role')->getError()];
+            }
 
             if (($id = $roleModel->addRole($data)) !== false) {
                 Loader::model('BackstageLog')->record("添加用户组,ID:[{$id}]");
@@ -64,7 +68,12 @@ class Role extends AdminBase
         }
 
         if (IS_AJAX) {
-            $data = Input::post();
+            $data       = Input::post();
+            $data['id'] = $id;
+
+            if (loader::validate('Role')->scene('edit')->check($data) === false) {
+                return ['status' => 0, 'data' => loader::validate('Role')->getError()];
+            }
 
             if ($roleRow->editRole($data) !== false) {
                 Loader::model('BackstageLog')->record("修改用户组,ID:[{$id}]");

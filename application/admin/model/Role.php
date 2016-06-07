@@ -75,7 +75,7 @@ class Role extends Model
         return Db::transaction(function () use ($data) {
             $roleModel = new Role;
 
-            $roleId = $roleModel->validate('Role.add')->save([
+            $roleId = $roleModel->save([
                 'status' => $data['status'],
                 'name'   => $data['name'],
                 'remark' => $data['remark'],
@@ -108,11 +108,11 @@ class Role extends Model
     {
         return Db::transaction(function () use ($data) {
             // 更新
-            if ($this->validate('Role.edit')->save([
+            if ($this->save([
                 'status' => $data['status'],
                 'name'   => $data['name'],
                 'remark' => $data['remark'],
-            ]) === false) {
+            ], ['id' => $data['id']]) === false) {
                 throw new PDOException($this->getError());
             }
             //先删除关联数据
