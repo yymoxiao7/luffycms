@@ -16,6 +16,11 @@ class Aricle extends AdminBase
      */
     public function index()
     {
+        $aricleModel = Loader::model('Aricle');
+        $aricleRows  = $aricleModel::paginate(25);
+
+        $this->assign('aricleRows', $aricleRows);
+        $this->assign('pages', $aricleRows->render());
         return $this->fetch();
     }
 
@@ -47,5 +52,22 @@ class Aricle extends AdminBase
         $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
         $this->assign('ariclecategoryRows', $ariclecategoryRows);
         return $this->fetch();
+    }
+
+    /**
+     * [destroy description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-06-07T17:45:42+0800
+     * @param    [type]                   $id [description]
+     * @return   [type]                       [description]
+     */
+    public function destroy($id)
+    {
+        if (Loader::model('Aricle')->deleteAricle($id) === false) {
+            return ['status' => 0, 'data' => Loader::model('Aricle')->getError()];
+        }
+        Loader::model('BackstageLog')->record("删除文章,ID:[{$id}]");
+
+        return ['status' => 1, 'url' => Url::build('admin/aricle/index')];
     }
 }

@@ -14,15 +14,32 @@
                     <table class="table  table-bordered table-hover">
                         <tr class="active">
                             <th><input class="check-all" type="checkbox" value=""></th>
-                            <th>角色名称</th>
-                            <th>用户数量</th>
+                            <th>标题</th>
+                            <th>分类</th>
+                            <th>排序</th>
                             <th>是否启用</th>
+                            <th>更新时间</th>
                             <th>操作</th>
                         </tr>
+                        {volist name="aricleRows" id="aricleRow"}
+                        <tr>
+                            <td><input class="check-item" type="checkbox" value="{$aricleRow.id}"></td>
+                            <td>{$aricleRow->title}</td>
+                            <td>{$aricleRow->category->title}</td>
+                            <td>{$aricleRow->sort}</td>
+                            <td>{$aricleRow->status}</td>
+                            <td>{$aricleRow->update_time}</td>
+                            <td>
+                                <a class="btn btn-xs btn-default" href="{:url('admin/aricle/edit',['id'=>$aricleRow['id']])}">编辑</a>
+                                <a class="btn btn-xs btn-default delete" href="{:url('admin/aricle/destroy',['id'=>$aricleRow['id']])}">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
                     </table>
                 </div>
             </div>
             <div class="panel-footer">
+            {$pages}
             </div>
         </div>
     </div>

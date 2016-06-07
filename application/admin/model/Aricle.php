@@ -15,6 +15,11 @@ class Aricle extends Model
         'update_time' => 'datetime',
     ];
 
+    public function category()
+    {
+        return $this->belongsTo('ariclecategory', 'category_id', 'id');
+    }
+
     /**
      * [aricleAdd description]
      * @author luffy<luffyzhao@vip.126.com>
@@ -35,6 +40,19 @@ class Aricle extends Model
             'sort'        => $params['sort'],
         ]);
     }
+
+    /**
+     * [deleteAricle description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-06-07T17:48:40+0800
+     * @param    [type]                   $id [description]
+     * @return   [type]                       [description]
+     */
+    public function deleteAricle($id)
+    {
+        self::get($id);
+
+    }
     /**
      * 设置简介
      * @author luffy<luffyzhao@vip.126.com>
@@ -51,4 +69,27 @@ class Aricle extends Model
         return isset($data['content']) ? mb_substr(strip_tags($data['content']), 0, 100, 'utf-8') : '';
     }
 
+    /**
+     * 获取状态
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-04-19T16:00:40+0800
+     * @param    string                   $value [description]
+     * @return   [type]                          [description]
+     */
+    public function getStatusAttr($value, $data)
+    {
+        $status = [1 => '<span class="label label-success">启用</span>', 0 => '<span class="label label-warning">禁用</span>'];
+        return $status[$value];
+    }
+
+    /**
+     * 获取排序
+     * @param  [type] $sort [description]
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
+    public function getSortAttr($sort, $data)
+    {
+        return '<input type="text" value="' . $sort . '" class="sort"/>';
+    }
 }
