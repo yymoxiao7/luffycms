@@ -65,7 +65,7 @@ $.extend({
      * @return   {[type]}                        [description]
      */
     ajaxDoneResult: function(result) {
-        if (result.status == 1) {
+        if (result.code == 1) {
             if (typeof result.url == 'undefined') {
                 result.url = '/admin/index/index';
             }
@@ -74,15 +74,15 @@ $.extend({
                 result.data = '成功！';
             }
 
-            $.messageSuccess(result.data);
+            $.messageSuccess(result.msg);
 
             setTimeout(function() {
                     location.href = result.url;
                 },
-                1000);
+                1000 * result.wait);
 
 
-        } else if (result.status == 2) {
+        } else if (result.code == 2) {
             if (typeof result.url == 'undefined') {
                 result.url = '/admin/index/index';
             }
@@ -91,16 +91,16 @@ $.extend({
                     location.href = result.url;
                 },
                 1000);
-        } else if (result.status == 3) {
-            $.messageSuccess(result.data);
-        } else if (result.status == 4) {
-            $.messageError(result.data);
+        } else if (result.code == 3) {
+            $.messageSuccess(result.msg);
+        } else if (result.code == 4) {
+            $.messageError(result.msg);
         } else {
-            if (typeof result.data == 'string') {
-                $.formLuffyZhaoErrorMessages.push($.messageError(result.data));
+            if (typeof result.msg == 'string') {
+                $.formLuffyZhaoErrorMessages.push($.messageError(result.msg));
             } else {
-                for (i in result.data) {
-                    $.formLuffyZhaoErrorMessages.push($.messageError(result.data[i]));
+                for (i in result.msg) {
+                    $.formLuffyZhaoErrorMessages.push($.messageError(result.msg[i]));
                 }
             }
         }

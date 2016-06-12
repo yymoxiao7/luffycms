@@ -12,7 +12,7 @@ class Role extends AdminBase
      * [index description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-19T11:59:59+0800
-     * @return   [type]                   [description]
+     * @return [type] [description]
      */
     public function index()
     {
@@ -21,6 +21,7 @@ class Role extends AdminBase
 
         $this->assign('lists', $lists);
         $this->assign('pages', $lists->render());
+
         return $this->fetch();
     }
 
@@ -36,19 +37,20 @@ class Role extends AdminBase
             $roleModel = Loader::model('Role');
 
             if (loader::validate('Role')->scene('add')->check($data) === false) {
-                return ['status' => 0, 'data' => loader::validate('Role')->getError()];
+                return $this->error( loader::validate('Role')->getError());
             }
 
             if (($id = $roleModel->addRole($data)) !== false) {
                 Loader::model('BackstageLog')->record("添加用户组,ID:[{$id}]");
 
-                return ['status' => 1, 'url' => Url::build('admin/role/index')];
+                return $this->success('用户组添加成功',Url::build('admin/role/index'));
             }
 
-            return ['status' => 0, 'data' => $roleModel->getError()];
+            return $this->error( Loader::model('Role')->getError());
 
         }
         $this->assign('ruleRows', Loader::model('rule')->getMenusByParentId());
+
         return $this->fetch();
     }
 
@@ -56,8 +58,8 @@ class Role extends AdminBase
      * [edit description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-19T12:22:26+0800
-     * @param    [type]                   $id [description]
-     * @return   [type]                       [description]
+     * @param  [type] $id [description]
+     * @return [type] [description]
      */
     public function edit($id)
     {
@@ -72,16 +74,16 @@ class Role extends AdminBase
             $data['id'] = $id;
 
             if (loader::validate('Role')->scene('edit')->check($data) === false) {
-                return ['status' => 0, 'data' => loader::validate('Role')->getError()];
+                return $this->error( loader::validate('Role')->getError());
             }
 
             if ($roleRow->editRole($data) !== false) {
                 Loader::model('BackstageLog')->record("修改用户组,ID:[{$id}]");
 
-                return ['status' => 1, 'url' => Url::build('admin/role/index')];
+                return $this->success('用户组修改成功',Url::build('admin/role/index'));
             }
 
-            return ['status' => 0, 'data' => $roleRow->getError()];
+            return $this->error( $roleRow->getError());
         }
 
         // 用户组所有权限
@@ -98,18 +100,18 @@ class Role extends AdminBase
      * [destroy description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-19T12:22:30+0800
-     * @param    [type]                   $id [description]
-     * @return   [type]                       [description]
+     * @param  [type] $id [description]
+     * @return [type] [description]
      */
     public function destroy($id)
     {
         $rouleModel = Loader::model('Role');
 
         if ($rouleModel->deleteRole($id) === false) {
-            return ['status' => 0, 'data' => '删除失败'];
+            return $this->error( $rouleModel->getError());
         }
         Loader::model('BackstageLog')->record("删除用户组,ID:[{$id}]");
 
-        return ['status' => 1, 'url' => Url::build('admin/role/index')];
+        return $this->success('用户组删除成功',Url::build('admin/role/index'));
     }
 }

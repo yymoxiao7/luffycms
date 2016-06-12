@@ -7,7 +7,6 @@ use \think\Model;
 
 class Variable extends Model
 {
-    protected $autoWriteTimestamp = false;
 
     protected $valuePath = "Variable";
 
@@ -15,8 +14,8 @@ class Variable extends Model
      * 通过key 获取到value的值
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-31T14:14:59+0800
-     * @param    [type]                   $key [description]
-     * @return   [type]                        [description]
+     * @param  [type] $key [description]
+     * @return [type] [description]
      */
     public function getValueBykey($key)
     {
@@ -24,13 +23,14 @@ class Variable extends Model
         if (!$value) {
             $value = $this->getValue($key);
         }
+
         return $value;
     }
     /**
      * [addVariable description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-30T15:05:37+0800
-     * @param    array                    $params [description]
+     * @param array $params [description]
      */
     public function addVariable(array $params)
     {
@@ -52,8 +52,8 @@ class Variable extends Model
      * 修改
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-31T11:26:21+0800
-     * @param    array                    $params [description]
-     * @return   [type]                           [description]
+     * @param  array  $params [description]
+     * @return [type] [description]
      */
     public function editVariable(array $params)
     {
@@ -76,7 +76,7 @@ class Variable extends Model
      * [setVariable description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-31T10:43:33+0800
-     * @param    array                    $params [description]
+     * @param array $params [description]
      */
     public function setVariable(array $params)
     {
@@ -94,27 +94,29 @@ class Variable extends Model
      * [deleteVariable description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-31T11:30:50+0800
-     * @param    string                   $value [description]
-     * @return   [type]                          [description]
+     * @param  string $value [description]
+     * @return [type] [description]
      */
     public function deleteVariable($key)
     {
         self::destroy($key);
         $this->deleteValue($key);
+
         return true;
     }
     /**
      * 获取变量值
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-31T10:48:20+0800
-     * @param    string                   $value [description]
-     * @return   [type]                          [description]
+     * @param  string $value [description]
+     * @return [type] [description]
      */
     protected function getValueAttr($value, $data)
     {
         if (($valueFile = $this->getValue($data['key'])) === false) {
             return $value;
         }
+
         return $valueFile;
     }
 
@@ -122,8 +124,8 @@ class Variable extends Model
      * 获取 文件值
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-31T10:49:17+0800
-     * @param    [type]                   $key [description]
-     * @return   [type]                        [description]
+     * @param  [type] $key [description]
+     * @return [type] [description]
      */
     protected function getValue($key)
     {
@@ -132,6 +134,7 @@ class Variable extends Model
         if (file_exists($file) && is_file($file)) {
             return file_get_contents($file);
         }
+
         return false;
     }
 
@@ -139,7 +142,7 @@ class Variable extends Model
      * 删除文件值
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-31T11:31:11+0800
-     * @param    [type]                   $key [description]
+     * @param [type] $key [description]
      */
     protected function deleteValue($key)
     {
@@ -153,8 +156,8 @@ class Variable extends Model
      * 保存 文件值
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-31T10:52:52+0800
-     * @param    [type]                   $key   [description]
-     * @param    [type]                   $value [description]
+     * @param [type] $key   [description]
+     * @param [type] $value [description]
      */
     protected function setValue($key, $value)
     {
@@ -169,8 +172,8 @@ class Variable extends Model
      * [getInputTypesAttr description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-30T15:42:18+0800
-     * @param    [type]                   $value [description]
-     * @return   [type]                          [description]
+     * @param  [type] $value [description]
+     * @return [type] [description]
      */
     protected function getInputTypesAttr($value)
     {
@@ -180,6 +183,7 @@ class Variable extends Model
             $type = Db::table('variable_type')->where(['type' => $value])->find();
             Cache::set($key, $type);
         }
+
         return isset($type['name']) ? $type['name'] : '';
     }
 

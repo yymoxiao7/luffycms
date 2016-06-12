@@ -15,7 +15,7 @@ class Page extends AdminBase
      * [index description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-06-03T14:10:45+0800
-     * @return   [type]                   [description]
+     * @return [type] [description]
      */
     public function index()
     {
@@ -38,21 +38,22 @@ class Page extends AdminBase
             $params = Input::param();
 
             if (loader::validate('Pages')->scene('add')->check($params) === false) {
-                return ['status' => 0, 'data' => loader::validate('Pages')->getError()];
+                return $this->error(loader::validate('Pages')->getError());
             }
 
             if (($pageId = Loader::model('Pages')->pageAdd($params)) === false) {
-                return ['status' => 0, 'data' => Loader::model('Pages')->getError()];
+                return $this->error(Loader::model('Pages')->getError());
             }
 
             Loader::model('BackstageLog')->record("添加单页面：[{$pageId}]");
 
-            return ['status' => 1, 'url' => Url::build('admin/page/index')];
+            return $this->success('单页面添加成功',Url::build('admin/page/index'));
         }
 
         $pageModel = Loader::model('Pages');
         $pageRows  = $pageModel::selectField()->where(['parent_id' => 0])->select();
         $this->assign('pageRows', $pageRows);
+
         return $this->fetch();
     }
 
@@ -60,8 +61,8 @@ class Page extends AdminBase
      * [edit description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-06-03T16:32:52+0800
-     * @param    [type]                   $id [description]
-     * @return   [type]                       [description]
+     * @param  [type] $id [description]
+     * @return [type] [description]
      */
     public function edit($id)
     {
@@ -69,16 +70,16 @@ class Page extends AdminBase
             $params       = Input::param();
             $params['id'] = $id;
             if (loader::validate('Pages')->scene('edit')->check($params) === false) {
-                return ['status' => 0, 'data' => loader::validate('Pages')->getError()];
+                return $this->error(loader::validate('Pages')->getError());
             }
 
             if (($pageId = Loader::model('Pages')->pageEdit($params)) === false) {
-                return ['status' => 0, 'data' => Loader::model('Pages')->getError()];
+                return $this->error(Loader::model('Pages')->getError());
             }
 
             Loader::model('BackstageLog')->record("修改单页面：[{$id}]");
 
-            return ['status' => 1, 'url' => Url::build('admin/page/index')];
+            return $this->success('单页面修改成功',Url::build('admin/page/index'));
         }
 
         $pageModel = Loader::model('Pages');
@@ -87,6 +88,7 @@ class Page extends AdminBase
         $pageRows = $pageModel::selectField()->where(['parent_id' => 0])->select();
         $this->assign('pageRows', $pageRows);
         $this->assign('pageRow', $pageRow);
+
         return $this->fetch();
     }
 
@@ -94,18 +96,18 @@ class Page extends AdminBase
      * [destroy description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-06-06T17:27:00+0800
-     * @param    string                   $value [description]
-     * @return   [type]                          [description]
+     * @param  string $value [description]
+     * @return [type] [description]
      */
     public function destroy($id)
     {
         $pageModel = Loader::model('Pages');
 
         if ($pageModel->deletePage($id) === false) {
-            return ['status' => 0, 'data' => $pageModel->getError()];
+             return $this->error($pageModel->getError());
         }
         Loader::model('BackstageLog')->record("删除单页面,ID:[{$id}]");
 
-        return ['status' => 1, 'url' => Url::build('admin/page/index')];
+        return $this->success('单页面删除成功',Url::build('admin/page/index'));
     }
 }

@@ -17,7 +17,7 @@ class Common extends Controller
      * 后台用户登录
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-16T17:32:23+0800
-     * @return   [type]                   [description]
+     * @return [type] [description]
      */
     public function login()
     {
@@ -38,10 +38,10 @@ class Common extends Controller
             ]);
 
             if ($userRow === false) {
-                return ['status' => 0, 'data' => $userModel->getError()];
+                return $this->error($userModel->getError());
             }
 
-            return ['status' => 1, 'url' => Url::build('admin/index/index')];
+            return $this->success(Url::build('admin/index/index'));
 
         } else {
             return $this->fetch();

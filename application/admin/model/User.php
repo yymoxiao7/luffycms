@@ -33,7 +33,7 @@ class User extends Model
      *                                                'email'=>'',
      *                                                'password'=> ''
      *                                             ) [description]
-     * @return   [type]                          [description]
+     * @return [type] [description]
      */
     public function login(array $params)
     {
@@ -45,9 +45,9 @@ class User extends Model
 
             if (empty($userRow)) {
                 $this->error = '用户名/邮箱不存在！';
-            } else if ($userRow['status'] == 0) {
+            } elseif ($userRow['status'] == 0) {
                 $this->error = '该用户已被禁用，请联系管理员。';
-            } else if ($userRow['password'] != $this->setPasswordAttr($params['password'])) {
+            } elseif ($userRow['password'] != $this->setPasswordAttr($params['password'])) {
                 $this->error = '密码错误！';
             }
 
@@ -71,8 +71,8 @@ class User extends Model
      * [profileEdit description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-26T10:53:30+0800
-     * @param    strings                   $value [description]
-     * @return   [type]                          [description]
+     * @param  strings $value [description]
+     * @return [type]  [description]
      */
     public function profileEdit(array $data)
     {
@@ -85,6 +85,7 @@ class User extends Model
         $pk = $this->getPk();
         if (!isset($data[$pk])) {
             $this->error = '参数不对！';
+
             return false;
         }
 
@@ -101,8 +102,8 @@ class User extends Model
      * [userAdd description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-27T10:16:00+0800
-     * @param    array                    $data [description]
-     * @return   [type]                         [description]
+     * @param  array  $data [description]
+     * @return [type] [description]
      */
     public function userAdd(array $data)
     {
@@ -113,33 +114,23 @@ class User extends Model
      * [deleteUser description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-27T10:44:48+0800
-     * @param    [type]                   $id [description]
-     * @return   [type]                       [description]
+     * @param  [type] $id [description]
+     * @return [type] [description]
      */
     public function deleteUser($id)
     {
         $profile = $this->find($id);
         $this->deleteHead($profile['head']);
-        return $profile->delete();
-    }
 
-    /**
-     * [userAddField description]
-     * @author luffy<luffyzhao@vip.126.com>
-     * @dateTime 2016-05-27T10:18:01+0800
-     * @return   [type]                   [description]
-     */
-    public function userAddField()
-    {
-        return $this->allowField(['name', 'email', 'password', 'status', 'sex', 'head', 'birthday', 'tel', 'role_id']);
+        return $profile->delete();
     }
 
     /**
      * [deleteHead description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-31T10:16:45+0800
-     * @param    [type]                   $head [description]
-     * @return   [type]                         [description]
+     * @param  [type] $head [description]
+     * @return [type] [description]
      */
     protected function deleteHead($head)
     {
@@ -147,11 +138,23 @@ class User extends Model
             unlink($file);
         }
     }
+
+    /**
+     * [userAddField description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-05-27T10:18:01+0800
+     * @return [type] [description]
+     */
+    public function userAddField()
+    {
+        return $this->allowField(['name', 'email', 'password', 'status', 'sex', 'head', 'birthday', 'tel', 'role_id']);
+    }
+
     /**
      * [profileEditField description]
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-26T17:36:24+0800
-     * @return   [type]                   [description]
+     * @return [type] [description]
      */
     protected function profileEditField()
     {
@@ -162,12 +165,13 @@ class User extends Model
      * 获取状态
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-04-19T16:00:40+0800
-     * @param    strings                   $value [description]
-     * @return   [type]                          [description]
+     * @param  strings $value [description]
+     * @return [type]  [description]
      */
     public function getStatusAttr($value)
     {
         $status = [0 => '禁用', 1 => '启用'];
+
         return $status[$value];
     }
 
@@ -175,12 +179,13 @@ class User extends Model
      * 获取性别
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-04-19T16:00:40+0800
-     * @param    strings                   $value [description]
-     * @return   [type]                          [description]
+     * @param  strings $value [description]
+     * @return [type]  [description]
      */
     public function getSexAttr($value)
     {
         $status = [0 => '保密', 1 => '男', 2 => '女'];
+
         return $status[$value];
     }
 
@@ -188,13 +193,18 @@ class User extends Model
      * 设置密码
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-04-19T15:58:11+0800
-     * @param    [type]                   $value [description]
+     * @param [type] $value [description]
      */
     protected function setPasswordAttr($password, $data = array())
     {
-        //e10adc3949ba59abbe56e057f20f883e
-        //123456
         return Strings::password($password);
+    }
+
+    protected function setBirthdayAttr($birthday, $data = array())
+    {
+        if ($birthday == '') {
+            return "1970-01-01";
+        }
     }
 
 }

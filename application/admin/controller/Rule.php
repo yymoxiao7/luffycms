@@ -12,7 +12,7 @@ class Rule extends AdminBase
      * 菜单列表
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-17T11:30:49+0800
-     * @return   [type]                   [description]
+     * @return [type] [description]
      */
     public function index()
     {
@@ -20,6 +20,7 @@ class Rule extends AdminBase
         $lists     = $ruleModel->where('parent_id', 0)->order('sort', 'asc')->select();
 
         $this->assign('lists', $lists);
+
         return $this->fetch();
     }
 
@@ -27,25 +28,28 @@ class Rule extends AdminBase
      * 添加菜单
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-17T14:42:48+0800
-     * @param    string                   $value [description]
+     * @param string $value [description]
      */
     public function add()
     {
         if (IS_AJAX) {
-            $ruleModel = Loader::model('Rule');
+            $params = Input::param();
 
-            $result = $ruleModel->validate('Rule.add')->save(Input::param());
-
-            if (false !== $result) {
-                Loader::model('BackstageLog')->record("添加菜单,ID:[{$result}]");
-                return ['status' => 1, 'url' => Url::build('admin/rule/index')];
+            if (loader::validate('Rule')->scene('add')->check($params) === false) {
+                return $this->error(loader::validate('Rule')->getError());
             }
 
-            return ['status' => 0, 'data' => $ruleModel->getError()];
+            if (($userId = Loader::model('Rule')->save($params)) === false) {
+                return $this->error(loader::model('Rule')->getError());
+            }
 
+            Loader::model('BackstageLog')->record("添加菜单,ID:[{$userId}]");
+
+            return $this->success('菜单添加成功',Url::build('admin/rule/index'));
         }
         $ruleRows = Loader::model('Rule')->getMenusByParentId(0);
         $this->assign('ruleRows', $ruleRows);
+
         return $this->fetch();
 
     }
@@ -54,8 +58,8 @@ class Rule extends AdminBase
      * 编辑
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-18T10:27:08+0800
-     * @param    string                   $value [description]
-     * @return   [type]                          [description]
+     * @param  string $value [description]
+     * @return [type] [description]
      */
     public function edit($id)
     {
@@ -67,20 +71,24 @@ class Rule extends AdminBase
         }
 
         if (IS_AJAX) {
-            $data   = Input::param();
-            $result = $ruleRow->validate('Rule.edit')->save($data);
+            $params   = Input::param();
+            $params['id'] = $id;
 
-            if (false !== $result) {
-                Loader::model('BackstageLog')->record("修改菜单,ID:[{$id}]");
-                return ['status' => 1, 'url' => Url::build('admin/rule/index')];
+            if (loader::validate('Rule')->scene('edit')->check($params) === false) {
+                return $this->error(loader::validate('Rule')->getError());
             }
-            return ['status' => 0, 'data' => $ruleModel->getError()];
+            if (Loader::model('Rule')->save($params,['id'=>$id]) === false) {
+                return $this->error(loader::model('Rule')->getError());
+            }
+            Loader::model('BackstageLog')->record("修改菜单,ID:[{$id}]");
 
+            return $this->success('菜单修改成功',Url::build('admin/rule/index'));
         }
 
         $ruleRows = $ruleModel->getMenusByParentId(0);
         $this->assign('ruleRow', $ruleRow);
         $this->assign('ruleRows', $ruleRows);
+
         return $this->fetch();
 
     }
@@ -89,18 +97,18 @@ class Rule extends AdminBase
      * 删除
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-18T15:36:55+0800
-     * @param    [type]                   $id [description]
-     * @return   [type]                       [description]
+     * @param  [type] $id [description]
+     * @return [type] [description]
      */
     public function destroy($id)
     {
         $ruleModel = Loader::model('Rule');
 
         if ($ruleModel->deleteRule($id) === false) {
-            return ['status' => 0, 'data' => $ruleModel->getError()];
+            return $this->error($ruleModel->getError());
         }
         Loader::model('BackstageLog')->record("删除菜单,ID:[{$id}]");
 
-        return ['status' => 1, 'url' => Url::build('admin/rule/index')];
+        return $this->success('菜单删除成功',Url::build('admin/rule/index'));
     }
 }
