@@ -41,7 +41,7 @@ class Common extends Controller
                 return $this->error($userModel->getError());
             }
 
-            return $this->success(Url::build('admin/index/index'));
+            return $this->success('登录成功',Url::build('admin/index/index'));
 
         } else {
             return $this->fetch();
