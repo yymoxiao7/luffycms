@@ -22,9 +22,9 @@
 
 
             if (IframeList[active].left < tabMarginLeft) {
-                tabMarginLeft = IframeList[active].left - 38;
-            } else if ((IframeList[active].left + IframeList[active].width) > ($(tabbox).width() + tabMarginLeft + 38)) {
-                tabMarginLeft = IframeList[active].left - 38;
+                tabMarginLeft = IframeList[active].left;
+            } else if ((IframeList[active].left + IframeList[active].width) > ($(tabbox).width() + tabMarginLeft)) {
+                tabMarginLeft = IframeList[active].left;
             }
 
             $(tab).css({ marginLeft: -tabMarginLeft });
