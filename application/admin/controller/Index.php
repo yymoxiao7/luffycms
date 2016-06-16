@@ -10,7 +10,7 @@ class Index extends AdminBase
      * 后台主面板
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-16T17:32:36+0800
-     * @return   [type]                   [description]
+     * @return [type] [description]
      */
     public function index()
     {
@@ -18,6 +18,7 @@ class Index extends AdminBase
 
         $this->assign('userRow', $this->userRow);
         $this->assign('ruleData', $ruleData);
+
         return $this->fetch();
     }
 
@@ -25,7 +26,7 @@ class Index extends AdminBase
      * 主面板
      * @author luffy<luffyzhao@vip.126.com>
      * @dateTime 2016-05-17T10:13:54+0800
-     * @return   [type]                   [description]
+     * @return [type] [description]
      */
     public function main()
     {
