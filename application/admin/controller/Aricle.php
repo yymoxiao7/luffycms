@@ -2,6 +2,8 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
+use app\admin\model\Aricle as AricleModel;
+use app\admin\model\Ariclecategory;
 use think\Input;
 use think\Loader;
 use think\Url;
@@ -16,8 +18,7 @@ class Aricle extends AdminBase
      */
     public function index()
     {
-        $aricleModel = Loader::model('Aricle');
-        $aricleRows  = $aricleModel::paginate(25);
+        $aricleRows  = AricleModel::paginate(25);
 
         $this->assign('aricleRows', $aricleRows);
         $this->assign('pages', $aricleRows->render());
@@ -48,8 +49,7 @@ class Aricle extends AdminBase
             return $this->success('文章添加成功', Url::build('admin/aricle/index'));
         }
 
-        $ariclecategoryModel = Loader::model('Ariclecategory');
-        $ariclecategoryRows  = $ariclecategoryModel::selectField()->where(['parent_id' => 0])->select();
+        $ariclecategoryRows  = Ariclecategory::selectField()->where(['parent_id' => 0])->select();
         $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
         $this->assign('ariclecategoryRows', $ariclecategoryRows);
 
@@ -66,7 +66,7 @@ class Aricle extends AdminBase
     public function edit($id)
     {
         $aricleModel = Loader::model('Aricle');
-        $aricleRow = $aricleModel::get($id);
+        $aricleRow = AricleModel::get($id);
 
         if ($aricleRow === false) {
             $this->error('文章不存在,或者已被删除');
@@ -80,8 +80,8 @@ class Aricle extends AdminBase
                 return $this->error(loader::validate('Aricle')->getError());
             }
 
-            if (($aricleId = Loader::model('Aricle')->aricleEdit($params)) === false) {
-                return $this->error(Loader::model('Aricle')->getError());
+            if (($aricleId = $aricleModel->aricleEdit($params)) === false) {
+                return $this->error($aricleModel->getError());
             }
 
             Loader::model('BackstageLog')->record("修改文章：[{$aricleId}]");
@@ -90,8 +90,7 @@ class Aricle extends AdminBase
 
         }
 
-        $ariclecategoryModel = Loader::model('Ariclecategory');
-        $ariclecategoryRows  = $ariclecategoryModel::selectField()->where(['parent_id' => 0])->select();
+        $ariclecategoryRows  = Ariclecategory::selectField()->where(['parent_id' => 0])->select();
         $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
         $this->assign('ariclecategoryRows', $ariclecategoryRows);
         $this->assign('aricleRow', $aricleRow);
