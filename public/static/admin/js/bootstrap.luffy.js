@@ -27,6 +27,7 @@
                 tabMarginLeft = IframeList[active].left;
             }
 
+            console.log($(tab).find('a').eq(active).position());
             $(tab).css({ marginLeft: -tabMarginLeft });
         },
         removeIframe = function(item) {
@@ -38,6 +39,33 @@
             $('.tab-a-' + active).remove();
             $('[name="' + iframeClass + active + '"]').remove();
             IframeList.splice(active, 1);
+
+            if(active != 0){
+                showIframe(IframeList[active - 1]);
+            }
+        },
+        rollleft = function() {
+            return this.each(function() {
+                $(this).bind('click', function(e) {
+                    if (tabMarginLeft > 0 && tabMarginLeft > $(tabbox).width()) {
+                        tabMarginLeft = tabMarginLeft - $(tabbox).width();
+                    } else {
+                        tabMarginLeft = 0;
+                    }
+                    $(tab).css({ marginLeft: -tabMarginLeft });
+                });
+            });
+        },
+        rollright = function () {
+             return this.each(function() {
+                $(this).bind('click', function(e) {
+                    if($(tab).width() - tabMarginLeft > $(tabbox).width()){
+                        tabMarginLeft = tabMarginLeft + $(tabbox).width();
+                    }
+
+                    $(tab).css({ marginLeft: -tabMarginLeft });
+                });
+            });
         };
 
     Iframe.prototype.show = function(e) {
@@ -90,7 +118,7 @@
                 removeIframe(a);
             });
         }
-        
+
         $(tab).find('a').eq(active).trigger('cilck.tab.show', [item]);
     }
 
@@ -109,5 +137,10 @@
         })
     }
 
-    $.fn.TabIframe = TabIframe
+    $.fn.TabIframe = TabIframe;
+
+    $.fn.rollleft = rollleft;
+    $.fn.rollright = rollright;
+    
+    
 }(jQuery)

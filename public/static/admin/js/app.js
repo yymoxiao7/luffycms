@@ -33,23 +33,12 @@ $(function() {
         $('a.ng-scope').TabIframe()
     }
 
+    $('.roll-left').rollleft();
+    $('.roll-right').rollright();
+
 
     $('[data-toggle="left-nav"] a:first').trigger('click');
 
-    $(".content-tabs .roll-left").bind('click', function(event) {
-        $(".page-tabs .tabs").css({
-            left:38
-        });
-    });
 
-    $(".content-tabs .roll-right").bind('click', function(event) {
-
-        if($(".page-tabs .tabs a:last").position().left > (-$(".page-tabs .tabs").position().left + $('.page-tabs').innerWidth())){
-            $(".page-tabs .tabs").css({
-                left:-($(".page-tabs .tabs").position().left + $('.page-tabs').innerWidth())
-            });
-        }
-        
-    });
 
 });

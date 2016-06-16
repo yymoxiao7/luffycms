@@ -303,7 +303,10 @@ nav.navbar{
 .page-tabs{
     margin-left: 38px;
     margin-right: 38px;
+    width: 10000px;
+    overflow: hidden;
 }
+
 
 .page-tabs a {
     display: block;
@@ -329,9 +332,8 @@ nav.navbar{
     font-size: 12px;
 }
 
-.tabs{
-    width: 10000px;
-    position: absolute;
+.page-tabs .tabs{
+    float: left;
 }
 
 .pagination{
