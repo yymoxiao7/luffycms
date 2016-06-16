@@ -1,0 +1,87 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">菜单列表</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a href="{:url('admin/rule/add')}" class="btn btn-success">添加</a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th><input class="check-all" type="checkbox" value=""></th>
+                            <th>菜单名称</th>
+                            <th>链接</th>
+                            <th>ICON</th>
+                            <th>类型</th>
+                            <th>排序</th>
+                            <th>操作</th>
+                        </tr>
+                        {volist name="$lists" id="vo"}
+                        <tr class="success">
+                            <td><input class="check-item" type="checkbox" value="{$vo.id}"></td>
+                            <td class="text-left">
+                            {$vo.title}
+                            </td>
+                            <td>
+                                {$vo.name}
+                            </td>
+                            <td>{$vo.icon}</td>
+                            <td>{$vo.islink}</td>
+                            <td>{$vo.sort}</td>
+                            <td>
+                                <a class="btn btn-xs btn-default" href="{:url('admin/rule/edit',['id'=>$vo['id']])}">编辑</a>
+                                <a class="btn btn-xs btn-default delete" href="{:url('admin/rule/destroy',['id'=>$vo['id']])}">删除</a>
+                            </td>
+                        </tr>
+                            {volist name="$vo->parent" id="v"}
+                                <tr class="active">
+                                    <td><input class="check-item" type="checkbox" value="{$v.id}"></td>
+                                    <td class="text-left">
+                                    &nbsp;&nbsp;┗━
+                                    {$v.title}
+                                    </td>
+                                    <td>
+                                        {$v.name}
+                                    </td>
+                                    <td>{$v.icon}</td>
+                                    <td>{$v.islink}</td>
+                                    <td>{$v.sort}</td>
+                                    <td>
+                                        <a class="btn btn-xs btn-default" href="{:url('admin/rule/edit',['id'=>$v['id']])}">编辑</a>
+                                        <a class="btn btn-xs btn-default delete" href="{:url('admin/rule/destroy',['id'=>$v['id']])}">删除</a>
+                                    </td>
+                                </tr>
+                                {volist name="$v->parent" id="ss"}
+                                <tr {if condition="$ss['parent_id'] eq 0"} class="success" {/if}>
+                                    <td><input class="check-item" type="checkbox" value="{$ss.id}"></td>
+                                    <td class="text-left">
+                                    &nbsp;&nbsp; &nbsp;&nbsp;┗━━
+                                    {$ss.title}
+                                    </td>
+                                    <td>
+                                        {$ss.name}
+                                    </td>
+                                    <td>{$ss.icon}</td>
+                                    <td>{$ss.islink}</td>
+                                    <td>{$ss.sort}</td>
+                                    <td>
+                                        <a class="btn btn-xs btn-default" href="{:url('admin/rule/edit',['id'=>$ss['id']])}">编辑</a>
+                                        <a class="btn btn-xs btn-default delete" href="{:url('admin/rule/destroy',['id'=>$ss['id']])}">删除</a>
+                                    </td>
+                                </tr>
+                            {/volist}
+                            {/volist}
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+</div>

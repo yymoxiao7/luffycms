@@ -1,0 +1,73 @@
+{layout name="layout" /}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">自定义变量</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <form action="{:url('admin/variable/add')}" class="form-horizontal ajax-form" method="post" name="rule">
+                            <div class="form-group">
+                                <label for="inputkey" class="col-sm-3 control-label">变量调用名称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="key" id="inputkey" placeholder="变量调用名称">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputinput_types" class="col-sm-3 control-label">输入框类型</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" name="input_types" id="inputinput_types">
+                                    <option value="">请选择输入框类型</option>
+                                    {volist name="$inputTypes" id="inputType"}
+                                    <option value="{$inputType.type}">{$inputType.name}</option>
+                                    {/volist}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputcheck" class="col-sm-3 control-label">验证规则</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="check" id="inputcheck" placeholder="验证规则">
+                                </div>
+                            </div>
+                            
+
+                            <div class="form-group">
+                                <label for="inputdescription" class="col-sm-3 control-label">描述</label>
+                                <div class="col-sm-5">
+                                    <textarea class="form-control" name="description" id="inputdescription"></textarea>
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+    $('form.ajax-form').formLuffyZhao([{
+        name: "key",
+        display: '变量调用名称',
+        rules: 'required|alpha_dash'
+    },{
+        name: "input_types",
+        display: '输入框类型',
+        rules: 'required'
+    }
+
+    ]);
+
+});
+</script>

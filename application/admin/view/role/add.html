@@ -1,0 +1,87 @@
+{layout name="layout" /}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">用户组添加</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <form action="{:url('admin/role/add')}" class="form-horizontal ajax-form" method="post" name="rule">
+                            <div class="form-group">
+                                <label for="inputname" class="col-sm-3 control-label">用户组名称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="name" id="inputname" placeholder="菜单名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputstatus"> 是否启用 </label>
+                                <div class="col-sm-5">
+                                    <input type="checkbox" name="status" id="inputstatus" value="1" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputremark"> 简单说明 </label>
+                                <div class="col-sm-5">
+                                    <textarea class="form-control" name="remark" id="inputremark"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label">权限管理</label>
+                                <div class="col-sm-5">
+                                    <div class="widget-group">
+                                    {volist name="$ruleRows" id="rules"}
+                                        <div class="widget-box">
+                                            <div class="widget-header">
+                                                <h5 class="widget-title">
+                                                    <label>
+                                                        <input name="rules[]" class="ace ace-checkbox-2 father" type="checkbox" value="{$rules.id}">
+                                                        <span class="lbl"> {$rules.title} </span>
+                                                    </label>
+                                                </h5>
+                                            </div>
+                                            <div class="widget-body collapse in">
+                                                <div class="widget-main row">
+                                                   {volist name="$rules->parent" id="rule"}
+                                                    <label class="col-xs-4">
+                                                        <input name="rules[]" class="ace ace-checkbox-2 children" type="checkbox" value="{$rule.id}">
+                                                        <span class="lbl"> {$rule.title}</span>
+                                                    </label>
+                                                    {volist name="$rule->parent" id="ru"}
+                                                    <label class="col-xs-4">
+                                                        <input name="rules[]" class="ace ace-checkbox-2 children" type="checkbox" value="{$ru.id}">
+                                                        <span class="lbl"> {$ru.title}</span>
+                                                    </label>
+                                                    {/volist}
+                                                    {/volist}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {/volist}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+    $('form.ajax-form').formLuffyZhao([
+
+    ]);
+
+    $('.children').on('ifChecked',function (argument) {
+         if(!$(this).parents('.widget-box').find('.father').is('checked')){
+            $(this).parents('.widget-box').find('.father').iCheck('check');
+         }
+    });
+});
+</script>

@@ -1,0 +1,48 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">友情链接列表</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a href="{:url('admin/links/add')}" class="btn btn-success">添加</a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th><input class="check-all" type="checkbox" value=""></th>
+                            <th>标题</th>
+                            <th>网址</th>
+                            <th>联系人</th>
+                            <th>状态</th>
+                            <th>排序</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                        {volist name="linksRows" id="linkRow"}
+                        <tr>
+                            <td><input class="check" type="checkbox" value="{$linkRow->id}"></td>
+                            <td>{$linkRow->title}</td>
+                            <td>{$linkRow->url}</td>
+                            <td>{$linkRow->linker}</td>
+                            <td>{$linkRow->status}</td>
+                            <td>{$linkRow->sort}</td>
+                            <td>{$linkRow->update_time}</td>
+                            <td>
+                                <a class="btn btn-xs btn-default" href="{:url('admin/links/edit',['id'=>$linkRow['id']])}">编辑</a>
+                                <a class="btn btn-xs btn-default delete" href="{:url('admin/links/destroy',['id'=>$linkRow['id']])}">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+            {$pages}
+            </div>
+        </div>
+    </div>
+</div>
