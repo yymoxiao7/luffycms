@@ -2,8 +2,8 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
-use think\Input;
 use think\Loader;
+use think\Request;
 use think\Url;
 
 class Ariclecategory extends AdminBase
@@ -30,8 +30,9 @@ class Ariclecategory extends AdminBase
      */
     public function add()
     {
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params = $request->param();
 
             if (loader::validate('Ariclecategory')->scene('add')->check($params) === false) {
                 return $this->error(loader::validate('Ariclecategory')->getError());
@@ -43,7 +44,7 @@ class Ariclecategory extends AdminBase
 
             Loader::model('BackstageLog')->record("添加文章分类页面：[{$ariclecategoryId}]");
 
-            return $this->success('文章分类添加成功',Url::build('admin/ariclecategory/index'));
+            return $this->success('文章分类添加成功', Url::build('admin/ariclecategory/index'));
         }
 
         $ariclecategoryModel = Loader::model('Ariclecategory');
@@ -62,9 +63,9 @@ class Ariclecategory extends AdminBase
      */
     public function edit($id)
     {
-
-        if (IS_AJAX) {
-            $params       = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params       = $request->param();
             $params['id'] = $id;
             if (loader::validate('Ariclecategory')->scene('edit')->check($params) === false) {
                 return $this->error(loader::validate('Ariclecategory')->getError());
@@ -76,7 +77,7 @@ class Ariclecategory extends AdminBase
 
             Loader::model('BackstageLog')->record("修改文章分类页面：[{$id}]");
 
-            return $this->success('文章分类修改成功',Url::build('admin/ariclecategory/index'));
+            return $this->success('文章分类修改成功', Url::build('admin/ariclecategory/index'));
         }
 
         $ariclecategoryModel = Loader::model('Ariclecategory');
@@ -105,6 +106,6 @@ class Ariclecategory extends AdminBase
         }
         Loader::model('BackstageLog')->record("删除文章分类页面,ID:[{$id}]");
 
-        return $this->success('文章分类删除成功',Url::build('admin/ariclecategory/index'));
+        return $this->success('文章分类删除成功', Url::build('admin/ariclecategory/index'));
     }
 }

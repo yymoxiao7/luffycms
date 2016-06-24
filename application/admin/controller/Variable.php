@@ -4,8 +4,8 @@ namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
 use think\Db;
-use think\Input;
 use think\Loader;
+use think\Request;
 use think\Url;
 
 class Variable extends AdminBase
@@ -35,8 +35,9 @@ class Variable extends AdminBase
      */
     public function add()
     {
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isPost()) {
+            $params = $request->param();
 
             if (loader::validate('Variable')->scene('add')->check($params) === false) {
                 return $this->error(loader::validate('Variable')->getError());
@@ -48,7 +49,7 @@ class Variable extends AdminBase
 
             Loader::model('BackstageLog')->record("添加自定义变量：[{$key}]");
 
-            return $this->success('自定义变量添加成功',Url::build('admin/variable/index'));
+            return $this->success('自定义变量添加成功', Url::build('admin/variable/index'));
 
         }
         $this->assign('inputTypes', Db::table('variable_type')->select());
@@ -65,8 +66,9 @@ class Variable extends AdminBase
      */
     public function edit($key)
     {
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isPost()) {
+            $params = $request->param();
 
             if (loader::validate('Variable')->scene('edit')->check($params) === false) {
                 return $this->error(loader::validate('Variable')->getError());
@@ -78,7 +80,7 @@ class Variable extends AdminBase
 
             Loader::model('BackstageLog')->record("修改自定义变量：[{$key}]");
 
-            return $this->success('自定义变量修改成功',Url::build('admin/variable/index'));
+            return $this->success('自定义变量修改成功', Url::build('admin/variable/index'));
 
         }
 
@@ -96,17 +98,17 @@ class Variable extends AdminBase
      */
     public function set($key)
     {
-
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isPost()) {
+            $params = $request->param();
             if (($key = Loader::model('Variable')->setVariable($params)) === false) {
                 return $this->error(loader::model('Variable')->getError());
             }
             Loader::model('BackstageLog')->record("设置自定义变量的值：[{$key}]");
 
-            return $this->success('自定义变量的值设置成功',Url::build('admin/variable/index'));
+            return $this->success('自定义变量的值设置成功', Url::build('admin/variable/index'));
         }
-
+        $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
         $this->assign('variableRow', Loader::model('Variable')->get($key));
 
         return $this->fetch();
@@ -127,6 +129,6 @@ class Variable extends AdminBase
 
         Loader::model('BackstageLog')->record("删除自定义变量：[{$key}]");
 
-        return $this->success('自定义变量删除成功',Url::build('admin/variable/index'));
+        return $this->success('自定义变量删除成功', Url::build('admin/variable/index'));
     }
 }

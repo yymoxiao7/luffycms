@@ -5,13 +5,12 @@ use \think\Model;
 
 class Ariclecategory extends Model
 {
-    protected $auto       = ['sort', 'description'];
-    protected $dateFormat = "Y-m-d";
-    protected $type       = [
+    protected $auto = ['sort', 'description'];
+    protected $type = [
         'id'          => 'integer',
         'sort'        => 'integer',
-        'create_time' => 'datetime',
-        'update_time' => 'datetime',
+        'update_time' => 'timestamp',
+        'create_time' => 'timestamp',
     ];
 
     /**
@@ -116,5 +115,18 @@ class Ariclecategory extends Model
     public function getSortAttr($sort, $data)
     {
         return '<input type="text" value="' . $sort . '" class="sort"/>';
+    }
+    /**
+     * [getUpdateTimeAttr description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-06-24T14:13:46+0800
+     * @type     {{type}}
+     * @param    [type]                   $sort [description]
+     * @param    [type]                   $data [description]
+     * @return   [type]                         [description]
+     */
+    public function getUpdateTimeAttr($time, $data)
+    {
+        return date('Y-m-d h:i:s', $time);
     }
 }

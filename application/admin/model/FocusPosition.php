@@ -5,10 +5,10 @@ use \think\Model;
 
 class FocusPosition extends Model
 {
+
     protected $type = [
-        'id'          => 'integer',
-        'create_time' => 'datetime',
-        'update_time' => 'datetime',
+        'update_time' => 'timestamp',
+        'create_time' => 'timestamp',
     ];
 
     /**
@@ -92,4 +92,5 @@ class FocusPosition extends Model
     {
         return '<input type="text" value="' . $sort . '" class="sort"/>';
     }
+
 }

@@ -2,8 +2,8 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
-use think\Input;
 use think\Loader;
+use think\Request;
 use think\Url;
 
 /**
@@ -34,8 +34,9 @@ class Page extends AdminBase
      */
     public function add()
     {
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params = $request->param();
 
             if (loader::validate('Pages')->scene('add')->check($params) === false) {
                 return $this->error(loader::validate('Pages')->getError());
@@ -47,7 +48,7 @@ class Page extends AdminBase
 
             Loader::model('BackstageLog')->record("添加单页面：[{$pageId}]");
 
-            return $this->success('单页面添加成功',Url::build('admin/page/index'));
+            return $this->success('单页面添加成功', Url::build('admin/page/index'));
         }
 
         $pageModel = Loader::model('Pages');
@@ -66,8 +67,9 @@ class Page extends AdminBase
      */
     public function edit($id)
     {
-        if (IS_AJAX) {
-            $params       = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params       = $request->param();
             $params['id'] = $id;
             if (loader::validate('Pages')->scene('edit')->check($params) === false) {
                 return $this->error(loader::validate('Pages')->getError());
@@ -76,10 +78,9 @@ class Page extends AdminBase
             if (($pageId = Loader::model('Pages')->pageEdit($params)) === false) {
                 return $this->error(Loader::model('Pages')->getError());
             }
-
             Loader::model('BackstageLog')->record("修改单页面：[{$id}]");
 
-            return $this->success('单页面修改成功',Url::build('admin/page/index'));
+            return $this->success('单页面修改成功', Url::build('admin/page/index'));
         }
 
         $pageModel = Loader::model('Pages');
@@ -104,10 +105,10 @@ class Page extends AdminBase
         $pageModel = Loader::model('Pages');
 
         if ($pageModel->deletePage($id) === false) {
-             return $this->error($pageModel->getError());
+            return $this->error($pageModel->getError());
         }
         Loader::model('BackstageLog')->record("删除单页面,ID:[{$id}]");
 
-        return $this->success('单页面删除成功',Url::build('admin/page/index'));
+        return $this->success('单页面删除成功', Url::build('admin/page/index'));
     }
 }

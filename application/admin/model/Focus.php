@@ -13,8 +13,8 @@ class Focus extends Model
         'id'          => 'integer',
         'status'      => 'integer',
         'sort'        => 'integer',
-        'create_time' => 'datetime',
-        'update_time' => 'datetime',
+        'update_time' => 'timestamp',
+        'create_time' => 'timestamp',
     ];
 
     /**

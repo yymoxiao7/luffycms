@@ -1,18 +1,19 @@
 <?php
 namespace app\admin\model;
 
-use \think\Model;
 use app\common\tools\Strings;
+use \think\Model;
+
 class Aricle extends Model
 {
-    protected $auto       = ['status', 'sort', 'description'];
-    protected $dateFormat = "Y-m-d";
-    protected $type       = [
+    protected $auto = ['status', 'sort', 'description'];
+
+    protected $type = [
         'id'          => 'integer',
         'status'      => 'integer',
         'sort'        => 'integer',
-        'create_time' => 'datetime',
-        'update_time' => 'datetime',
+        'update_time' => 'timestamp',
+        'create_time' => 'timestamp',
     ];
 
     public function category()
@@ -71,7 +72,7 @@ class Aricle extends Model
             'content'     => $params['content'],
             'status'      => isset($params['status']) ? $params['status'] : 0,
             'sort'        => $params['sort'],
-        ],['id'=>$params['id']]);
+        ], ['id' => $params['id']]);
 
     }
 
@@ -134,4 +135,5 @@ class Aricle extends Model
     {
         return '<input type="text" value="' . $sort . '" class="sort"/>';
     }
+
 }

@@ -10,6 +10,11 @@ class Variable extends Model
 
     protected $valuePath = "Variable";
 
+    protected $type = [
+        'update_time' => 'timestamp',
+        'create_time' => 'timestamp',
+    ];
+
     /**
      * 通过key 获取到value的值
      * @author luffy<luffyzhao@vip.126.com>

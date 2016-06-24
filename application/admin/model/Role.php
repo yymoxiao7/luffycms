@@ -12,8 +12,8 @@ class Role extends Model
     protected $type = [
         'id'          => 'integer',
         'status'      => 'integer',
-        'create_time' => 'datetime',
-        'update_time' => 'datetime',
+        'update_time' => 'timestamp',
+        'create_time' => 'timestamp',
     ];
 
     /**

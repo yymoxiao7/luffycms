@@ -27,7 +27,7 @@ class DbManage
     {
         $dir = RUNTIME_PATH . $dir . DS . date('Y-m-d') . DS;
         if (!file_exists($dir)) {
-            mkdir($dir, 0755);
+            mkdir($dir, 0755, true);
         }
         $filename = $table . ".sql";
 
@@ -122,7 +122,7 @@ class DbManage
 
         $res = self::get("SHOW CREATE TABLE `user`;");
 
-        $sql .= $res['create table'] . self::$sqlEnd . self::$ds;
+        $sql .= $res['Create Table'] . self::$sqlEnd . self::$ds;
 
         $sql .= self::$ds;
         $sql .= "--" . self::$ds;

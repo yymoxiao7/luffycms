@@ -5,14 +5,12 @@ use \think\Model;
 
 class Pages extends Model
 {
-    protected $auto       = ['status', 'sort', 'description'];
-    protected $dateFormat = "Y-m-d";
-    protected $type       = [
-        'id'          => 'integer',
+    protected $auto = ['status', 'sort', 'description'];
+    protected $type = [
         'status'      => 'integer',
         'sort'        => 'integer',
-        'create_time' => 'datetime',
-        'update_time' => 'datetime',
+        'update_time' => 'timestamp',
+        'create_time' => 'timestamp',
     ];
 
     /**
@@ -87,7 +85,7 @@ class Pages extends Model
      */
     protected function setDescriptionAttr($description, $data)
     {
-        if ($description != '') {
+        if ($description) {
             return $description;
         }
 
@@ -150,4 +148,5 @@ class Pages extends Model
     {
         return '<input type="text" value="' . $sort . '" class="sort"/>';
     }
+
 }

@@ -3,8 +3,8 @@ namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
 use \think\Db;
-use \think\Input;
 use \think\Loader;
+use \think\Request;
 use \think\Url;
 
 /**
@@ -36,8 +36,9 @@ class Links extends AdminBase
      */
     public function add()
     {
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params = $request->param();
 
             if (loader::validate('Links')->scene('add')->check($params) === false) {
                 return $this->error(loader::validate('Links')->getError());
@@ -49,7 +50,7 @@ class Links extends AdminBase
 
             Loader::model('BackstageLog')->record("添加友情链接：[{$linksId}]");
 
-            return $this->success('友情链接添加成功',Url::build('admin/links/index'));
+            return $this->success('友情链接添加成功', Url::build('admin/links/index'));
         }
         $this->assign('default_image', Loader::model('Variable')->getValueBykey('default_image'));
 
@@ -65,8 +66,9 @@ class Links extends AdminBase
      */
     public function edit($id)
     {
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params = $request->param();
 
             $params['id'] = $id;
             if (loader::validate('Links')->scene('edit')->check($params) === false) {
@@ -79,7 +81,7 @@ class Links extends AdminBase
 
             Loader::model('BackstageLog')->record("修改友情链接：[{$id}]");
 
-            return $this->success('友情链接修改成功',Url::build('admin/links/index'));
+            return $this->success('友情链接修改成功', Url::build('admin/links/index'));
         }
 
         $linksRow = Db::table('links')->find($id);
@@ -105,6 +107,6 @@ class Links extends AdminBase
         }
         Loader::model('BackstageLog')->record("删除菜单,ID:[{$id}]");
 
-        return $this->success('友情链接删除成功',Url::build('admin/links/index'));
+        return $this->success('友情链接删除成功', Url::build('admin/links/index'));
     }
 }

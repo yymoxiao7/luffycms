@@ -2,8 +2,8 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
-use \think\Input;
 use \think\Loader;
+use \think\Request;
 use \think\Url;
 
 class Rule extends AdminBase
@@ -32,8 +32,9 @@ class Rule extends AdminBase
      */
     public function add()
     {
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params = $request->param();
 
             if (loader::validate('Rule')->scene('add')->check($params) === false) {
                 return $this->error(loader::validate('Rule')->getError());
@@ -45,7 +46,7 @@ class Rule extends AdminBase
 
             Loader::model('BackstageLog')->record("添加菜单,ID:[{$userId}]");
 
-            return $this->success('菜单添加成功',Url::build('admin/rule/index'));
+            return $this->success('菜单添加成功', Url::build('admin/rule/index'));
         }
         $ruleRows = Loader::model('Rule')->getMenusByParentId(0);
         $this->assign('ruleRows', $ruleRows);
@@ -70,19 +71,20 @@ class Rule extends AdminBase
             $this->error('没有找到对应的数据');
         }
 
-        if (IS_AJAX) {
-            $params   = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params       = $request->param();
             $params['id'] = $id;
 
             if (loader::validate('Rule')->scene('edit')->check($params) === false) {
                 return $this->error(loader::validate('Rule')->getError());
             }
-            if (Loader::model('Rule')->save($params,['id'=>$id]) === false) {
+            if (Loader::model('Rule')->save($params, ['id' => $id]) === false) {
                 return $this->error(loader::model('Rule')->getError());
             }
             Loader::model('BackstageLog')->record("修改菜单,ID:[{$id}]");
 
-            return $this->success('菜单修改成功',Url::build('admin/rule/index'));
+            return $this->success('菜单修改成功', Url::build('admin/rule/index'));
         }
 
         $ruleRows = $ruleModel->getMenusByParentId(0);
@@ -109,6 +111,6 @@ class Rule extends AdminBase
         }
         Loader::model('BackstageLog')->record("删除菜单,ID:[{$id}]");
 
-        return $this->success('菜单删除成功',Url::build('admin/rule/index'));
+        return $this->success('菜单删除成功', Url::build('admin/rule/index'));
     }
 }

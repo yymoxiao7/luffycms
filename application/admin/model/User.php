@@ -12,12 +12,13 @@ class User extends Model
 {
     protected $insert = ['password'];
 
-    protected $dateFormat = 'Y-m-d';
-    protected $type       = [
-        'id'      => 'integer',
-        'role_id' => 'integer',
-        'status'  => 'integer',
-        'sex'     => 'integer',
+    protected $type = [
+        'id'          => 'integer',
+        'role_id'     => 'integer',
+        'status'      => 'integer',
+        'sex'         => 'integer',
+        'update_time' => 'timestamp',
+        'create_time' => 'timestamp',
     ];
 
     public function role()
@@ -199,12 +200,20 @@ class User extends Model
     {
         return Strings::password($password);
     }
-
+    /**
+     * [setBirthdayAttr description]
+     * @author luffy<luffyzhao@vip.126.com>
+     * @dateTime 2016-06-24T14:00:15+0800
+     * @type     {{type}}
+     * @param    [type]                   $birthday [description]
+     * @param    array                    $data     [description]
+     */
     protected function setBirthdayAttr($birthday, $data = array())
     {
         if ($birthday == '') {
             return "1970-01-01";
         }
+        return $birthday;
     }
 
 }

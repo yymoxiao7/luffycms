@@ -3,8 +3,8 @@ namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
 use think\Db;
-use think\Input;
 use think\Loader;
+use think\Request;
 use think\Url;
 
 class Personal extends AdminBase
@@ -17,22 +17,23 @@ class Personal extends AdminBase
      */
     public function profile()
     {
-        if (IS_AJAX) {
+        $request = Request::instance();
+        if ($request->isAjax()) {
 
-            $params       = Input::post();
+            $params       = $request->post();
             $params['id'] = $this->userRow['id'];
 
             if (loader::validate('User')->scene('edit_profile')->check($params) === false) {
-                return $this->error( loader::validate('User')->getError());
+                return $this->error(loader::validate('User')->getError());
             }
 
             if (Loader::model('User')->profileEdit($params) === false) {
-                return $this->error( Loader::model('User')->getError());
+                return $this->error(Loader::model('User')->getError());
             }
 
             Loader::model('BackstageLog')->record("个人资料修改");
 
-            return $this->success('个人资料修改成功',Url::build('admin/personal/profile'));
+            return $this->success('个人资料修改成功', Url::build('admin/personal/profile'));
 
         }
         $userRow = Db::table('user')->find($this->userRow['id']);

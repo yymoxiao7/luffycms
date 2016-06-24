@@ -3,7 +3,6 @@ namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
 use app\common\tools\Strings;
-use think\Input;
 use think\Loader;
 use think\Request;
 
@@ -17,10 +16,11 @@ class Upload extends AdminBase
      */
     public function uploadpic()
     {
-        if (Request::instance()->isPost()) {
+        $request = Request::instance();
+        if ($request->isPost()) {
             $optput = ['error' => 1, 'message' => '上传失败'];
 
-            $file = Input::file('imgFile');
+            $file = $request->file('imgFile');
             if (Loader::model('ImagesInfo')->imageSize('editor', $file) === false) {
                 $optput['message'] = Loader::model('ImagesInfo')->getError();
             } else {
@@ -50,10 +50,11 @@ class Upload extends AdminBase
      */
     public function index($id = 'editor')
     {
-        if (Request::instance()->isPost()) {
+        $request = Request::instance();
+        if ($request->isPost()) {
             $optput = ['error' => '上传失败'];
 
-            $file = Input::file('imgFile');
+            $file = $request->file('imgFile');
             if (Loader::model('ImagesInfo')->imageSize($id, $file) === false) {
                 $optput['error'] = Loader::model('ImagesInfo')->getError();
             } else {

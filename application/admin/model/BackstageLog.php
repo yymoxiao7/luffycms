@@ -9,6 +9,9 @@ class BackstageLog extends Model
 {
     protected $updateTime = false;
     protected $insert     = ['ip', 'user_id'];
+    protected $type       = [
+        'create_time' => 'timestamp',
+    ];
 
     /**
      * 设置登录用户的ip

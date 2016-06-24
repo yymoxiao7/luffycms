@@ -22,7 +22,7 @@ class AdminBase extends Controller
     {
         parent::__construct();
 
-        defined('IS_AJAX') or define('IS_AJAX', Request::instance()->isAjax());
+        // defined('IS_AJAX') or define('IS_AJAX', Request::instance()->isAjax());
         defined('STATIC_PATH') or define('STATIC_PATH', dirname(ROOT_PATH) . DS . 'static');
 
         // 当前位置

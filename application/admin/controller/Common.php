@@ -2,7 +2,6 @@
 namespace app\admin\controller;
 
 use think\Controller;
-use think\Input;
 use think\Loader;
 use think\Request;
 use think\Url;
@@ -22,8 +21,9 @@ class Common extends Controller
     public function login()
     {
         $request = Request::instance();
+
         if ($request->isAjax()) {
-            $data   = Input::param();
+            $data   = $request->param();
             $result = $this->validate($data, "User.login");
 
             if ($result !== true) {
@@ -41,7 +41,7 @@ class Common extends Controller
                 return $this->error($userModel->getError());
             }
 
-            return $this->success('登录成功',Url::build('admin/index/index'));
+            return $this->success('登录成功', Url::build('admin/index/index'));
 
         } else {
             return $this->fetch();

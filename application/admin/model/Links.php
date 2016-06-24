@@ -13,8 +13,8 @@ class Links extends Model
         'id'          => 'integer',
         'status'      => 'integer',
         'sort'        => 'integer',
-        'create_time' => 'datetime',
-        'update_time' => 'datetime',
+        'update_time' => 'timestamp',
+        'create_time' => 'timestamp',
     ];
 
     /**
@@ -31,7 +31,7 @@ class Links extends Model
             'url'    => $params['url'],
             'logo'   => $params['links_logo'],
             'linker' => $params['linker'],
-            'status' => $params['status'],
+            'status' => isset($params['status']) ? $params['status'] : 0,
             'sort'   => $params['sort'],
         ]);
     }
@@ -98,4 +98,5 @@ class Links extends Model
     {
         return '<input type="text" value="' . $sort . '" class="sort"/>';
     }
+
 }

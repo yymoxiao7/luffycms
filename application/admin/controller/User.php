@@ -3,8 +3,8 @@ namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
 use \think\Db;
-use \think\Input;
 use \think\Loader;
+use \think\Request;
 use \think\Url;
 
 class User extends AdminBase
@@ -33,8 +33,9 @@ class User extends AdminBase
      */
     public function add()
     {
-        if (IS_AJAX) {
-            $params    = Input::param();
+        $request = Request::instance();
+        if ($request->isPost()) {
+            $params = $request->param();
 
             if (loader::validate('User')->scene('add')->check($params) === false) {
                 return $this->error(loader::validate('User')->getError());
@@ -46,7 +47,7 @@ class User extends AdminBase
 
             Loader::model('BackstageLog')->record("添加后台用户：[{$userId}]");
 
-            return $this->success('后台用户添加成功',Url::build('admin/user/index'));
+            return $this->success('后台用户添加成功', Url::build('admin/user/index'));
         }
 
         $roleModel = Loader::model('Role');
@@ -67,8 +68,9 @@ class User extends AdminBase
      */
     public function edit($id)
     {
-        if (IS_AJAX) {
-            $params    = Input::param();
+        $request = Request::instance();
+        if ($request->isPost()) {
+            $params    = $request->param();
             $userModel = Loader::model('User');
 
             $params['id'] = (int) $id;
@@ -81,7 +83,7 @@ class User extends AdminBase
             }
             Loader::model('BackstageLog')->record("修改后台用户：[{$id}]");
 
-            return $this->success('后台用户添加成功',Url::build('admin/user/index'));
+            return $this->success('后台用户修改成功', Url::build('admin/user/index'));
 
         }
 
@@ -111,7 +113,7 @@ class User extends AdminBase
 
         Loader::model('BackstageLog')->record("删除后台用户：[{$id}]");
 
-        return $this->success('后台用户删除成功',Url::build('admin/user/index'));
+        return $this->success('后台用户删除成功', Url::build('admin/user/index'));
 
     }
 }

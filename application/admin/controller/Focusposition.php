@@ -2,8 +2,8 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
-use think\Input;
 use think\Loader;
+use think\Request;
 use think\Url;
 
 /**
@@ -35,8 +35,9 @@ class Focusposition extends AdminBase
      */
     public function add()
     {
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params = $request->param();
 
             if (loader::validate('FocusPosition')->check($params) === false) {
                 return $this->error(loader::validate('FocusPosition')->getError());
@@ -48,7 +49,7 @@ class Focusposition extends AdminBase
 
             Loader::model('BackstageLog')->record("添加焦点图位置：[{$positionId}]");
 
-            return $this->success('焦点图位置添加成功',Url::build('admin/focusposition/index'));
+            return $this->success('焦点图位置添加成功', Url::build('admin/focusposition/index'));
         }
     }
 
@@ -61,8 +62,9 @@ class Focusposition extends AdminBase
      */
     public function edit($id)
     {
-        if (IS_AJAX) {
-            $params       = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params       = $request->param();
             $params['id'] = $id;
 
             if (loader::validate('FocusPosition')->check($params) === false) {
@@ -74,7 +76,7 @@ class Focusposition extends AdminBase
             }
             Loader::model('BackstageLog')->record("修改焦点图位置：[{$id}]");
 
-            return $this->success('焦点图位置修改成功',Url::build('admin/focusposition/index'));
+            return $this->success('焦点图位置修改成功', Url::build('admin/focusposition/index'));
         }
         $positionModel = loader::model('FocusPosition');
         $positionRow   = $positionModel::get($id);
@@ -97,6 +99,6 @@ class Focusposition extends AdminBase
         }
         Loader::model('BackstageLog')->record("删除焦点图位置,ID:[{$id}]");
 
-        return $this->success('焦点图位置删除成功',Url::build('admin/focusposition/index'));
+        return $this->success('焦点图位置删除成功', Url::build('admin/focusposition/index'));
     }
 }

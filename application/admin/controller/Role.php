@@ -2,8 +2,8 @@
 namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
-use \think\Input;
 use \think\Loader;
+use \think\Request;
 use \think\Url;
 
 class Role extends AdminBase
@@ -32,21 +32,22 @@ class Role extends AdminBase
      */
     public function add()
     {
-        if (IS_AJAX) {
-            $data      = Input::post();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $data      = $request->param();
             $roleModel = Loader::model('Role');
 
             if (loader::validate('Role')->scene('add')->check($data) === false) {
-                return $this->error( loader::validate('Role')->getError());
+                return $this->error(loader::validate('Role')->getError());
             }
 
             if (($id = $roleModel->addRole($data)) !== false) {
                 Loader::model('BackstageLog')->record("添加用户组,ID:[{$id}]");
 
-                return $this->success('用户组添加成功',Url::build('admin/role/index'));
+                return $this->success('用户组添加成功', Url::build('admin/role/index'));
             }
 
-            return $this->error( Loader::model('Role')->getError());
+            return $this->error(Loader::model('Role')->getError());
 
         }
         $this->assign('ruleRows', Loader::model('rule')->getMenusByParentId());
@@ -69,21 +70,21 @@ class Role extends AdminBase
             $this->error('没有找到对应的数据');
         }
 
-        if (IS_AJAX) {
-            $data       = Input::post();
-            $data['id'] = $id;
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $data = $request->param();
 
             if (loader::validate('Role')->scene('edit')->check($data) === false) {
-                return $this->error( loader::validate('Role')->getError());
+                return $this->error(loader::validate('Role')->getError());
             }
 
             if ($roleRow->editRole($data) !== false) {
                 Loader::model('BackstageLog')->record("修改用户组,ID:[{$id}]");
 
-                return $this->success('用户组修改成功',Url::build('admin/role/index'));
+                return $this->success('用户组修改成功', Url::build('admin/role/index'));
             }
 
-            return $this->error( $roleRow->getError());
+            return $this->error($roleRow->getError());
         }
 
         // 用户组所有权限
@@ -108,10 +109,10 @@ class Role extends AdminBase
         $rouleModel = Loader::model('Role');
 
         if ($rouleModel->deleteRole($id) === false) {
-            return $this->error( $rouleModel->getError());
+            return $this->error($rouleModel->getError());
         }
         Loader::model('BackstageLog')->record("删除用户组,ID:[{$id}]");
 
-        return $this->success('用户组删除成功',Url::build('admin/role/index'));
+        return $this->success('用户组删除成功', Url::build('admin/role/index'));
     }
 }

@@ -3,8 +3,8 @@ namespace app\admin\controller;
 
 use app\common\controller\AdminBase;
 use think\Db;
-use think\Input;
 use think\Loader;
+use think\Request;
 use think\Url;
 
 /**
@@ -36,8 +36,9 @@ class Focus extends AdminBase
      */
     public function add()
     {
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params = $request->param();
 
             if (loader::validate('Focus')->scene('add')->check($params) === false) {
                 return $this->error(loader::validate('Focus')->getError());
@@ -49,7 +50,7 @@ class Focus extends AdminBase
 
             Loader::model('BackstageLog')->record("添加焦点图：[{$focusId}]");
 
-            return $this->success('焦点图添加成功',Url::build('admin/focus/index'));
+            return $this->success('焦点图添加成功', Url::build('admin/focus/index'));
         }
 
         $this->assign('positionRows', Loader::model('FocusPosition')->select());
@@ -67,9 +68,9 @@ class Focus extends AdminBase
      */
     public function edit($id)
     {
-        // $focus = Loader::model('Focus');
-        if (IS_AJAX) {
-            $params = Input::param();
+        $request = Request::instance();
+        if ($request->isAjax()) {
+            $params = $request->param();
 
             $params['id'] = $id;
             if (loader::validate('Focus')->scene('edit')->check($params) === false) {
@@ -82,7 +83,7 @@ class Focus extends AdminBase
 
             Loader::model('BackstageLog')->record("修改焦点图：[{$id}]");
 
-            return $this->success('焦点图修改成功',Url::build('admin/focus/index'));
+            return $this->success('焦点图修改成功', Url::build('admin/focus/index'));
         }
 
         $focusRow = Db::table('focus')->find($id);
@@ -107,6 +108,6 @@ class Focus extends AdminBase
         }
         Loader::model('BackstageLog')->record("删除焦点图,ID:[{$id}]");
 
-        return $this->success('焦点图删除成功',Url::build('admin/focus/index'));
+        return $this->success('焦点图删除成功', Url::build('admin/focus/index'));
     }
 }

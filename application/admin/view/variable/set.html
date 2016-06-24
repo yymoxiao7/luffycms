@@ -38,7 +38,7 @@
                                     </script>
                                     {elseif condition="$variableRow->getData('input_types') eq 'image'"}
                                     {if condition="$variableRow.value eq ''"}
-                                    <img src="{$variableRow.value|default=$default_image}" style="max-width:100px; max-height:100px;" id="value" class="img-circle upload">
+                                    <img src="{$default_image}" style="max-width:100px; max-height:100px;" id="value" class="img-circle upload">
                                     <input type="hidden" name="value" value="{$variableRow.value}" />
                                     {else /}
                                     <img src="{$variableRow.value}" style="max-width:100px; max-height:100px;" id="value" class="img-circle upload">
