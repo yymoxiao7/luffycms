@@ -15,10 +15,10 @@ class Index extends AdminBase
     public function index()
     {
         $ruleData = Loader::model('Rule')->getMenusByRoleId($this->userRow['role_id']);
-
+		//diedump( $this->userRow['role_id']);
         $this->assign('userRow', $this->userRow);
         $this->assign('ruleData', $ruleData);
-
+		
         return $this->fetch();
     }
 

@@ -137,7 +137,7 @@ class Rule extends Model
             ->where('r.islink', 1)
             ->order('r.parent_id ASC , r.sort ASC')
             ->select();
-
+		 
         if (empty($ruleRows)) {
             return [];
         }

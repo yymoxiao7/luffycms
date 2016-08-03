@@ -14,16 +14,20 @@ class Common extends Controller
 
     /**
      * 后台用户登录
-     * @author luffy<luffyzhao@vip.126.com>
-     * @dateTime 2016-05-16T17:32:23+0800
+     * @author ywq
+     * @dateTime 2016-07-29
      * @return [type] [description]
      */
     public function login()
-    {
+    {   
+		
         $request = Request::instance();
-
+		
+		//diedump( $request );
         if ($request->isAjax()) {
-            $data   = $request->param();
+			
+            $data   = $request->post();
+			
             $result = $this->validate($data, "User.login");
 
             if ($result !== true) {
@@ -33,14 +37,14 @@ class Common extends Controller
             $userModel = Loader::model('User');
 
             $userRow = $userModel->login([
-                'email'    => $data['email_login'],
-                'password' => $data['password'],
+                'nickname'    => $data['nickname'],
+                'password' 	  => $data['password'],
             ]);
 
             if ($userRow === false) {
                 return $this->error($userModel->getError());
             }
-
+	
             return $this->success('登录成功', Url::build('admin/index/index'));
 
         } else {

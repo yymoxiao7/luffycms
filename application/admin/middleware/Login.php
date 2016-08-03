@@ -12,7 +12,10 @@ class Login
 
     public function run(&$params)
     {
+		
         $request = Request::instance();
+		
+		//dump("Login");exit;
         if (Session::has(Config::get('login_session_identifier')) && ($user = Session::get(Config::get('login_session_identifier')))) {
             if ($request->controller() == 'common') {
                 if ($request->isAjax()) {

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>LuffyZhao For Bootstrap</title>
+    <title>我是可爱的后台管理！♪(^∇^*)</title>
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="/static/admin/css/bootstrap.css">
     <!-- 可选的Bootstrap主题文件 -->
@@ -28,24 +28,24 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">管理控制台 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">后台管理 <span class="sr-only">(current)</span></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-envelope"></span> 未读信息<span class="badge">4</span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-envelope"></span> 待做事项提醒<span class="badge">7</span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">iBoxDB 2.9/2.5 发布，从 KeyV...</a></li>
-                            <li><a href="#">为什么未来是全栈工程师的世界,查看全部列表？</a></li>
+                            <li><a href="#">test.</a></li>
+                            <li><a href="#">123,456</a></li>
                             <li role="separator" class="divider"></li>
-                            <li class="text-center"><a href="#">查看全部列表</a></li>
+                            <li class="text-center"><a href="#">你点我干啥嘛！</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#" data-toggle="modal" data-target="#clearModal">清理缓存 </a>
+                        <a href="#" data-toggle="modal" data-target="#clearModal">高级检索 </a>
                         <!-- Modal -->
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrator <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{$userRow.nickname} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#" class="ng-scope" data-title="修改个人资料">{$userRow.email}</a></li>
                             <li><a href="{:url('index/logout')}">退出</a></li>
@@ -64,12 +64,18 @@
             </div>
         </div>
     </nav>
-    <section class="container-fluid viewFramework-sidebar-full viewFramework-body" id="sidebar-left">
+   
+   
+   
+   <section class="container-fluid viewFramework-sidebar-full viewFramework-body" id="sidebar-left">
         <div class="viewFramework-sidebar row">
+
             <div class="sidebar-fold text-center" id="sidebar-icon"><span class="glyphicon glyphicon-th-list"></span></div>
+
             <div class="sidebar-nav">
                 <ul class="entrance-nav sidebar-trans" data-toggle="left-nav">
                     {volist name="ruleData" id="vo"}
+					
                     <li class="nav-item">
                         {if condition="isset($vo['sub']) && !empty($vo['sub'])"}
                         <a href="javascript:void(0);" >
@@ -95,6 +101,8 @@
                 </ul>
             </div>
         </div>
+		
+		
         <div class="viewFramework-product">
             <div class="content-tabs">
                 <button class="roll-nav roll-left"><span class="glyphicon glyphicon-backward"></span></button>
@@ -106,10 +114,25 @@
             </div>
         </div>
     </section>
+   
+   
+   
+   
+   
+
+	
+	
+	
+	
+	
+	
+	
+	
     <div class="modal fade" id="clearModal" tabindex="-1" role="dialog" aria-labelledby="clearModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+				
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="clearModalLabel">温馨提示</h4>
                 </div>

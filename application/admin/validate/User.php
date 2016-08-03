@@ -38,6 +38,6 @@ class User extends Validate
         'edit_profile' => ['name', 'password', 'repassword', 'status', 'sex', 'birthday', 'profile_head'],
         'edit'         => ['name', 'password', 'repassword', 'status', 'sex', 'birthday', 'role_id', 'profile_head'],
         'editstatus'   => ['status'],
-        'login'        => ['email_login', 'password'],
+        'login'        => ['nickname', 'password'],
     ];
 }

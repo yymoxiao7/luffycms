@@ -18,4 +18,64 @@ return [
 
     'default_module'      => 'admin',
     'default_ajax_return' => 'json',
+	'app_debug' =>  true,
+	
+	'MG_DB' => [
+    // 数据库类型
+    'type'        => 'mysql',
+    // 服务器地址
+    'hostname'    => '192.168.1.227',
+    // 数据库名
+    'database'    => 'HT_MGDB',
+    // 数据库用户名
+    'username'    => 'root',
+    // 数据库密码
+    'password'    => '123456',
+    // 数据库编码默认采用utf8
+    'charset'     => 'utf8',
+    // 数据库表前缀
+    'prefix'      => '',
+],
+//数据库配置2
+'LOG_DB' => [
+    // 数据库类型
+    'type'        => 'mysql',
+    // 服务器地址
+    'hostname'    => '192.168.1.227',
+    // 数据库名
+    'database'    => 'HT_LOGDB',
+    // 数据库用户名
+    'username'    => 'root',
+    // 数据库密码
+    'password'    => '123456',
+    // 数据库编码默认采用utf8
+    'charset'     => 'utf8',
+    // 数据库表前缀
+    'prefix'      => '',
+],
+	
+	
+//数据库配置3
+'IM_DB' => [
+    // 数据库类型
+    'type'        => 'mysql',
+    // 服务器地址
+    'hostname'    => '192.168.1.227',
+    // 数据库名
+    'database'    => 'HT_IMDB',
+    // 数据库用户名
+    'username'    => 'root',
+    // 数据库密码
+    'password'    => '123456',
+    // 数据库编码默认采用utf8
+    'charset'     => 'utf8',
+    // 数据库表前缀
+    'prefix'      => '',
+],	
+	
+	
+	
+	
+	
+	
 ];

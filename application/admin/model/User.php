@@ -38,23 +38,37 @@ class User extends Model
      */
     public function login(array $params)
     {
-        $userRow = Db::table('user')->field([
+		
+        /*$userRow = Db::table('user')->field([
             'id', 'name', 'role_id', 'status', 'password', 'sex', 'birthday', 'tel', 'email',
-        ])->where('email', $params['email'])->find();
-
-        if (empty($userRow) || $userRow['status'] == 0 || $userRow['password'] != $this->setPasswordAttr($params['password'])) {
+        ])->where('email', $params['email'])->find();*/
+		
+		$db_mg				=	Db::connect('MG_DB');
+		
+		$where['account']	=	$params['nickname'];
+		
+		$userRow			=	$db_mg->table('mg_user')->field('id,nickname,role_id,password,email,status,create_time')->where($where)->find();
+		
+		$password			=	$this->getpassword_HT($params['password'],$userRow['create_time']);
+		
+		
+		
+        if (empty($userRow) || $userRow['status'] == 0 || $userRow['password'] != $password) {
 
             if (empty($userRow)) {
-                $this->error = '用户名/邮箱不存在！';
+                $this->error = '用户名不存在！';
             } elseif ($userRow['status'] == 0) {
                 $this->error = '该用户已被禁用，请联系管理员。';
-            } elseif ($userRow['password'] != $this->setPasswordAttr($params['password'])) {
-                $this->error = '密码错误！';
+            } elseif ($userRow['password'] != $password) {
+                $this->error = '密码错误，请重新输入密码';
             }
 
             //登录失败要记录在日志里
-            Loader::model('BackstageLog')->record("登录失败,email:[{$params['email']}] password:[" . Strings::replaceToStar($params['password']) . ']');
-
+           // Loader::model('BackstageLog')->record("登录失败,nickname:[{$params['nickname']}] password:[" . Strings::replaceToStar($params['password']) . ']');
+			
+			Loader::model('LogRecode')->login_record("登录失败,nickname:[{$params['nickname']}] password:[" . Strings::replaceToStar($params['password']) . ']','');
+		   
+		   
             return false;
         }
 
@@ -63,11 +77,18 @@ class User extends Model
         Session::set(Config::get('login_session_identifier'), $userRow);
 
         //登录成功要记录在日志里
-        Loader::model('BackstageLog')->record('登录');
-
+        //Loader::model('BackstageLog')->login_record('登陆成功');
+		$name	=	$userRow['nickname'];
+		Loader::model('LogRecode')->login_record('登陆成功',$name);
+		
         return $userRow;
     }
 
+	
+	
+	
+	
+	
     /**
      * [profileEdit description]
      * @author luffy<luffyzhao@vip.126.com>
@@ -200,6 +221,21 @@ class User extends Model
     {
         return Strings::password($password);
     }
+	
+	/* 获取string这个工具类里面的原来的后台密码
+	 * @author 	 ywq
+     * @dateTime 2016年8月1日14:37:41
+     * @param  	 $password,$time
+	 */
+	protected function  getpassword_HT($password,$time){
+		
+		
+		 return Strings::get_HT_password($password,$time);
+		
+	}
+	
+	
+	
     /**
      * [setBirthdayAttr description]
      * @author luffy<luffyzhao@vip.126.com>
@@ -208,6 +244,9 @@ class User extends Model
      * @param    [type]                   $birthday [description]
      * @param    array                    $data     [description]
      */
+	 
+	
+	 
     protected function setBirthdayAttr($birthday, $data = array())
     {
         if ($birthday == '') {

@@ -48,7 +48,42 @@ class BackstageLog extends Model
      */
     public function record($remark)
     {
-        $this->save(['remark' => $remark]);
+        //$this->save(['remark' => $remark]);
+		//Db::table('backstage_log')->save("remark={$remark}");
+		/*$db_mg					=	Db::connect('MG_DB');
+		
+		$data['remark']			=	$remark;
+		$data['user_id']		=	$this->userRow['id'];
+		$data['create_time']	=	time();
+		$data['ip']				=	$this->setIpAttr();
+		$ret					=	$db_mg->table('user_log_remark')->insert(['id' => 18, 'remark' => 'thinkphp']);
+		$db_mg->query("INSERT INTO user_log_remark (user_id, remark ) VALUES (344,'success')");*/
+		
+		$db_mg					=	Db::connect('MG_DB');
+		
+		$data['remark']			=	$remark;
+		$data['user_id']		=	$this->userRow['nickname'];
+		
+		$data['create_time']	=	date('Y-m-d H:i:s',time());
+		$data['ip']				=	$this->setIpAttr();
+		
+		$db_mg->table('user_log_remark')->insert($data);
+		
+		
     }
-
+	
+	public function login_record($remark){
+		
+		$db_mg					=	Db::connect('MG_DB');
+		
+		$data['remark']			=	$remark;
+		$data['user_id']		=	$this->userRow['nickname'];
+		$data['create_time']	=	date('Y-m-d H:i:s',time());
+		$data['ip']				=	\app\common\tools\Visitor::getIP();
+		
+		$db_mg->table('user_log_remark')->insert($data);
+		
+		
+		
+	}
 }

@@ -113,7 +113,8 @@ $.extend({
      * @return {[type]}        [description]
      */
     ajaxFailResult: function(result) {
-        $.messageError('网络错误,请联系管理员');
+        $.messageError('网络错误,请联系管理员'+result.data);
+		
         $.buttonEnable();
     },
 

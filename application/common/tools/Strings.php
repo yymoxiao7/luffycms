@@ -76,4 +76,11 @@ class Strings
     {
         return md5($string);
     }
+	
+	/* 用于获取后台原来的账号密码 */
+	public static function get_HT_password($string,$time){
+		
+		return md5( md5($string).$time);
+		
+	}
 }

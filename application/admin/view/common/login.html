@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta charset="UTF-8">
-    <title>登录 - luffyzhao shopping</title>
+    <title>后台用户登录</title>
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="/static/admin/css/bootstrap.css">
     <!-- 可选的Bootstrap主题文件 -->
@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="icon-envelope"></i></span>
-                                <input type="text" class="form-control" placeholder="email" name="email_login" data-required data-pattern="/dfads/i">
+                                <input type="text" class="form-control" placeholder="nickname" name="nickname" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -45,7 +45,7 @@
                     </form>
                 </div>
                 <div class="panel-footer text-center">
-                    <span class="text-muted ">版权所有 2016 luffyzhaoshopping.com</span>
+                    <span class="text-muted ">后台用户登录</span>
                 </div>
             </div>
         </div>
@@ -58,9 +58,9 @@
 <script type="text/javascript" src="/static/admin/js/global.js"></script>
 <script type="text/javascript">
 $('form.ajax-form').formLuffyZhao([{
-    name: "email_login",
-    display: '登录邮箱',
-    rules: 'required|valid_email'
+    name: "nickname",
+    display: '账号',
+    rules: 'required'
 }, {
     name: "password",
     display: "密码",
